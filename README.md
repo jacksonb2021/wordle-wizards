@@ -1,2 +1,6 @@
 # team-project
-Add your name to this file.
+
+
+
+Authors: Jackson Burns, Duke Speed, Amon Guinan, Jose Juan Velasquez
+
