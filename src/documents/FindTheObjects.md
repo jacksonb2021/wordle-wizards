@@ -37,8 +37,8 @@ WordleGUI
 OutputScreen
  - extends BorderPane
  - shows your score, saves on exit
-    if logged in, show averages and past.
-    if not logged in, show # of guesses and # of words. local save but cannot save until logged in. make an alert
+        if logged in, show averages and past.
+        if not logged in, show # of guesses and # of words. local save but cannot save until logged in. make an alert
  - shows old scores, asks if you want to play again, on practice mode.
 
  UsernameLogin
