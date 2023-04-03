@@ -35,7 +35,8 @@ WordleGUI
  - button to switch to practice mode (randomizes the word but stays on same screen)
 
 OutputScreen
- - extends BorderPane
+ - extends BorderPane, could also be shown as alert.
+        could open as seperate JavaFX application
  - shows your score, saves on exit
         if logged in, show averages and past.
         if not logged in, show # of guesses and # of words. local save but cannot save until logged in. make an alert
