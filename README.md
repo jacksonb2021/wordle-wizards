@@ -1,4 +1,4 @@
-# team-project
+# Wordle Team Project
 
 
 
