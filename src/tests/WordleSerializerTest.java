@@ -1,17 +1,15 @@
 package tests;
 
+import static org.junit.Assert.*;
 
 import model.WordleSerializer;
-import org.junit.*;
+import org.junit.Test;
 
-class WordleSerializerTest {
+public class WordleSerializerTest {
 
-    @Test
-    void load() {
-        WordleSerializer w = new WordleSerializer();
-    }
+	@Test
+	public void test() {
+		WordleSerializer ws = new WordleSerializer();
+	}
 
-    @org.junit.jupiter.api.Test
-    void save() {
-    }
 }
