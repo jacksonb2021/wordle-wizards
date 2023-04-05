@@ -1,7 +1,7 @@
 # model
 =========================
 
-WordleOperations
+Wordle
  - contains the wordle dictionary
  - method to play game, take in word as parameter. 6 tries to guess the word, like normal wordle
  - allows user to practice on random words
@@ -47,5 +47,9 @@ OutputScreen
   - allows users to login so it saves data
   - no logout button, will reset on exit
   - if no username, no data will be saved
+
+ WordleConsole
+  - console view of wordle. to test before gui is implemented
+  -
 
 
