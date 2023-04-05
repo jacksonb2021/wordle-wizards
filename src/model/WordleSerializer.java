@@ -1,7 +1,6 @@
 package model;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -23,18 +22,28 @@ public class WordleSerializer {
             //words = (ArrayList<String>[]) inFile.readObject();
             words = (HashMap<Integer, ArrayList<String>>) inFile.readObject();
             inFile.close();
+            System.out.println("Loaded database");
         } catch (IOException | ClassNotFoundException e) {
             load();
             save();
+            System.out.println("File not found, creating new database");
         }
     }
 
 
-    public void save(){
+    private void save(){
+        try {
+            FileOutputStream bytesToDisk = new FileOutputStream(serializedPath);
+            ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
+            outFile.writeObject(words);
+            outFile.close(); // Always close the output file!
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
     }
 
-    public void load(){
+    private void load(){
 
         Scanner s=null;
         try {
@@ -57,14 +66,14 @@ public class WordleSerializer {
             //words.get()
 
         }
-        System.out.println(words);
 
         //System.out.println(largest);
 
     }
 
-    public String pickDailyWord(){
-        return null;
+
+    public HashMap<Integer,ArrayList<String>> getMap(){
+        return words;
     }
 
 
