@@ -1,7 +1,5 @@
 package tests;
 
-import static org.junit.Assert.*;
-
 import model.WordleSerializer;
 import org.junit.Test;
 
@@ -12,5 +10,6 @@ public class WordleSerializerTest {
 		WordleSerializer ws = new WordleSerializer();
 		System.out.println(ws.getMap().toString());
 	}
+
 
 }

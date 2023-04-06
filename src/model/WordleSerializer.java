@@ -1,8 +1,10 @@
 package model;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class WordleSerializer {
@@ -28,7 +30,9 @@ public class WordleSerializer {
             save();
             System.out.println("File not found, creating new database");
         }
+
     }
+
 
 
     private void save(){
