@@ -20,6 +20,14 @@ public class Wordle {
 
 
 
+    public String guess(String word){
+        //Todo guess the word, return a string with a space for wrong characters, underscore for wrong location?
+        // compare to original string??
+        return null;
+    }
+
+
+
 
     private String randomWord(int length, boolean daily){
         Random rand;
