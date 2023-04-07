@@ -30,7 +30,7 @@ public class Wordle {
 		// Completed toString method and can print an indication of the tiles
 		// Also now it checks for repeated characters
 		guessedWord = word;
-		int[]checkedChars = new int[5];
+		int[]checkedChars = new int[word.length()];
 		final int WRONG = 0;
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
