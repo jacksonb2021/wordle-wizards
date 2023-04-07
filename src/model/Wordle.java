@@ -19,18 +19,18 @@ public class Wordle {
 
 	/**
 	 * This function compares the word passed into to the dailyWord variable, set in
-	 * the constructor, and returns a map of character indices for keys, and then
+	 * the constructor, and returns an array and then
 	 * WRONG (0), CORRECT (1) and CONTAINS (2) as the potential values.
 	 * 
 	 * @param word The word to check
-	 * @return A map with indices for keys, 0 for wrong, 1 for correct position, 2
+	 * @return An array with index corresponding to word 0 for wrong, 1 for correct position, 2
 	 *         for in the string, wrong position.
 	 */
-	public HashMap<Integer, Integer> guess(String word) {
+	public int[] guess(String word) {
 		// Completed toString method and can print an indication of the tiles
 		// Also now it checks for repeated characters
 		guessedWord = word;
-		HashMap<Integer, Integer> checkedChars = new HashMap<>();
+		int[]checkedChars = new int[5];
 		final int WRONG = 0;
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
@@ -39,16 +39,16 @@ public class Wordle {
 			char guessChar = word.charAt(index);
 			char correctChar = dailyWord.charAt(index);
 			if (guessChar == correctChar) {
-				checkedChars.put(index, CORRECT);
+				checkedChars[index]= CORRECT;
 			} else if (dailyWord.indexOf(guessChar) != -1) {
 				boolean verifyRepeat = checkForRepeats(word, guessChar);
 				if (!verifyRepeat) {
-					checkedChars.put(index, CONTAINS);
+					checkedChars[index] = CONTAINS;
 				} else {
-					checkedChars.put(index, WRONG);
+					checkedChars[index]= WRONG;
 				}
 			} else {
-				checkedChars.put(index, WRONG);
+				checkedChars[index]= WRONG;
 			}
 
 		}
@@ -89,15 +89,15 @@ public class Wordle {
 		return dailyWord;
 	}
 
-	public String guessToString(HashMap<Integer, Integer> checkedChars) {
+	public String guessToString(int[]checkedChars) {
 		String guess = "";
-		for (Entry<Integer, Integer> entry : checkedChars.entrySet()) {
-			if (entry.getValue() == 1) {
-				guess += guessedWord.charAt(entry.getKey()) + "(Green)";
-			} else if (entry.getValue() == 2) {
-				guess += guessedWord.charAt(entry.getKey()) + "(Yellow)";
-			} else if (entry.getValue() == 0) {
-				guess += guessedWord.charAt(entry.getKey()) + "(Gray)";
+		for(int i=0;i<checkedChars.length;i++) {
+			if (checkedChars[i] == 1) {
+				guess += guessedWord.charAt(i) + "(Green)";
+			} else if (checkedChars[i] == 2) {
+				guess += guessedWord.charAt(i) + "(Yellow)";
+			} else if (checkedChars[i] == 0) {
+				guess += guessedWord.charAt(i) + "(Gray)";
 			}
 			guess += " ";
 		}
