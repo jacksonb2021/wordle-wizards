@@ -9,6 +9,8 @@ import java.util.Scanner;
  * Wordle serializer stores the words hashmap and the accounts arraylist in a .ser file.
  * It also loads the words and accounts from the .ser file if it exists.
  * Finally, it can verify if a user exists, and it can add a new user to the database
+ *
+ * @author Jackson Burns
  */
 public class WordleSerializer {
     private final String wordsPath = "WordleWords.txt";
@@ -64,7 +66,7 @@ public class WordleSerializer {
     /**
      * This method saves the accounts arraylist to the accounts.ser file
      */
-    private void saveAccounts(){
+    public void saveAccounts(){
         try {
             FileOutputStream bytesToDisk = new FileOutputStream(accountsDatabasePath);
             ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
@@ -173,4 +175,5 @@ public class WordleSerializer {
     public HashMap<Integer,ArrayList<String>> getMap(){
         return words;
     }
+
 }
