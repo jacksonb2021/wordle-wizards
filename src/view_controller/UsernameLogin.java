@@ -4,5 +4,4 @@ import javafx.scene.layout.BorderPane;
 
 public class UsernameLogin extends BorderPane {
 
-
 }

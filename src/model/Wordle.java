@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Random;
 
 public class Wordle {
@@ -20,58 +19,55 @@ public class Wordle {
 		setRandomWord(5);
 	}
 
-
-
-	public WordleAccount login(String username, String password){
-		for(WordleAccount account : ws.getAccounts()){
-			if(account.getUsername().equals(username) && account.getPassword().equals(password)){
+	public WordleAccount login(String username, String password) {
+		for (WordleAccount account : ws.getAccounts()) {
+			if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
 				return account;
 			}
 		}
 		return null;
 	}
 
-	public void createAccount(String username, String password){
+	public void createAccount(String username, String password) {
 		ws.createNewUser(username, password);
 	}
 
-	public void updateAccount(WordleAccount account){
+	public void updateAccount(WordleAccount account) {
 		ws.update(account);
 	}
 
-	public String getWord(boolean daily){
-		if(daily){
+	public String getWord(boolean daily) {
+		if (daily) {
 			return dailyWord;
-		}
-		else{
+		} else {
 			return randomWord;
 		}
 	}
-	public void save(){
+
+	public void save() {
 		ws.saveAccounts();
 	}
 
 	/**
 	 * This function compares the word passed into to the dailyWord variable, set in
-	 * the constructor, and returns an array and then
-	 * WRONG (0), CORRECT (1) and CONTAINS (2) as the potential values.
+	 * the constructor, and returns an array and then WRONG (0), CORRECT (1) and
+	 * CONTAINS (2) as the potential values.
 	 * 
 	 * @param word The word to check
-	 * @return An array with index corresponding to word 0 for wrong, 1 for correct position, 2
-	 *         for in the string, wrong position.
+	 * @return An array with index corresponding to word 0 for wrong, 1 for correct
+	 *         position, 2 for in the string, wrong position.
 	 */
 	public int[] guess(String word, boolean daily) {
 		// Completed toString method and can print an indication of the tiles
 		// Also now it checks for repeated characters
 		String toBeGuessed;
-		if(daily){
+		if (daily) {
 			toBeGuessed = dailyWord;
-		}
-		else{
+		} else {
 			toBeGuessed = randomWord;
 		}
 		guessedWord = word;
-		int[]checkedChars = new int[word.length()];
+		int[] checkedChars = new int[word.length()];
 		final int WRONG = 0;
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
@@ -80,16 +76,16 @@ public class Wordle {
 			char guessChar = word.charAt(index);
 			char correctChar = toBeGuessed.charAt(index);
 			if (guessChar == correctChar) {
-				checkedChars[index]= CORRECT;
+				checkedChars[index] = CORRECT;
 			} else if (toBeGuessed.indexOf(guessChar) != -1) {
-				boolean verifyRepeat = checkForRepeats(word, guessChar,toBeGuessed);
+				boolean verifyRepeat = checkForRepeats(word, guessChar, toBeGuessed);
 				if (!verifyRepeat) {
 					checkedChars[index] = CONTAINS;
 				} else {
-					checkedChars[index]= WRONG;
+					checkedChars[index] = WRONG;
 				}
 			} else {
-				checkedChars[index]= WRONG;
+				checkedChars[index] = WRONG;
 			}
 
 		}
@@ -126,7 +122,7 @@ public class Wordle {
 		return map.get(length).get(randomIndex);
 	}
 
-	public void setRandomWord(int length){
+	public void setRandomWord(int length) {
 		randomWord = randomWord(length, false);
 	}
 
@@ -134,9 +130,9 @@ public class Wordle {
 		return dailyWord;
 	}
 
-	public String guessToString(int[]checkedChars) {
+	public String guessToString(int[] checkedChars) {
 		String guess = "";
-		for(int i=0;i<checkedChars.length;i++) {
+		for (int i = 0; i < checkedChars.length; i++) {
 			if (checkedChars[i] == 1) {
 				guess += guessedWord.charAt(i) + "(Green)";
 			} else if (checkedChars[i] == 2) {
@@ -149,7 +145,7 @@ public class Wordle {
 		return guess;
 	}
 
-	//Only used for testing
+	// Only used for testing
 	public void setDailyWord(String test) {
 		dailyWord = test;
 	}

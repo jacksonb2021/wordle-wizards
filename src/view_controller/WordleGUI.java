@@ -6,13 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-
-
 public class WordleGUI extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		Scene scene = new Scene(new Label("Test"), 900, 600);
-
 
 		stage.setScene(scene);
 		stage.show();
@@ -21,6 +18,5 @@ public class WordleGUI extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 
 }
