@@ -18,14 +18,14 @@ public class WordleTest {
 	 * required code coverage percentage, delete all local .ser files and run with
 	 * this testAccountCreator method uncommented
 	 */
-	@Test
-	public void testAccountCreator() {
-		WordleSerializer ws = new WordleSerializer();
-		ws.createNewUser("jackson", "burns");
-		ws.saveAccounts();
-		ws.createNewUser("JJVH19", "nel");
-		ws.saveAccounts();
-	}
+//	@Test
+//	public void testAccountCreator() {
+//		WordleSerializer ws = new WordleSerializer();
+//		ws.createNewUser("jackson", "burns");
+//		ws.saveAccounts();
+//		ws.createNewUser("JJVH19", "nel");
+//		ws.saveAccounts();
+//	}
 
 	@Test
 	public void testAllCorrect() {
