@@ -163,9 +163,7 @@ public class WordleSerializer {
         }
         if (!containsAcct) {
             accounts.add(new WordleAccount(newUser, newPwd));
-            return true;
         }
-        return false;
     }
 
     /**
