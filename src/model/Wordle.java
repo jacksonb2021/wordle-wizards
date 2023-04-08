@@ -82,7 +82,7 @@ public class Wordle {
 			if (guessChar == correctChar) {
 				checkedChars[index]= CORRECT;
 			} else if (toBeGuessed.indexOf(guessChar) != -1) {
-				boolean verifyRepeat = checkForRepeats(word, guessChar);
+				boolean verifyRepeat = checkForRepeats(word, guessChar,toBeGuessed);
 				if (!verifyRepeat) {
 					checkedChars[index] = CONTAINS;
 				} else {
@@ -96,14 +96,14 @@ public class Wordle {
 		return checkedChars;
 	}
 
-	private boolean checkForRepeats(String word, char guessChar) {
+	private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
 		int verifyRepeatGuess = 0;
 		int verifyRepeatDailyWord = 0;
 		for (int character = 0; character < word.length(); character++) {
 			if (word.charAt(character) == guessChar) {
 				verifyRepeatGuess++;
 			}
-			if (dailyWord.charAt(character) == guessChar) {
+			if (toBeGuessed.charAt(character) == guessChar) {
 				verifyRepeatDailyWord++;
 			}
 		}

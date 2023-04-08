@@ -116,9 +116,9 @@ public class WordleConsole {
 				game.save();
     			return;
     		}
-    	}
+		}
 		System.out.println("Game over. You lose.\nThe word was "+game.getWord(isDaily));
-		account.updateScore(counter);
+		account.updateScore(counter+1);
 		System.out.println("your score:\n"+account.getScoreString());
 		game.updateAccount(account);
 		game.save();
