@@ -154,7 +154,7 @@ public class WordleSerializer {
      * @param newPwd - the password of the new user
      * @return - true if the user was created, false if the user already exists
      */
-    public boolean createNewUser(String newUser, String newPwd) {
+    public void createNewUser(String newUser, String newPwd) {
         boolean containsAcct = false;
         for (WordleAccount acct : accounts) {
             if (acct.getUsername().equals(newUser)) {
