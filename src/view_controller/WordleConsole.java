@@ -7,6 +7,7 @@
 package view_controller;
 
 import model.Wordle;
+import model.WordleAccount;
 
 import java.util.Scanner;
 
@@ -42,24 +43,86 @@ public class WordleConsole {
     }
     
     private static void gameLoop(Wordle game) {
+		int counter= 0;
     	String guess;
     	int results[];
     	Scanner s = new Scanner(System.in);
+		WordleAccount account = null;
+		System.out.println("Login (l) or create account (c)");
+		if(s.nextLine().strip().equals("l")) {
+			System.out.println("Login:");
+			System.out.println("Enter username:");
+			String username = s.nextLine().strip();
+			System.out.println("Enter password:");
+			String password = s.nextLine().strip();
+			account = game.login(username,password);
+			if(account==null) {
+				System.out.println("Invalid username or password, exiting");
+				return;
+			}
+		}
+		else {
+			System.out.println("Create account:");
+			System.out.println("Enter username:");
+			String username = s.nextLine().strip();
+			System.out.println("Enter password:");
+			String password = s.nextLine().strip();
+			game.createAccount(username,password);
+			account= game.login(username,password);
+			System.out.println("Account created");
+			game.save();
+		}
+		System.out.println("Daily word (d) or random word (r)");
+		String wordChoice = s.nextLine().strip();
+		boolean isDaily;
+		if(wordChoice.equals("r")) {
+			isDaily=false;
+		}
+		else if (wordChoice.equals("d")) {
+			isDaily=true;
+		}
+		else{
+			System.out.println("Invalid input. Defaulting to daily word.");
+			isDaily=true;
+		}
     	//while the guess contains wrong or out of place letters
-    	while(true) {
+    	while(counter<6) {
     		//implement no-more-guesses loss condition here.
-    		
-    		System.out.println("Enter guess:");
+
+    		System.out.println("Enter guess number "+(counter+1)+":, or 'q' to quit");
+			if(isDaily!=true) {
+				System.out.println("word: "+game.getWord(isDaily));
+			}
     		guess = s.nextLine().strip();
-    		results = game.guess(guess);
-    		System.out.println(game.guessToString(results));
+			if(guess.length() != 5) {
+				System.out.println("Guess must be 5 letters long. (longer words implemented in gui)");
+				continue;
+			}
+			if(guess.equals("q")) {
+				System.out.println("Game over.");
+				break;
+			}
+
+    		results = game.guess(guess,isDaily);
+    		System.out.println(game.guessToString(results)+'\n');
+			counter++;
     		
     		//if guess is correct
     		if(!game.guessToString(results).matches(".*(Yellow|Gray).*")) { 
-    			System.out.println("Game over. You win!");
-    			break;
+    			System.out.println("Game over. You win!\nYou guessed the word in "+counter+" guesses.");
+				account.updateScore(counter);
+				System.out.println("your score:\n"+account.getScoreString());
+				game.updateAccount(account);
+				game.save();
+    			return;
     		}
     	}
+		System.out.println("Game over. You lose.\nThe word was "+game.getWord(isDaily));
+		account.updateScore(counter);
+		System.out.println("your score:\n"+account.getScoreString());
+		game.updateAccount(account);
+		game.save();
+
     }
     
 }

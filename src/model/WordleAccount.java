@@ -15,7 +15,7 @@ public class WordleAccount implements Serializable {
     public WordleAccount(String username, String password) {
         this.username = username;
         this.password = password;
-        score = new int[6];
+        score = new int[7];
         for(int i=0;i<score.length;i++){
             score[i]=0;
         }
@@ -52,5 +52,29 @@ public class WordleAccount implements Serializable {
      */
     public int[] getScore() {
         return score;
+    }
+
+    public String getScoreString(){
+        String s = "";
+        for(int i=0;i<score.length;i++){
+            if (i == 6) {
+                s += "more than 6: " + score[i] +" ("+percent(i)+"%)"+ '\n';
+            } else {
+                s+=(i+1)+": "+score[i] +" ("+percent(i)+"%)"+'\n';
+            }
+        }
+        return s;
+    }
+
+    private int percent(int i){
+        return (int)((double)score[i]/getTotalGames()*100);
+    }
+
+    public int getTotalGames(){
+        int total=0;
+        for(int i=0;i<score.length;i++){
+            total+=score[i];
+        }
+        return total;
     }
 }

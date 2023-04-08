@@ -10,11 +10,45 @@ public class Wordle {
 	private String dailyWord;
 	private final HashMap<Integer, ArrayList<String>> map;
 	private String guessedWord;
+	private String randomWord;
+	WordleSerializer ws;
 
 	public Wordle() {
-		WordleSerializer ws = new WordleSerializer();
+		ws = new WordleSerializer();
 		map = ws.getMap();
 		dailyWord = randomWord(5, true);
+		setRandomWord(5);
+	}
+
+
+
+	public WordleAccount login(String username, String password){
+		for(WordleAccount account : ws.getAccounts()){
+			if(account.getUsername().equals(username) && account.getPassword().equals(password)){
+				return account;
+			}
+		}
+		return null;
+	}
+
+	public void createAccount(String username, String password){
+		ws.createNewUser(username, password);
+	}
+
+	public void updateAccount(WordleAccount account){
+		ws.update(account);
+	}
+
+	public String getWord(boolean daily){
+		if(daily){
+			return dailyWord;
+		}
+		else{
+			return randomWord;
+		}
+	}
+	public void save(){
+		ws.saveAccounts();
 	}
 
 	/**
@@ -26,9 +60,16 @@ public class Wordle {
 	 * @return An array with index corresponding to word 0 for wrong, 1 for correct position, 2
 	 *         for in the string, wrong position.
 	 */
-	public int[] guess(String word) {
+	public int[] guess(String word, boolean daily) {
 		// Completed toString method and can print an indication of the tiles
 		// Also now it checks for repeated characters
+		String toBeGuessed;
+		if(daily){
+			toBeGuessed = dailyWord;
+		}
+		else{
+			toBeGuessed = randomWord;
+		}
 		guessedWord = word;
 		int[]checkedChars = new int[word.length()];
 		final int WRONG = 0;
@@ -37,10 +78,10 @@ public class Wordle {
 
 		for (int index = 0; index < word.length(); index++) {
 			char guessChar = word.charAt(index);
-			char correctChar = dailyWord.charAt(index);
+			char correctChar = toBeGuessed.charAt(index);
 			if (guessChar == correctChar) {
 				checkedChars[index]= CORRECT;
-			} else if (dailyWord.indexOf(guessChar) != -1) {
+			} else if (toBeGuessed.indexOf(guessChar) != -1) {
 				boolean verifyRepeat = checkForRepeats(word, guessChar);
 				if (!verifyRepeat) {
 					checkedChars[index] = CONTAINS;
@@ -83,6 +124,10 @@ public class Wordle {
 		int len = map.get(length).size();
 		int randomIndex = rand.nextInt(len + 1);
 		return map.get(length).get(randomIndex);
+	}
+
+	public void setRandomWord(int length){
+		randomWord = randomWord(length, false);
 	}
 
 	public String getDailyWord() {
