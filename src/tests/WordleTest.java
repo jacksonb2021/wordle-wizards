@@ -329,6 +329,7 @@ public class WordleTest {
 	public void update() {
 		WordleSerializer ws = new WordleSerializer();
 		Wordle wordleTest = new Wordle();
+		ws.createNewUser("jackson","burns");
 		WordleAccount jackson = ws.getAccounts().get(0);
 		jackson.updateScore(5);
 		wordleTest.updateAccount(jackson);
@@ -338,6 +339,11 @@ public class WordleTest {
 		jackson.updateScore(5);
 		assertEquals(ws.getAccounts().get(0).getScore()[4], 2);
 		System.out.println(jackson.getScoreString());
+		jackson.updateScore(7);
+		assertEquals(ws.getAccounts().get(0).getScore()[6], 1);
+		System.out.println(jackson.getScoreString());
+
+
 
 		WordleAccount wordleAcct = new WordleAccount("JJVH19", "nel");
 		System.out.println(wordleAcct.getScoreString());
@@ -347,6 +353,7 @@ public class WordleTest {
 	@Test
 	public void testUser() {
 		WordleSerializer ws = new WordleSerializer();
+		ws.createNewUser("jackson","burns");
 		assertNotNull(ws.verifyLogin("jackson", "burns"));
 		assertNull(ws.verifyLogin("jackson", "burns2"));
 	}
@@ -360,6 +367,7 @@ public class WordleTest {
 	@Test
 	public void testLogin() {
 		Wordle wordleTest = new Wordle();
+		wordleTest.createAccount("JJVH19", "nel");
 		assertNotNull(wordleTest.login("JJVH19", "nel"));
 		assertNull(wordleTest.login("JJVH18", "nel"));
 		assertNull(wordleTest.login("JJVH19", "nl"));
