@@ -63,6 +63,7 @@ public class WordleAccount implements Serializable {
 
 	public String getScoreString() {
 		String s = "";
+		s+= "Total Games: " + getTotalGames()+'\n';
 		for (int i = 0; i < score.length; i++) {
 			if (i == 6) {
 				s += "more than 6: " + score[i] + " (" + percent(i) + "%)" + '\n';
