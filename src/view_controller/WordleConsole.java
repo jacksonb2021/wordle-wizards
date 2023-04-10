@@ -85,12 +85,9 @@ public class WordleConsole {
 			// implement no-more-guesses loss condition here.
 
 			System.out.println("Enter guess number " + (counter + 1) + ":, or 'q' to quit");
-			if (isDaily != true) {
-				System.out.println("word: " + game.getWord(isDaily));
-			}
 			guess = s.nextLine().strip();
 			if (guess.equals("q")) {
-				System.out.println("Game over.");
+				System.out.println("Game over.\n the word was " + game.getWord(isDaily) + "\n");
 				break;
 			}
 			if (guess.length() != 5) {
@@ -104,9 +101,11 @@ public class WordleConsole {
 
 			// if guess is correct
 			if (!game.guessToString(results).matches(".*(Yellow|Gray).*")) {
-				System.out.println("Game over. You win!\nYou guessed the word in " + counter + " guesses.");
+				System.out.println("Game over. You win!");
+				System.out.println("You guessed the word in " + counter + " guesses.");
+				System.out.println("The word was " + game.getWord(isDaily));
 				account.updateScore(counter);
-				System.out.println("your score:\n" + account.getScoreString());
+				System.out.println(account.getScoreString());
 				game.updateAccount(account);
 				game.save();
 				return;
@@ -114,7 +113,7 @@ public class WordleConsole {
 		}
 		System.out.println("Game over. You lose.\nThe word was " + game.getWord(isDaily));
 		account.updateScore(counter + 1);
-		System.out.println("your score:\n" + account.getScoreString());
+		System.out.println(account.getScoreString());
 		game.updateAccount(account);
 		game.save();
 
