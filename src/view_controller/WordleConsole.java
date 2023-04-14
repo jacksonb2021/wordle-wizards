@@ -48,7 +48,7 @@ public class WordleConsole {
 		WordleAccount account = null;
 		System.out.println("Login (l) or create account (c)");
 		if (s.nextLine().strip().equals("l")) {
-			System.out.println("Login:");
+			System.out.println("Login:\n");
 			System.out.println("Enter username:");
 			String username = s.nextLine().strip();
 			System.out.println("Enter password:");
@@ -59,7 +59,7 @@ public class WordleConsole {
 				return;
 			}
 		} else {
-			System.out.println("Create account:");
+			System.out.println("Create account:\n");
 			System.out.println("Enter username:");
 			String username = s.nextLine().strip();
 			System.out.println("Enter password:");
