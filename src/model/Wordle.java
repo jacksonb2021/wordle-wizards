@@ -28,8 +28,9 @@ public class Wordle {
 		return null;
 	}
 
-	public void createAccount(String username, String password) {
-		ws.createNewUser(username, password);
+	public boolean createAccount(String username, String password) {
+		return ws.createNewUser(username, password);
+
 	}
 
 	public void updateAccount(WordleAccount account) {
