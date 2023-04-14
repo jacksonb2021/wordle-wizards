@@ -21,6 +21,7 @@ public class WordleGUI extends Application {
 	private UsernameLogin loginPane;
 	private TextArea text;
 	private Button button;
+	private int counter = 0; //TODO stop game after 6 guesses
 	private TextField field;
 	private Wordle wordle;
 	private BorderPane everything;
@@ -33,7 +34,6 @@ public class WordleGUI extends Application {
 		layoutGUI();
 		layoutKeyboard();
 		setupText();
-		everything.setCenter(text);
 		Scene scene = new Scene(everything, 800, 700);
 
 		stage.setScene(scene);
@@ -47,6 +47,7 @@ public class WordleGUI extends Application {
 		text.setEditable(false);
 		text.setFont(new Font("comic sans MS",20));
 		layout.getChildren().addAll(word,text);
+		everything.setCenter(layout);
 	}
 
 
@@ -126,6 +127,11 @@ public class WordleGUI extends Application {
 		@Override
 		public void handle(ActionEvent actionEvent) {
 			String guess = field.getText().strip();
+			if(!loginPane.isLoggedIn()){
+				button.setText("you are not logged in");
+				field.setText("");
+				return;
+			}
 			if(guess.length()!=5){
 				button.setText("invalid length, try again");
 				field.setText("");

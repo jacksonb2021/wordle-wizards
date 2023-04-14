@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Wordle {
 	private String dailyWord;
+	private boolean loggedIn;
 	private final HashMap<Integer, ArrayList<String>> map;
 	private String guessedWord;
 	private String randomWord;
@@ -22,12 +23,16 @@ public class Wordle {
 	public WordleAccount login(String username, String password) {
 		for (WordleAccount account : ws.getAccounts()) {
 			if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
+				//loggedIn=true;
 				return account;
 			}
 		}
 		return null;
 	}
 
+	public boolean isLoggedIn(){
+		return loggedIn;
+	}
 	public boolean createAccount(String username, String password) {
 		return ws.createNewUser(username, password);
 
