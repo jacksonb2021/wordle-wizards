@@ -12,12 +12,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Wordle;
 import model.WordleAccount;
 import model.WordleSerializer;
 
 
 public class UsernameLogin extends BorderPane {
-	private final WordleSerializer login;
+	private final Wordle wordle;
 	private final TextField userTextField = new TextField();
 	private final TextField pwdTextField = new PasswordField();
 	private final Label loginStatus = new Label("Please Login");
@@ -30,8 +31,8 @@ public class UsernameLogin extends BorderPane {
 	private boolean loggedIn;
 
 	@SuppressWarnings("unused")
-	public UsernameLogin(WordleSerializer login) {
-		this.login = login;
+	public UsernameLogin(Wordle login) {
+		this.wordle = login;
 		loggedIn = false;
 		Stage stage = new Stage();
 		layoutWindow();
@@ -44,7 +45,7 @@ public class UsernameLogin extends BorderPane {
 			}
 			String userName = userTextField.getText();
 			String password = pwdTextField.getText();
-			currentUser = login.verifyLogin(userName, password);
+			currentUser = wordle.login(userName, password);
 			if (currentUser != null) {
 				loginStatus.setText("You are now logged in");
 
@@ -127,9 +128,9 @@ public class UsernameLogin extends BorderPane {
 		addWindow.show();
 
 		OK.setOnAction(ok -> {
-			if (!login.createNewUser(newUserTextField.getText().trim(), newPwdTextField.getText().trim())) {
+			if (!wordle.createAccount(newUserTextField.getText().trim(), newPwdTextField.getText().trim())) {
 				loginStatus.setText("New User Created");
-				login.saveAccounts();
+				wordle.save();
 			} else {
 				loginStatus.setText("Username is already taken. Try another one.");
 			}
