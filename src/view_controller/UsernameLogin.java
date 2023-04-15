@@ -2,6 +2,8 @@ package view_controller;
 
 import java.time.LocalDate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -48,7 +50,6 @@ public class UsernameLogin extends BorderPane {
 			currentUser = wordle.login(userName, password);
 			if (currentUser != null) {
 				loginStatus.setText("You are now logged in");
-
 				userTextField.setText("");
 				pwdTextField.setText("");
 				loggedIn = true;

@@ -140,11 +140,11 @@ public class Wordle {
 		String guess = "";
 		for (int i = 0; i < checkedChars.length; i++) {
 			if (checkedChars[i] == 1) {
-				guess += guessedWord.charAt(i) + "(Green)";
+				guess += guessedWord.charAt(i);// + "(Green)";
 			} else if (checkedChars[i] == 2) {
-				guess += guessedWord.charAt(i) + "(Yellow)";
+				guess += guessedWord.charAt(i);// + "(Yellow)";
 			} else if (checkedChars[i] == 0) {
-				guess += guessedWord.charAt(i) + "(Gray)";
+				guess += guessedWord.charAt(i);// + "(Gray)";
 			}
 			guess += " ";
 		}
