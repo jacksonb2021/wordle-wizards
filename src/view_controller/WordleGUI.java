@@ -239,6 +239,7 @@ public class WordleGUI extends Application {
 			if(loginPane.isLoggedIn()) {
 				account = loginPane.getCurrentUser();
 			}
+			field.setText("");
 			int[] guessStr = wordle.guess(guess, true);
 			if (counter == 0) {
 				boardGameR1 = colorBoard(guess, guessStr, boardGameR1);
