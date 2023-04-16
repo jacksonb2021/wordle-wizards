@@ -74,6 +74,23 @@ public class WordleAccount implements Serializable {
 		return s;
 	}
 
+	/**
+	 * This method returns the average number of guesses it took the user to guess a word
+	 * @return - a float of the average guesses per word
+	 */
+	public float getAverage() {
+		float total = 0;
+		for (int i = 0; i < score.length; i++) {
+			total += score[i] * (i + 1);
+		}
+		return total / getTotalGames();
+	}
+
+	/**
+	 * this method returns the percent of games that took i guesses
+	 * @param i - the number of guesses
+	 * @return - the percent of games that took i guesses
+	 */
 	public int percent(int i) {
 		return (int) ((double) score[i] / getTotalGames() * 100);
 	}

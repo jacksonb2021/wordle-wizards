@@ -10,6 +10,8 @@ import model.Wordle;
 import model.WordleAccount;
 import model.WordleSerializer;
 
+import java.util.ArrayList;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WordleTest {
 
@@ -385,5 +387,15 @@ public class WordleTest {
 	public void testSaveMap() {
 		Wordle wordleTest = new Wordle();
 		wordleTest.save();
+	}
+
+	@Test
+	public void testAverageGuesses(){
+		WordleSerializer ws = new WordleSerializer();
+		ArrayList<WordleAccount> accounts = ws.getAccounts();
+		for(int i=0;i<accounts.size();i++){
+			System.out.println("name: "+accounts.get(i).getUsername()+"\naverage: " +accounts.get(i).getAverage());
+		}
+
 	}
 }
