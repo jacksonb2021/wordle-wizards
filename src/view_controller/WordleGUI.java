@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -247,8 +245,10 @@ public class WordleGUI extends Application {
 				colorKeyboard2(guess, guessStr);
 				colorKeyboard3(guess, guessStr);
 				counter++;
-				if (windCondition(boardGameR1)) {
+				if (winCondition(boardGameR1)) {
 					everything.setDisable(true);
+					account.updateScore(counter+1);
+
 				}
 			} else if (counter == 1) {
 				boardGameR2 = colorBoard(guess, guessStr, boardGameR2);
@@ -256,8 +256,10 @@ public class WordleGUI extends Application {
 				colorKeyboard2(guess, guessStr);
 				colorKeyboard3(guess, guessStr);
 				counter++;
-				if (windCondition(boardGameR2)) {
+				if (winCondition(boardGameR2)) {
 					everything.setDisable(true);
+					account.updateScore(counter+1);
+
 				}
 			} else if (counter == 2) {
 				boardGameR3 = colorBoard(guess, guessStr, boardGameR3);
@@ -265,8 +267,10 @@ public class WordleGUI extends Application {
 				colorKeyboard2(guess, guessStr);
 				colorKeyboard3(guess, guessStr);
 				counter++;
-				if (windCondition(boardGameR3)) {
+				if (winCondition(boardGameR3)) {
 					everything.setDisable(true);
+					account.updateScore(counter+1);
+
 				}
 			} else if (counter == 3) {
 				boardGameR4 = colorBoard(guess, guessStr, boardGameR4);
@@ -274,8 +278,10 @@ public class WordleGUI extends Application {
 				colorKeyboard2(guess, guessStr);
 				colorKeyboard3(guess, guessStr);
 				counter++;
-				if (windCondition(boardGameR4)) {
+				if (winCondition(boardGameR4)) {
 					everything.setDisable(true);
+					account.updateScore(counter+1);
+
 				}
 			} else if (counter == 4) {
 				boardGameR5 = colorBoard(guess, guessStr, boardGameR5);
@@ -283,8 +289,10 @@ public class WordleGUI extends Application {
 				colorKeyboard2(guess, guessStr);
 				colorKeyboard3(guess, guessStr);
 				counter++;
-				if (windCondition(boardGameR5)) {
+				if (winCondition(boardGameR5)) {
 					everything.setDisable(true);
+					account.updateScore(counter+1);
+
 				}
 			} else if (counter == 5) {
 				boardGameR6 = colorBoard(guess, guessStr, boardGameR6);
@@ -292,17 +300,18 @@ public class WordleGUI extends Application {
 				colorKeyboard2(guess, guessStr);
 				colorKeyboard3(guess, guessStr);
 				counter++;
-				if (windCondition(boardGameR6)) {
+				if (winCondition(boardGameR6)) {
 					everything.setDisable(true);
 				} else {
 					everything.setDisable(true);
 					System.out.println("Game over.\n the word was " + wordle.getWord(true) + "\n");
+					account.updateScore(counter+1);
 				}
 			}
 
 		}
 
-		private boolean windCondition(Button[] boardGame) {
+		private boolean winCondition(Button[] boardGame) {
 			for (int i = 0; i < boardGame.length; i++) {
 				if (!boardGame[i].getStyle().contains("-fx-background-color: #00FF00; ")) {
 					return false;

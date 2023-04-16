@@ -100,7 +100,13 @@ public class WordleConsole {
 			counter++;
 
 			// if guess is correct
-			if (!game.guessToString(results).matches(".*(Yellow|Gray).*")) {
+			boolean win = true;
+			for(int i=0;i<results.length;i++){
+				if(results[i]!=1){
+					win = false;
+				}
+			}
+			if (win) {
 				System.out.println("Game over. You win!");
 				System.out.println("You guessed the word in " + counter + " guesses.");
 				System.out.println("The word was " + game.getWord(isDaily));

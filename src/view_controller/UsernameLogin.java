@@ -49,7 +49,7 @@ public class UsernameLogin extends BorderPane {
 			String password = pwdTextField.getText();
 			currentUser = wordle.login(userName, password);
 			if (currentUser != null) {
-				loginStatus.setText("You are now logged in");
+				loginStatus.setText("You are now logged in as " + userName + "");
 				userTextField.setText("");
 				pwdTextField.setText("");
 				loggedIn = true;
