@@ -48,14 +48,12 @@ public class WordleGUI extends Application {
 		// setupText();
 //		verifyLogin();
 		setBoard();
-		layoutGame();
 
-		Scene scene = new Scene(everything, 800, 900);
+
+		Scene scene = new Scene(everything, 600, 750);
 
 		stage.setScene(scene);
-		stage.addEventFilter(KeyEvent.KEY_PRESSED, event->{
-			handleKeyboardInput(event);
-		});
+		stage.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyboardInput);
 		stage.show();
 	}
 
@@ -63,10 +61,7 @@ public class WordleGUI extends Application {
 		String key = event.getText();
 	}
 
-	private void layoutGame() {
-		// TODO Auto-generated method stub
 
-	}
 
 	private void setBoard() {
 		// Label word = new Label(wordle.getWord(true));
@@ -109,26 +104,7 @@ public class WordleGUI extends Application {
 		}
 		return temp;
 	}
-//
-//	public void verifyLogin() {
-//		if(!loginPane.isLoggedIn()) {
-//			board.setDisable(true);	
-//		} else {
-//			board.setDisable(false);
-//		}
-//		// TODO Auto-generated method stub
-//		
-//	}
 
-//	private void setupText(){
-//		Label word = new Label(wordle.getWord(true));
-//		VBox layout = new VBox();
-//		text = new TextArea();
-//		text.setEditable(false);
-//		text.setFont(new Font("comic sans MS",20));
-//		layout.getChildren().addAll(word,text);
-//		everything.setCenter(layout);
-//	}
 
 	private void layoutKeyboard() {
 		HBox Row1 = new HBox();
@@ -151,7 +127,6 @@ public class WordleGUI extends Application {
 			// each letter on the keyboard
 			for (int j = 0; j < curEndPoint && j+startPoint < letters.length(); j++) {
 				Button keyButton = new Button("" + qwerty[j + startPoint]);
-
 				keyButton.setStyle("-fx-padding: 5 10 10 10;");
 				keyButton.setFont(new Font("Courier New", 32));
 				keyButton.setOnAction(event -> {
@@ -178,7 +153,6 @@ public class WordleGUI extends Application {
 		board.getChildren().addAll(Row1, Row2, Row3, textbutton);
 		everything.setBottom(board);
 
-		// TODO Auto-generated method stub
 	}
 
 	private void layoutGUI() {
@@ -201,13 +175,11 @@ public class WordleGUI extends Application {
 				field.setText("");
 				return;
 			}
+			account = loginPane.getCurrentUser();
 			if (guess.length() != 5) {
 				button.setText("invalid length, try again");
 				field.setText("");
 				return;
-			}
-			if(loginPane.isLoggedIn()) {
-				account = loginPane.getCurrentUser();
 			}
 			field.setText("");
 			int[] guessStr = wordle.guess(guess, true);
@@ -236,11 +208,11 @@ public class WordleGUI extends Application {
 					return false;
 				}
 			}
-			System.out.println("Game over. You win!");
-			System.out.println("You guessed the word in " + counter + " guesses.");
-			System.out.println("The word was " + wordle.getWord(true));
+//			System.out.println("Game over. You win!");
+//			System.out.println("You guessed the word in " + counter + " guesses.");
+//			System.out.println("The word was " + wordle.getWord(true));
 			account.updateScore(counter);
-			System.out.println(account.getScoreString());
+//			System.out.println(account.getScoreString());
 			wordle.updateAccount(account);
 			wordle.save();
 			
