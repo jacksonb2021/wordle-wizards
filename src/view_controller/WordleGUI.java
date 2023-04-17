@@ -1,6 +1,7 @@
 package view_controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -8,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
@@ -35,6 +38,7 @@ public class WordleGUI extends Application {
 	Button[] boardGameR4 = new Button[5];
 	Button[] boardGameR5 = new Button[5];
 	Button[] boardGameR6 = new Button[5];
+	Button[][] boardGameRs = new Button[6][5];
 	ArrayList<Button> keyboardR1 = new ArrayList<>();
 	ArrayList<Button> keyboardR2 = new ArrayList<>();
 	ArrayList<Button> keyboardR3 = new ArrayList<>();
@@ -59,7 +63,14 @@ public class WordleGUI extends Application {
 		Scene scene = new Scene(everything, 800, 700);
 
 		stage.setScene(scene);
+		stage.addEventFilter(KeyEvent.KEY_PRESSED, event->{
+			handleKeyboardInput(event);
+		});
 		stage.show();
+	}
+
+	private void handleKeyboardInput(KeyEvent event) {
+		String key = event.getText();
 	}
 
 	private void layoutGame() {
@@ -69,51 +80,27 @@ public class WordleGUI extends Application {
 
 	private void setBoard() {
 		// Label word = new Label(wordle.getWord(true));
-		HBox Row1 = new HBox();
-		HBox Row2 = new HBox();
-		HBox Row3 = new HBox();
-		HBox Row4 = new HBox();
-		HBox Row5 = new HBox();
-		HBox Row6 = new HBox();
+		List<HBox> rows = new ArrayList<>();
+
+		for (int i = 0; i < 6; i++) {
+			rows.add(new HBox());
+		}
+
 		VBox boardGame = new VBox();
 
 		for (int i = 0; i < 6; i++) {
-			if (i == 0) {
-				boardGameR1 = ButtonMaker();
-				Row1.getChildren().addAll(boardGameR1);
-			} else if (i == 1) {
-				boardGameR2 = ButtonMaker();
-				Row2.getChildren().addAll(boardGameR2);
-			} else if (i == 2) {
-				boardGameR3 = ButtonMaker();
-				Row3.getChildren().addAll(boardGameR3);
-			} else if (i == 3) {
-				boardGameR4 = ButtonMaker();
-				Row4.getChildren().addAll(boardGameR4);
-			} else if (i == 4) {
-				boardGameR5 = ButtonMaker();
-				Row5.getChildren().addAll(boardGameR5);
-			} else if (i == 5) {
-				boardGameR6 = ButtonMaker();
-				Row6.getChildren().addAll(boardGameR6);
-			}
-
+			HBox curRow = rows.get(i);
+			Button[] boardGame1 = ButtonMaker();
+			curRow.getChildren().addAll(boardGame1);
+			curRow.setAlignment(Pos.CENTER);
+			curRow.setSpacing(5);
+			boardGameRs[i] = boardGame1;
 		}
-		Row1.setAlignment(Pos.CENTER);
-		Row2.setAlignment(Pos.CENTER);
-		Row3.setAlignment(Pos.CENTER);
-		Row4.setAlignment(Pos.CENTER);
-		Row5.setAlignment(Pos.CENTER);
-		Row6.setAlignment(Pos.CENTER);
-		Row1.setSpacing(5);
-		Row2.setSpacing(5);
-		Row3.setSpacing(5);
-		Row4.setSpacing(5);
-		Row5.setSpacing(5);
-		Row6.setSpacing(5);
-		boardGame.getChildren().addAll(Row1, Row2, Row3, Row4, Row5, Row6);
+
+		boardGame.getChildren().addAll(rows);
 		boardGame.setSpacing(5);
 		boardGame.setStyle("-fx-padding: 20 0 0 0;");
+
 		everything.setCenter(boardGame);
 		// TODO Auto-generated method stub
 
@@ -239,75 +226,23 @@ public class WordleGUI extends Application {
 			}
 			field.setText("");
 			int[] guessStr = wordle.guess(guess, true);
-			if (counter == 0) {
-				boardGameR1 = colorBoard(guess, guessStr, boardGameR1);
-				colorKeyboard1(guess, guessStr);
-				colorKeyboard2(guess, guessStr);
-				colorKeyboard3(guess, guessStr);
-				counter++;
-				if (winCondition(boardGameR1)) {
-					everything.setDisable(true);
-					account.updateScore(counter+1);
 
-				}
-			} else if (counter == 1) {
-				boardGameR2 = colorBoard(guess, guessStr, boardGameR2);
-				colorKeyboard1(guess, guessStr);
-				colorKeyboard2(guess, guessStr);
-				colorKeyboard3(guess, guessStr);
-				counter++;
-				if (winCondition(boardGameR2)) {
-					everything.setDisable(true);
-					account.updateScore(counter+1);
-
-				}
-			} else if (counter == 2) {
-				boardGameR3 = colorBoard(guess, guessStr, boardGameR3);
-				colorKeyboard1(guess, guessStr);
-				colorKeyboard2(guess, guessStr);
-				colorKeyboard3(guess, guessStr);
-				counter++;
-				if (winCondition(boardGameR3)) {
-					everything.setDisable(true);
-					account.updateScore(counter+1);
-
-				}
-			} else if (counter == 3) {
-				boardGameR4 = colorBoard(guess, guessStr, boardGameR4);
-				colorKeyboard1(guess, guessStr);
-				colorKeyboard2(guess, guessStr);
-				colorKeyboard3(guess, guessStr);
-				counter++;
-				if (winCondition(boardGameR4)) {
-					everything.setDisable(true);
-					account.updateScore(counter+1);
-
-				}
-			} else if (counter == 4) {
-				boardGameR5 = colorBoard(guess, guessStr, boardGameR5);
-				colorKeyboard1(guess, guessStr);
-				colorKeyboard2(guess, guessStr);
-				colorKeyboard3(guess, guessStr);
-				counter++;
-				if (winCondition(boardGameR5)) {
-					everything.setDisable(true);
-					account.updateScore(counter+1);
-
-				}
-			} else if (counter == 5) {
-				boardGameR6 = colorBoard(guess, guessStr, boardGameR6);
-				colorKeyboard1(guess, guessStr);
-				colorKeyboard2(guess, guessStr);
-				colorKeyboard3(guess, guessStr);
-				counter++;
-				if (winCondition(boardGameR6)) {
-					everything.setDisable(true);
-				} else {
-					everything.setDisable(true);
-					System.out.println("Game over.\n the word was " + wordle.getWord(true) + "\n");
-					account.updateScore(counter+1);
-				}
+			Button[] curBoard = boardGameRs[counter];
+			boardGameRs[counter] = colorBoard(guess, guessStr, curBoard);
+			colorKeyboard1(guess, guessStr);
+			colorKeyboard2(guess, guessStr);
+			colorKeyboard3(guess, guessStr);
+			counter++;
+			if (winCondition(curBoard)) {
+				everything.setDisable(true);
+				account.updateScore(counter+1);
+			} else if (counter == boardGameRs.length){
+				everything.setDisable(true);
+				System.out.println("Game over.\n the word was " + wordle.getWord(true) + "\n");
+				account.updateScore(counter+1);
 			}
+
+
 
 		}
 
