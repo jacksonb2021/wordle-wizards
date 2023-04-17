@@ -42,6 +42,11 @@ public class WordleGUI extends Application {
 		stage.setTitle("Wordle");
 		wordle = new Wordle();
 		field = new TextField();
+		field.setOnAction(event -> {
+			String text = field.getText();
+			field.setText("");
+			System.out.println(text);
+		});
 
 		layoutGUI();
 		layoutKeyboard();
@@ -96,7 +101,7 @@ public class WordleGUI extends Application {
 		for (int i = 0; i < 5; i++) {
 			temp[i] = new Button("_");
 			temp[i].setStyle("-fx-padding: 5 10 10 10;");
-			temp[i].setFont(new Font("Courier New", 32));
+			temp[i].setFont(new Font("Courier New", 25));
 			temp[i].setOnAction(event -> {
 				Button buttonClicked = (Button) event.getSource();
 				System.out.println(buttonClicked.getText());
@@ -128,7 +133,7 @@ public class WordleGUI extends Application {
 			for (int j = 0; j < curEndPoint && j+startPoint < letters.length(); j++) {
 				Button keyButton = new Button("" + qwerty[j + startPoint]);
 				keyButton.setStyle("-fx-padding: 5 10 10 10;");
-				keyButton.setFont(new Font("Courier New", 32));
+				keyButton.setFont(new Font("Courier New", 25));
 				keyButton.setOnAction(event -> {
 					Button buttonClicked = (Button) event.getSource();
 					System.out.println(buttonClicked.getText());
@@ -182,6 +187,7 @@ public class WordleGUI extends Application {
 				return;
 			}
 			field.setText("");
+			button.setText("submit guess");
 			int[] guessStr = wordle.guess(guess, true);
 
 			Button[] curBoard = boardGameRs[counter];
@@ -194,6 +200,10 @@ public class WordleGUI extends Application {
 				account.updateScore(counter+1);
 			} else if (counter == boardGameRs.length){
 				everything.setDisable(true);
+				Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
+				scoreAlert.setContentText("Game over. You lose\n"+account.getScoreString());
+				scoreAlert.setHeaderText("The word was "+wordle.getWord(true)+"\n\nScore Summary");
+				scoreAlert.show();
 				System.out.println("Game over.\n the word was " + wordle.getWord(true) + "\n");
 				account.updateScore(counter+1);
 			}
@@ -218,7 +228,7 @@ public class WordleGUI extends Application {
 			
 			Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
 			scoreAlert.setContentText("Game over.\n"+account.getScoreString());
-			scoreAlert.setHeaderText("Score Summary");
+			scoreAlert.setHeaderText("Score Summary. The word was "+wordle.getWord(true));
 			scoreAlert.show();
 			
 			return true;
