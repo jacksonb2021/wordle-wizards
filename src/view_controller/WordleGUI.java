@@ -25,6 +25,9 @@ import model.*;
 import javafx.event.ActionEvent;
 
 public class WordleGUI extends Application {
+	private static final int WRONG = 0;
+	private static final int CORRECT = 1;
+	private static final int CONTAINS = 2;
 	private UsernameLogin loginPane;
 	private TextArea text;
 	private Button button;
@@ -237,24 +240,19 @@ public class WordleGUI extends Application {
 		private void colorKeyboard(String guess, int[] guessStr) {
 			String guessUpper = guess.toUpperCase();
 			String[] splitGuess = guessUpper.split("");
-			for (ArrayList<Button> keyboard : keyboardRows) {
-				for (int i = 0; i < splitGuess.length; i++) {
-					for (int j = 0; j <keyboard.size(); j++) {
-						if (splitGuess[i].equals(keyboard.get(j).getText())) {
-							if (guessStr[i] == 1) {
-								keyboard.get(j).setStyle("-fx-background-color: #00FF00; ");
-							} else if (guessStr[i] == 2
-									&& !keyboard.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-								keyboard.get(j).setStyle("-fx-background-color: #FFFF00; ");
-							} else if (guessStr[i] == 0
-									&& !keyboard.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-								keyboard.get(j).setStyle("-fx-background-color: #808080; ");
-							}
+
+			keyboardRows.forEach((row) -> row.forEach((key) -> {
+				// iterate over every key
+				for (int i = 0; i < guessStr.length; i++) {
+					if (splitGuess[i].equals(key.getText())) {
+						switch (guessStr[i]) {
+							case (WRONG) -> key.setStyle("-fx-background-color: #808080; ");
+							case (CORRECT) -> key.setStyle("-fx-background-color: #00FF00; ");
+							case (CONTAINS) -> key.setStyle("-fx-background-color: #FFFF00; ");
 						}
-					}
-				}
+					}}}));
 			}
-		}
+
 
 
 
