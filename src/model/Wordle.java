@@ -66,6 +66,12 @@ public class Wordle {
 	public int[] guess(String word, boolean daily) {
 		// Completed toString method and can print an indication of the tiles
 		// Also now it checks for repeated characters
+
+		int[] checkedChars = new int[word.length()];
+		final int WRONG = 0;
+		final int CORRECT = 1;
+		final int CONTAINS = 2;
+
 		String toBeGuessed;
 		if (daily) {
 			toBeGuessed = dailyWord;
@@ -73,32 +79,27 @@ public class Wordle {
 			toBeGuessed = randomWord;
 		}
 		guessedWord = word;
-		int[] checkedChars = new int[word.length()];
-		final int WRONG = 0;
-		final int CORRECT = 1;
-		final int CONTAINS = 2;
+
 
 		for (int index = 0; index < word.length(); index++) {
 			char guessChar = word.charAt(index);
 			char correctChar = toBeGuessed.charAt(index);
-			if (guessChar == correctChar) {
-				checkedChars[index] = CORRECT;
-			} else if (toBeGuessed.indexOf(guessChar) != -1) {
-				boolean verifyRepeat = checkForRepeats(word, guessChar, toBeGuessed);
-				if (!verifyRepeat) {
-					checkedChars[index] = CONTAINS;
-				} else {
-					checkedChars[index] = WRONG;
-				}
-			} else {
-				checkedChars[index] = WRONG;
-			}
+			int indexOfGuessChar = toBeGuessed.indexOf(guessChar);
 
+			// check if the character is in the string at all
+			if (indexOfGuessChar != -1) {
+				checkedChars[index] = CONTAINS;
+				// if the char is in the correct position we set it to correct.
+				if (guessChar == correctChar) {
+					checkedChars[index] = CORRECT;
+				}
+			}
+			// otherwise, leave it as WRONG.
 		}
 		return checkedChars;
 	}
 
-	private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
+	/*private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
 		int verifyRepeatGuess = 0;
 		int verifyRepeatDailyWord = 0;
 		for (int character = 0; character < word.length(); character++) {
@@ -114,7 +115,7 @@ public class Wordle {
 		}
 		return true;
 
-	}
+	}*/
 
 	private String randomWord(int length, boolean daily) {
 		Random rand;
