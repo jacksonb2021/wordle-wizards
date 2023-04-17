@@ -34,20 +34,8 @@ public class WordleGUI extends Application {
 	private WordleAccount account;
 	private BorderPane everything;
 	private TilePane tilePane;
-	Button[] boardGameR1 = new Button[5];
-	Button[] boardGameR2 = new Button[5];
-	Button[] boardGameR3 = new Button[5];
-	Button[] boardGameR4 = new Button[5];
-	Button[] boardGameR5 = new Button[5];
-	Button[] boardGameR6 = new Button[5];
 	Button[][] boardGameRs = new Button[6][5];
-	ArrayList<Button> keyboardR1 = new ArrayList<>();
-	ArrayList<Button> keyboardR2 = new ArrayList<>();
-	ArrayList<Button> keyboardR3 = new ArrayList<>();
-
-	// Button[] keyboardR1 = new Button[10];
-//	Button[] keyboardR2 = new Button[9];
-//	Button[] keyboardR3 = new Button[7];
+	ArrayList<ArrayList<Button>> keyboardRows = new ArrayList<>();
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -155,37 +143,32 @@ public class WordleGUI extends Application {
 
 		String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
 		char[] qwerty = letters.toCharArray();
+		int curEndPoint = 10;
+		int startPoint = 0;
+		for (int i = 0; i < 3; i++) {
+			// each row
+			ArrayList<Button> keyboardRow = new ArrayList<>();
+			// each letter on the keyboard
+			for (int j = 0; j < curEndPoint && j+startPoint < letters.length(); j++) {
+				Button keyButton = new Button("" + qwerty[j + startPoint]);
 
-		for (int i = 0; i < 10; i++) {
-			keyboardR1.add(new Button("" + qwerty[i]));
-			keyboardR1.get(i).setStyle("-fx-padding: 5 10 10 10;");
-			keyboardR1.get(i).setFont(new Font("Courier New", 32));
-			keyboardR1.get(i).setOnAction(event -> {
-				Button buttonClicked = (Button) event.getSource();
-				System.out.println(buttonClicked.getText());
-			});
+				keyButton.setStyle("-fx-padding: 5 10 10 10;");
+				keyButton.setFont(new Font("Courier New", 32));
+				keyButton.setOnAction(event -> {
+					Button buttonClicked = (Button) event.getSource();
+					System.out.println(buttonClicked.getText());
+				});
+				keyboardRow.add(keyButton);
+
+			}
+			keyboardRows.add(keyboardRow);
+			startPoint += curEndPoint;
+			curEndPoint--;
 		}
-		for (int i = 0; i < 9; i++) {
-			keyboardR2.add(new Button("" + qwerty[i + 10]));
-			keyboardR2.get(i).setStyle("-fx-padding: 5 10 10 10;");
-			keyboardR2.get(i).setFont(new Font("Courier New", 32));
-			keyboardR2.get(i).setOnAction(event -> {
-				Button buttonClicked = (Button) event.getSource();
-				System.out.println(buttonClicked.getText());
-			});
-		}
-		for (int i = 0; i < 7; i++) {
-			keyboardR3.add(new Button("" + qwerty[i + 19]));
-			keyboardR3.get(i).setStyle("-fx-padding: 5 10 10 10;");
-			keyboardR3.get(i).setFont(new Font("Courier New", 32));
-			keyboardR3.get(i).setOnAction(event -> {
-				Button buttonClicked = (Button) event.getSource();
-				System.out.println(buttonClicked.getText());
-			});
-		}
-		Row1.getChildren().addAll(keyboardR1);
-		Row2.getChildren().addAll(keyboardR2);
-		Row3.getChildren().addAll(keyboardR3);
+
+		Row1.getChildren().addAll(keyboardRows.get(0));
+		Row2.getChildren().addAll(keyboardRows.get(1));
+		Row3.getChildren().addAll(keyboardRows.get(2));
 		Row1.setSpacing(5);
 		Row2.setSpacing(5);
 		Row3.setSpacing(5);
@@ -231,9 +214,8 @@ public class WordleGUI extends Application {
 
 			Button[] curBoard = boardGameRs[counter];
 			boardGameRs[counter] = colorBoard(guess, guessStr, curBoard);
-			colorKeyboard1(guess, guessStr);
-			colorKeyboard2(guess, guessStr);
-			colorKeyboard3(guess, guessStr);
+			colorKeyboard(guess, guessStr);
+
 			counter++;
 			if (winCondition(curBoard)) {
 				everything.setDisable(true);
@@ -269,66 +251,29 @@ public class WordleGUI extends Application {
 			return true;
 		}
 
-		private void colorKeyboard3(String guess, int[] guessStr) {
-
+		private void colorKeyboard(String guess, int[] guessStr) {
 			String guessUpper = guess.toUpperCase();
-			String[] temp = guessUpper.split("");
-			for (int i = 0; i < temp.length; i++) {
-				for (int j = 0; j < keyboardR3.size(); j++) {
-					if (temp[i].equals(keyboardR3.get(j).getText())) {
-						if (guessStr[i] == 1) {
-							keyboardR3.get(j).setStyle("-fx-background-color: #00FF00; ");
-						} else if (guessStr[i] == 2
-								&& !keyboardR3.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-							keyboardR3.get(j).setStyle("-fx-background-color: #FFFF00; ");
-						} else if (guessStr[i] == 0
-								&& !keyboardR3.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-							keyboardR3.get(j).setStyle("-fx-background-color: #808080; ");
+			String[] splitGuess = guessUpper.split("");
+			for (ArrayList<Button> keyboard : keyboardRows) {
+				for (int i = 0; i < splitGuess.length; i++) {
+					for (int j = 0; j <keyboard.size(); j++) {
+						if (splitGuess[i].equals(keyboard.get(j).getText())) {
+							if (guessStr[i] == 1) {
+								keyboard.get(j).setStyle("-fx-background-color: #00FF00; ");
+							} else if (guessStr[i] == 2
+									&& !keyboard.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
+								keyboard.get(j).setStyle("-fx-background-color: #FFFF00; ");
+							} else if (guessStr[i] == 0
+									&& !keyboard.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
+								keyboard.get(j).setStyle("-fx-background-color: #808080; ");
+							}
 						}
 					}
 				}
 			}
 		}
 
-		private void colorKeyboard2(String guess, int[] guessStr) {
-			String guessUpper = guess.toUpperCase();
-			String[] temp = guessUpper.split("");
-			for (int i = 0; i < temp.length; i++) {
-				for (int j = 0; j < keyboardR2.size(); j++) {
-					if (temp[i].equals(keyboardR2.get(j).getText())) {
-						if (guessStr[i] == 1) {
-							keyboardR2.get(j).setStyle("-fx-background-color: #00FF00; ");
-						} else if (guessStr[i] == 2
-								&& !keyboardR2.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-							keyboardR2.get(j).setStyle("-fx-background-color: #FFFF00; ");
-						} else if (guessStr[i] == 0
-								&& !keyboardR2.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-							keyboardR2.get(j).setStyle("-fx-background-color: #808080; ");
-						}
-					}
-				}
-			}
-		}
 
-		private void colorKeyboard1(String guess, int[] guessStr) {
-			String guessUpper = guess.toUpperCase();
-			String[] temp = guessUpper.split("");
-			for (int i = 0; i < temp.length; i++) {
-				for (int j = 0; j < keyboardR1.size(); j++) {
-					if (temp[i].equals(keyboardR1.get(j).getText())) {
-						if (guessStr[i] == 1) {
-							keyboardR1.get(j).setStyle("-fx-background-color: #00FF00; ");
-						} else if (guessStr[i] == 2
-								&& !keyboardR1.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-							keyboardR1.get(j).setStyle("-fx-background-color: #FFFF00; ");
-						} else if (guessStr[i] == 0
-								&& !keyboardR1.get(j).getStyle().contains("-fx-background-color: #00FF00; ")) {
-							keyboardR1.get(j).setStyle("-fx-background-color: #808080; ");
-						}
-					}
-				}
-			}
-		}
 
 		private Button[] colorBoard(String guess, int[] guessStr, Button[] boardGameR) {
 			String[] temp = guess.split("");
