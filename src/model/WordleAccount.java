@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Jackson Burns, Amon Guinan
  */
 @SuppressWarnings("serial")
-public class WordleAccount implements Serializable, Comparable<WordleAccount>{
+public class WordleAccount implements Serializable{
 	private final String username;
 	private final String password;
 	private int[] score;
@@ -103,24 +103,35 @@ public class WordleAccount implements Serializable, Comparable<WordleAccount>{
 		return total;
 	}
 
-	private int totalGuesses() {
-		int retVal = 0;
-		for(int i = 0; i < score.length; i++) {
-			retVal += score[i];
-		}
-		return retVal;
-	}
-	public int totalScore() {
-		return totalGuesses() / getTotalGames();
-	}
-	//Assumes score is from a game with a 5 letter word.
-	//Need to record word length and implement general scoring function
-	//in order to fairly compare scores from different word length games.
-	@Override
-	public int compareTo(WordleAccount other) {
-		//>0 if this is larger than other.
-		//0 if equal
-		//<0 if other larger.
-		return this.totalScore() - other.totalScore();
-	}
+//
+//	/**
+//	 *
+//	 * @return
+//	 */
+//	private int totalGuesses() {
+//		int retVal = 0;
+//		for(int i = 0; i < score.length; i++) {
+//			retVal += score[i];
+//		}
+//		return retVal;
+//	}
+//	public int totalScore() {
+//		return totalGuesses() / getTotalGames();
+//	}
+//
+//
+//	/**
+//	 * 	Assumes score is from a game with a 5 letter word.
+//	 * 	Need to record word length and implement general scoring function
+//	 * 	in order to fairly compare scores from different word length games.
+//	 * @param other the object to be compared.
+//	 * @return
+//	 */
+//	@Override
+//	public int compareTo(WordleAccount other) {
+//		//>0 if this is larger than other.
+//		//0 if equal
+//		//<0 if other larger.
+//		return this.totalScore() - other.totalScore();
+//	}
 }
