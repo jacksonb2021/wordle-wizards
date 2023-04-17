@@ -50,7 +50,7 @@ public class WordleGUI extends Application {
 		setBoard();
 		layoutGame();
 
-		Scene scene = new Scene(everything, 800, 700);
+		Scene scene = new Scene(everything, 800, 900);
 
 		stage.setScene(scene);
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, event->{
@@ -245,7 +245,8 @@ public class WordleGUI extends Application {
 			wordle.save();
 			
 			Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
-			scoreAlert.setContentText("Game over.\nYour score is " + account.totalScore());
+			scoreAlert.setContentText("Game over.\n"+account.getScoreString());
+			scoreAlert.setHeaderText("Score Summary");
 			scoreAlert.show();
 			
 			return true;
