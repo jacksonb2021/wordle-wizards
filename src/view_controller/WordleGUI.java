@@ -162,23 +162,28 @@ public class WordleGUI extends Application {
 
 	private void layoutGUI(){
 		everything = new BorderPane();
-		VBox holder = new VBox();
 		loginPane = new UsernameLogin(wordle);
+
 		MenuBar menuBar = new MenuBar();
+
 		Menu settings = new Menu("settings");
 		MenuItem darkMode = new MenuItem("dark mode toggle");
-		darkMode.setOnAction(new DarkMode());
 		MenuItem practiceMode = new MenuItem("practice mode");
-		settings.getItems().addAll(darkMode, practiceMode);
 
 		Menu score = new Menu("score");
 		MenuItem leaderboard = new MenuItem("leaderboard");
 		MenuItem personalScore = new MenuItem("statistics");
 
+		settings.getItems().addAll(darkMode, practiceMode);
 		score.getItems().addAll(leaderboard, personalScore);
 		menuBar.getMenus().addAll(settings,score);
+
+		VBox holder = new VBox();
 		holder.getChildren().addAll(menuBar, loginPane);
 		everything.setTop(holder);
+
+		darkMode.setOnAction(new DarkMode());
+
 	}
 
 
