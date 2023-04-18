@@ -7,9 +7,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,7 +17,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 import model.*;
 
 import javafx.event.ActionEvent;
@@ -163,11 +160,28 @@ public class WordleGUI extends Application {
 
 	}
 
-	private void layoutGUI() {
+	private void layoutGUI(){
 		everything = new BorderPane();
+		VBox holder = new VBox();
 		loginPane = new UsernameLogin(wordle);
-		everything.setTop(loginPane);
+		MenuBar menuBar = new MenuBar();
+		Menu settings = new Menu("settings");
+		MenuItem darkMode = new MenuItem("dark mode toggle");
+		darkMode.setOnAction(new DarkMode());
+		MenuItem practiceMode = new MenuItem("practice mode");
+		settings.getItems().addAll(darkMode, practiceMode);
+
+		Menu score = new Menu("score");
+		MenuItem leaderboard = new MenuItem("leaderboard");
+		MenuItem personalScore = new MenuItem("statistics");
+
+		score.getItems().addAll(leaderboard, personalScore);
+		menuBar.getMenus().addAll(settings,score);
+		holder.getChildren().addAll(menuBar, loginPane);
+		everything.setTop(holder);
 	}
+
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -271,5 +285,20 @@ public class WordleGUI extends Application {
 			return boardGameR;
 		}
 
+	}
+
+	private class DarkMode implements EventHandler<ActionEvent>{
+		boolean isDarkMode = false;
+		@Override
+		public void handle(ActionEvent actionEvent) {
+			if (!isDarkMode) {
+				everything.setStyle("-fx-background-color: #000000; ");
+				isDarkMode = true;
+			} else {
+				everything.setStyle("-fx-background-color: #FFFFFF; ");
+				isDarkMode = false;
+			}
+
+		}
 	}
 }
