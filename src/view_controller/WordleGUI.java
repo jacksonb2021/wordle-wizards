@@ -7,9 +7,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,7 +17,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 import model.*;
 
 import javafx.event.ActionEvent;
@@ -113,6 +110,34 @@ public class WordleGUI extends Application {
 		return temp;
 	}
 
+	private void showScore(boolean menu, boolean win, boolean loggedIn){
+
+
+		Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
+		String header ="";
+		String content="";
+		if(!loggedIn){
+			header = "You must be logged in to see your score";
+			content = "Please log in to see your score";
+
+		}
+		else if(menu){
+			content = account.getScoreString();
+			header = "Score Statistics";
+		}
+		else if(win){
+			content = "You win!\n"+account.getScoreString();
+			header = "The word was "+wordle.getWord(true)+"\n\nScore Summary";
+		}
+		else{
+			content = "Game over. You lose\n"+account.getScoreString();
+			header = "The word was "+wordle.getWord(true)+"\n\nScore Summary";
+		}
+		scoreAlert.setContentText(content);
+		scoreAlert.setHeaderText(header);
+		scoreAlert.show();
+	}
+
 
 	private void layoutKeyboard() {
 		HBox Row1 = new HBox();
@@ -163,11 +188,43 @@ public class WordleGUI extends Application {
 
 	}
 
-	private void layoutGUI() {
+	private void layoutGUI(){
 		everything = new BorderPane();
 		loginPane = new UsernameLogin(wordle);
-		everything.setTop(loginPane);
+
+		MenuBar menuBar = new MenuBar();
+
+		Menu settings = new Menu("settings");
+		MenuItem darkMode = new MenuItem("dark mode toggle");
+		MenuItem practiceMode = new MenuItem("practice mode");
+
+		Menu score = new Menu("score");
+		MenuItem leaderboard = new MenuItem("leaderboard");
+		MenuItem personalScore = new MenuItem("statistics");
+
+		settings.getItems().addAll(darkMode, practiceMode);
+		score.getItems().addAll(leaderboard, personalScore);
+		menuBar.getMenus().addAll(settings,score);
+
+		VBox holder = new VBox();
+		holder.getChildren().addAll(menuBar, loginPane);
+		everything.setTop(holder);
+
+		darkMode.setOnAction(new DarkMode());
+		score.setOnAction(actionEvent -> {
+			account = loginPane.getCurrentUser();
+			if (account==null){
+				showScore(true, false, false);
+			}
+			else{
+				showScore(true, false, true);
+			}
+		});
+
+
 	}
+
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -201,14 +258,18 @@ public class WordleGUI extends Application {
 			if (winCondition(curBoard)) {
 				everything.setDisable(true);
 				account.updateScore(counter+1);
+				wordle.updateAccount(account);
+				wordle.save();
+				showScore(false,true,true);
 			} else if (counter == boardGameRs.length){
 				everything.setDisable(true);
-				Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
-				scoreAlert.setContentText("Game over. You lose\n"+account.getScoreString());
-				scoreAlert.setHeaderText("The word was "+wordle.getWord(true)+"\n\nScore Summary");
-				scoreAlert.show();
 				System.out.println("Game over.\n the word was " + wordle.getWord(true) + "\n");
 				account.updateScore(counter+1);
+				wordle.updateAccount(account);
+				wordle.save();
+				showScore(false,false,true);
+
+
 			}
 
 
@@ -229,11 +290,7 @@ public class WordleGUI extends Application {
 			wordle.updateAccount(account);
 			wordle.save();
 			
-			Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
-			scoreAlert.setContentText("Game over.\n"+account.getScoreString());
-			scoreAlert.setHeaderText("Score Summary. The word was "+wordle.getWord(true));
-			scoreAlert.show();
-			
+
 			return true;
 		}
 
@@ -246,9 +303,9 @@ public class WordleGUI extends Application {
 				for (int i = 0; i < guessStr.length; i++) {
 					if (splitGuess[i].equals(key.getText())) {
 						switch (guessStr[i]) {
-							case (WRONG) -> key.setStyle("-fx-background-color: #808080; ");
-							case (CORRECT) -> key.setStyle("-fx-background-color: #00FF00; ");
-							case (CONTAINS) -> key.setStyle("-fx-background-color: #FFFF00; ");
+							case WRONG -> key.setStyle("-fx-background-color: #808080; ");
+							case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
+							case CONTAINS -> key.setStyle("-fx-background-color: #FFFF00; ");
 						}
 					}}}));
 			}
@@ -271,5 +328,20 @@ public class WordleGUI extends Application {
 			return boardGameR;
 		}
 
+	}
+
+	private class DarkMode implements EventHandler<ActionEvent>{
+		boolean isDarkMode = false;
+		@Override
+		public void handle(ActionEvent actionEvent) {
+			if (!isDarkMode) {
+				everything.setStyle("-fx-background-color: #000000; ");
+				isDarkMode = true;
+			} else {
+				everything.setStyle("-fx-background-color: #FFFFFF; ");
+				isDarkMode = false;
+			}
+
+		}
 	}
 }
