@@ -1,7 +1,7 @@
 package view_controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Array;
+import java.util.*;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -36,6 +36,7 @@ public class WordleGUI extends Application {
 	private TilePane tilePane;
 	Button[][] boardGameRs = new Button[6][5];
 	ArrayList<ArrayList<Button>> keyboardRows = new ArrayList<>();
+	protected Keyboard keyboard;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -56,7 +57,6 @@ public class WordleGUI extends Application {
 
 
 		Scene scene = new Scene(everything, 600, 750);
-
 		stage.setScene(scene);
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyboardInput);
 		stage.show();
@@ -140,10 +140,7 @@ public class WordleGUI extends Application {
 
 
 	private void layoutKeyboard() {
-		HBox Row1 = new HBox();
-		HBox Row2 = new HBox();
-		HBox Row3 = new HBox();
-		VBox board = new VBox();
+
 		HBox textbutton = new HBox();
 
 		button = new Button("submit guess");
@@ -152,39 +149,11 @@ public class WordleGUI extends Application {
 
 		String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
 		char[] qwerty = letters.toCharArray();
-		int curEndPoint = 10;
-		int startPoint = 0;
-		for (int i = 0; i < 3; i++) {
-			// each row
-			ArrayList<Button> keyboardRow = new ArrayList<>();
-			// each letter on the keyboard
-			for (int j = 0; j < curEndPoint && j+startPoint < letters.length(); j++) {
-				Button keyButton = new Button("" + qwerty[j + startPoint]);
-				keyButton.setStyle("-fx-padding: 5 10 10 10;");
-				keyButton.setFont(new Font("Courier New", 25));
-				keyButton.setOnAction(event -> {
-					Button buttonClicked = (Button) event.getSource();
-					System.out.println(buttonClicked.getText());
-				});
-				keyboardRow.add(keyButton);
 
-			}
-			keyboardRows.add(keyboardRow);
-			startPoint += curEndPoint;
-			curEndPoint--;
-		}
+		this.keyboard = new Keyboard(qwerty);
 
-		Row1.getChildren().addAll(keyboardRows.get(0));
-		Row2.getChildren().addAll(keyboardRows.get(1));
-		Row3.getChildren().addAll(keyboardRows.get(2));
-		Row1.setSpacing(5);
-		Row2.setSpacing(5);
-		Row3.setSpacing(5);
-		Row1.setAlignment(Pos.CENTER);
-		Row2.setAlignment(Pos.CENTER);
-		Row3.setAlignment(Pos.CENTER);
-		board.getChildren().addAll(Row1, Row2, Row3, textbutton);
-		everything.setBottom(board);
+		keyboard.getChildren().add(textbutton);
+		everything.setBottom(keyboard);
 
 	}
 
@@ -298,8 +267,12 @@ public class WordleGUI extends Application {
 			String guessUpper = guess.toUpperCase();
 			String[] splitGuess = guessUpper.split("");
 
-			keyboardRows.forEach((row) -> row.forEach((key) -> {
+			Collection<Keyboard.Key> keys = keyboard.getKeys();
+
+			keys.forEach((key -> {
 				// iterate over every key
+				String letter = key.getKeyVal();
+
 				for (int i = 0; i < guessStr.length; i++) {
 					if (splitGuess[i].equals(key.getText())) {
 						switch (guessStr[i]) {
@@ -342,6 +315,120 @@ public class WordleGUI extends Application {
 				isDarkMode = false;
 			}
 
+		}
+	}
+}
+
+class Keyboard extends VBox {
+	private List<HBox> rows;
+	private VBox board;
+	private HashMap<String, Key> keyMap;
+
+	/**
+	 *
+	 * @param keys
+	 */
+	public Keyboard(char[] keys) {
+		super();
+		this.rows = generateKeys(keys, 3, 10);
+		this.board = new VBox();
+		this.board.getChildren().addAll(this.rows);
+		this.getChildren().addAll(this.rows);
+	}
+
+	/**
+	 * This function sets all keys in the keyboard to a format
+	 * that looks better with a black background.
+	 * @param dark if true, enables dark mode. if false, enables light mode
+	 */
+	public void setDarkMode(boolean dark) {
+
+	}
+
+	/**
+	 * This function generates a list of rows/HBoxs of buttons that correspond
+	 * to the characters given in keys
+	 * @param keys the list of characters to put on the keyboard
+	 * @param rowCount the max number of rows
+	 * @paraam maxRowLength the max length of each row
+	 * @return
+	 */
+	private List<HBox> generateKeys(char[] keys, int rowCount, int maxRowLength) {
+		this.keyMap = new HashMap<>();
+		List<HBox> keyBoardGui = new ArrayList<>();
+
+
+
+		int curEndPoint = maxRowLength;
+		int startPoint = 0;
+
+		for (int i = 0; i < rowCount; i++) {
+			HBox newRow = new HBox();
+			newRow.setSpacing(5);
+			newRow.setAlignment(Pos.CENTER);
+
+
+			// create the buttons that we need to place on this row
+			for (int j = 0; j < curEndPoint && j+startPoint < keys.length; j++) {
+				String val = "" + keys[j + startPoint];
+				Key keyButton = new Key(val);
+				keyMap.put(val, keyButton);
+				newRow.getChildren().add(keyButton);
+			}
+
+			// add the row we just made, and continue on
+			keyBoardGui.add(newRow);
+			startPoint += curEndPoint;
+			curEndPoint--;
+		}
+
+		return keyBoardGui;
+	}
+
+	public Collection<Key> getKeys() {
+		return this.keyMap.values();
+	}
+
+	/**
+	 * Returns the Key object that the letter corresponds to.
+	 * @param letter the letter linked to the Key we want to find
+	 * @return a Key that corresponds to letter
+	 */
+	public Key getKey(String letter) {
+		return keyMap.get(letter);
+	}
+
+	/**
+	 *
+	 */
+	class Key extends Button {
+
+		private String keyChar;
+
+		/**
+		 * Constructor. Links the letter to the object for later retrieval.
+		 * @param letter
+		 */
+		public Key(String letter) {
+			super(letter);
+			this.keyChar = letter;
+
+			// default style options, can be changed if wanted.
+			this.setStyle("-fx-padding: 5 10 10 10;");
+			this.setFont(new Font("Courier New", 25));
+			this.setOnAction(event -> {
+				Button buttonClicked = (Button) event.getSource();
+				System.out.println(buttonClicked.getText());
+			});
+		}
+
+
+
+		/**
+		 * @return the letter with which this Key object corresponds to
+		 */
+		public String getKeyVal() {
+			return keyChar;
 		}
 	}
 }
