@@ -303,9 +303,9 @@ public class WordleGUI extends Application {
 				for (int i = 0; i < guessStr.length; i++) {
 					if (splitGuess[i].equals(key.getText())) {
 						switch (guessStr[i]) {
-							case (WRONG) -> key.setStyle("-fx-background-color: #808080; ");
-							case (CORRECT) -> key.setStyle("-fx-background-color: #00FF00; ");
-							case (CONTAINS) -> key.setStyle("-fx-background-color: #FFFF00; ");
+							case WRONG -> key.setStyle("-fx-background-color: #808080; ");
+							case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
+							case CONTAINS -> key.setStyle("-fx-background-color: #FFFF00; ");
 						}
 					}}}));
 			}
