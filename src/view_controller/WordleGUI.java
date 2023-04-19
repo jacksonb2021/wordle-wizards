@@ -110,6 +110,34 @@ public class WordleGUI extends Application {
 		return temp;
 	}
 
+	private void showScore(boolean menu, boolean win, boolean loggedIn){
+
+
+		Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
+		String header ="";
+		String content="";
+		if(!loggedIn){
+			header = "You must be logged in to see your score";
+			content = "Please log in to see your score";
+
+		}
+		else if(menu){
+			content = account.getScoreString();
+			header = "Score Statistics";
+		}
+		else if(win){
+			content = "You win!\n"+account.getScoreString();
+			header = "The word was "+wordle.getWord(true)+"\n\nScore Summary";
+		}
+		else{
+			content = "Game over. You lose\n"+account.getScoreString();
+			header = "The word was "+wordle.getWord(true)+"\n\nScore Summary";
+		}
+		scoreAlert.setContentText(content);
+		scoreAlert.setHeaderText(header);
+		scoreAlert.show();
+	}
+
 
 	private void layoutKeyboard() {
 		HBox Row1 = new HBox();
@@ -183,6 +211,16 @@ public class WordleGUI extends Application {
 		everything.setTop(holder);
 
 		darkMode.setOnAction(new DarkMode());
+		score.setOnAction(actionEvent -> {
+			account = loginPane.getCurrentUser();
+			if (account==null){
+				showScore(true, false, false);
+			}
+			else{
+				showScore(true, false, true);
+			}
+		});
+
 
 	}
 
@@ -220,14 +258,18 @@ public class WordleGUI extends Application {
 			if (winCondition(curBoard)) {
 				everything.setDisable(true);
 				account.updateScore(counter+1);
+				wordle.updateAccount(account);
+				wordle.save();
+				showScore(false,true,true);
 			} else if (counter == boardGameRs.length){
 				everything.setDisable(true);
-				Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
-				scoreAlert.setContentText("Game over. You lose\n"+account.getScoreString());
-				scoreAlert.setHeaderText("The word was "+wordle.getWord(true)+"\n\nScore Summary");
-				scoreAlert.show();
 				System.out.println("Game over.\n the word was " + wordle.getWord(true) + "\n");
 				account.updateScore(counter+1);
+				wordle.updateAccount(account);
+				wordle.save();
+				showScore(false,false,true);
+
+
 			}
 
 
@@ -248,11 +290,7 @@ public class WordleGUI extends Application {
 			wordle.updateAccount(account);
 			wordle.save();
 			
-			Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
-			scoreAlert.setContentText("Game over.\n"+account.getScoreString());
-			scoreAlert.setHeaderText("Score Summary. The word was "+wordle.getWord(true));
-			scoreAlert.show();
-			
+
 			return true;
 		}
 
