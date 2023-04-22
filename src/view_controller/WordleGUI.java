@@ -124,6 +124,7 @@ public class WordleGUI extends Application {
 		field.setEditable(true);
 		button.setDisable(false);
 		loginPane.logout();
+		counter = 0;
 	}
 
 	private Button[] ButtonMaker() {
