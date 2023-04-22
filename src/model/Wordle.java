@@ -11,13 +11,25 @@ public class Wordle {
 	private final HashMap<Integer, ArrayList<String>> map;
 	private String guessedWord;
 	private String randomWord;
+	private String toBeGuessed;
 	WordleSerializer ws;
 
-	public Wordle() {
+	public Wordle(boolean daily) {
+
 		ws = new WordleSerializer();
 		map = ws.getMap();
 		dailyWord = randomWord(5, true);
 		setRandomWord(5);
+		if(daily){
+			toBeGuessed = dailyWord;
+		}
+		else{
+			toBeGuessed = randomWord;
+		}
+	}
+
+	public boolean isWord(String word){
+		return map.get(5).contains(word);
 	}
 
 	public WordleAccount login(String username, String password) {
@@ -63,7 +75,7 @@ public class Wordle {
 	 * @return An array with index corresponding to word 0 for wrong, 1 for correct
 	 *         position, 2 for in the string, wrong position.
 	 */
-	public int[] guess(String word, boolean daily) {
+	public int[] guess(String word) {
 		// Completed toString method and can print an indication of the tiles
 		// Also now it checks for repeated characters
 
@@ -72,12 +84,6 @@ public class Wordle {
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
 
-		String toBeGuessed;
-		if (daily) {
-			toBeGuessed = dailyWord;
-		} else {
-			toBeGuessed = randomWord;
-		}
 		guessedWord = word;
 
 
