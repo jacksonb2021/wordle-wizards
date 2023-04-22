@@ -43,7 +43,7 @@ public class WordleGUI extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
-		wordle = new Wordle();
+		wordle = new Wordle(true);
 		field = new TextField();
 		mode = new Label("Daily word");
 		field.setOnAction(event -> {
@@ -93,9 +93,18 @@ public class WordleGUI extends Application {
 		boardGame.getChildren().addAll(rows);
 		boardGame.setSpacing(5);
 		boardGame.setStyle("-fx-padding: 20 0 0 0;");
-
-		everything.setCenter(boardGame);
+		VBox v = new VBox();
+		v.getChildren().addAll(mode,boardGame);
+		v.setAlignment(Pos.BASELINE_CENTER);
+		everything.setCenter(v);
 		// TODO Auto-generated method stub
+
+	}
+
+	private void resetGame(){
+		setBoard();
+		wordle = new Wordle(false);
+		this.keyboard= new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
 
 	}
 
@@ -170,12 +179,13 @@ public class WordleGUI extends Application {
 		Menu settings = new Menu("settings");
 		MenuItem darkMode = new MenuItem("dark mode toggle");
 		MenuItem practiceMode = new MenuItem("practice mode");
+		MenuItem newGame = new MenuItem("new game (practice mode)");
 
 		Menu score = new Menu("score");
 		MenuItem leaderboard = new MenuItem("leaderboard");
 		MenuItem personalScore = new MenuItem("statistics");
 
-		settings.getItems().addAll(darkMode, practiceMode);
+		settings.getItems().addAll(darkMode, practiceMode,newGame);
 		score.getItems().addAll(leaderboard, personalScore);
 		menuBar.getMenus().addAll(settings,score);
 
@@ -194,11 +204,17 @@ public class WordleGUI extends Application {
 			}
 		});
 
+		newGame.setOnAction(actionEvent -> {
+			mode.setText("Practice Mode");
+			wordle.setRandomWord(5);
+			resetGame();
+		});
+
 
 		practiceMode.setOnAction(event -> {
 			mode.setText("Practice Mode");
 			buttonHandler.mode = false;
-					//TODO reset board
+			resetGame();
 		});
 
 
@@ -230,7 +246,15 @@ public class WordleGUI extends Application {
 			}
 			field.setText("");
 			button.setText("submit guess");
-			int[] guessStr = wordle.guess(guess, mode);
+			int[]guessStr;
+			if(!wordle.isWord(guess)) {
+
+				button.setText("Not a word, try again");
+				return;
+			}
+			else{
+				guessStr = wordle.guess(guess);
+			}
 
 			Button[] curBoard = boardGameRs[counter];
 			boardGameRs[counter] = colorBoard(guess, guessStr, curBoard);
@@ -253,6 +277,8 @@ public class WordleGUI extends Application {
 
 
 			}
+			everything.setDisable(false);
+
 
 
 
