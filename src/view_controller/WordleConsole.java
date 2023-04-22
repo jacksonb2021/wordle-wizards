@@ -14,22 +14,8 @@ import java.util.Scanner;
 public class WordleConsole {
 
 	public static void main(String[] args) {
-		Wordle wordle = new Wordle();
-//        System.out.println("Play wordle, enter 'd' for daily word, or 'r' for random word");
-//        Scanner s = new Scanner(System.in);
-
-		// implement random word assignment.
-		// would probably need to modify Wordle class
-		// specifically, publicize getRandomWord() and setWord()
-//        String word;
-//        if(s.next().strip().equals("d")){
-//        	
-//        } else if (!s.next().strip().equals("d")){
-
-//        }
-
+		Wordle wordle = new Wordle(true);
 		printWelcome();
-		// wordle.setDailyWord("brick");
 		gameLoop(wordle);
 
 	}
@@ -95,7 +81,7 @@ public class WordleConsole {
 				continue;
 			}
 
-			results = game.guess(guess, isDaily);
+			results = game.guess(guess);
 			System.out.println(game.guessToString(results) + '\n');
 			counter++;
 

@@ -31,10 +31,10 @@ public class WordleTest {
 
 	@Test
 	public void testAllCorrect() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran first ");
-		int[] checkedChars = wordleTest.guess("frank", true);
+		int[] checkedChars = wordleTest.guess("frank");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -51,11 +51,11 @@ public class WordleTest {
 
 	@Test
 	public void testPartialCorrect() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran second ");
-		int[] checkedChars = wordleTest.guess("kranf", true);
+		int[] checkedChars = wordleTest.guess("kranf");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 2);
 		int secondChar = checkedChars[1];
@@ -72,11 +72,11 @@ public class WordleTest {
 
 	@Test
 	public void testPartialCorrect2() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran third ");
-		int[] checkedChars = wordleTest.guess("kfnar", true);
+		int[] checkedChars = wordleTest.guess("kfnar");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 2);
 		int secondChar = checkedChars[1];
@@ -92,11 +92,11 @@ public class WordleTest {
 
 	@Test
 	public void testPartialIncorrect() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran fourth ");
-		int[] checkedChars = wordleTest.guess("crank", true);
+		int[] checkedChars = wordleTest.guess("crank");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 0);
 		int secondChar = checkedChars[1];
@@ -113,11 +113,11 @@ public class WordleTest {
 
 	@Test
 	public void testPartialIncorrect2() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran fifth ");
-		int[] checkedChars = wordleTest.guess("cfenc", true);
+		int[] checkedChars = wordleTest.guess("cfenc");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 0);
 		int secondChar = checkedChars[1];
@@ -134,11 +134,11 @@ public class WordleTest {
 
 	@Test
 	public void testAllIncorrect() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran sixth ");
-		int[] checkedChars = wordleTest.guess("uiope", true);
+		int[] checkedChars = wordleTest.guess("uiope");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 0);
 		int secondChar = checkedChars[1];
@@ -155,11 +155,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions2() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("krank");
 		System.out.println(wordleTest.getDailyWord() + " I ran seventh ");
-		int[] checkedChars = wordleTest.guess("krank", true);
+		int[] checkedChars = wordleTest.guess("krank");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -176,11 +176,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("frank");
 		System.out.println(wordleTest.getDailyWord() + " I ran eighth");
-		int[] checkedChars = wordleTest.guess("franf", true);
+		int[] checkedChars = wordleTest.guess("franf");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -197,11 +197,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions3() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("ffass");
 		System.out.println(wordleTest.getDailyWord() + " I ran ninth");
-		int[] checkedChars = wordleTest.guess("ffass", true);
+		int[] checkedChars = wordleTest.guess("ffass");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -218,11 +218,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions4() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("ffaas");
 		System.out.println(wordleTest.getDailyWord() + " I ran tenth");
-		int[] checkedChars = wordleTest.guess("ffasa", true);
+		int[] checkedChars = wordleTest.guess("ffasa");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -239,11 +239,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions5() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("fffff");
 		System.out.println(wordleTest.getDailyWord() + " I ran eleventh");
-		int[] checkedChars = wordleTest.guess("zfffz", true);
+		int[] checkedChars = wordleTest.guess("zfffz");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 0);
 		int secondChar = checkedChars[1];
@@ -260,11 +260,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions6() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("fafaf");
 		System.out.println(wordleTest.getDailyWord() + " I ran twelveth");
-		int[] checkedChars = wordleTest.guess("afffa", true);
+		int[] checkedChars = wordleTest.guess("afffa");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 2);
 		int secondChar = checkedChars[1];
@@ -281,11 +281,11 @@ public class WordleTest {
 
 	@Test
 	public void testRepetitions7() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("fafaf");
 		System.out.println(wordleTest.getDailyWord() + " I ran thirteenth");
-		int[] checkedChars = wordleTest.guess("fefaf", true);
+		int[] checkedChars = wordleTest.guess("fefaf");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -302,11 +302,11 @@ public class WordleTest {
 
 	@Test
 	public void testBug() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
 		wordleTest.setDailyWord("crash");
 		System.out.println(wordleTest.getDailyWord() + " I ran fourteenth");
-		int[] checkedChars = wordleTest.guess("crahs", true);
+		int[] checkedChars = wordleTest.guess("crahs");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
 		int secondChar = checkedChars[1];
@@ -330,7 +330,7 @@ public class WordleTest {
 	@Test
 	public void update() {
 		WordleSerializer ws = new WordleSerializer();
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		ws.createNewUser("jackson","burns");
 		WordleAccount jackson = ws.getAccounts().get(0);
 		jackson.updateScore(5);
@@ -368,7 +368,7 @@ public class WordleTest {
 
 	@Test
 	public void testLogin() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		wordleTest.createAccount("JJVH19", "nel");
 		assertNotNull(wordleTest.login("JJVH19", "nel"));
 		assertNull(wordleTest.login("JJVH18", "nel"));
@@ -377,7 +377,7 @@ public class WordleTest {
 
 	@Test
 	public void testGettingWord() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		wordleTest.setDailyWord("crash");
 		assertEquals(wordleTest.getWord(true), "crash");
 		assertNotEquals(wordleTest.getWord(false), "crash");
@@ -385,7 +385,7 @@ public class WordleTest {
 
 	@Test
 	public void testSaveMap() {
-		Wordle wordleTest = new Wordle();
+		Wordle wordleTest = new Wordle(true);
 		wordleTest.save();
 	}
 
