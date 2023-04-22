@@ -58,6 +58,7 @@ public class Keyboard extends VBox {
 			HBox newRow = new HBox();
 			newRow.setSpacing(5);
 			newRow.setAlignment(Pos.CENTER);
+			newRow.setStyle("-fx-padding: 5 10 10 10;");
 
 			// create the buttons that we need to place on this row
 			for (int j = 0; j < curEndPoint && j + startPoint < keys.length; j++) {

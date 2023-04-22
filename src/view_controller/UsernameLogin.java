@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Wordle;
 import model.WordleAccount;
+
 //import model.WordleSerializer;
 /**
  * This class holds the GUI of the login section of WordleGUI
@@ -64,7 +65,6 @@ public class UsernameLogin extends BorderPane {
 
 	}
 
-
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
@@ -76,13 +76,13 @@ public class UsernameLogin extends BorderPane {
 	public void setLoginStatus(String update) {
 		loginStatus.setText(update);
 	}
-	
+
 	public void logout() {
 		loggedIn = false;
 		currentUser = null;
 		loginStatus.setText("Please Login");
 	}
-	
+
 	public void login() {
 		if (currentUser != null) {
 			loginStatus.setText("You are already logged in, please logout");
@@ -102,11 +102,11 @@ public class UsernameLogin extends BorderPane {
 			pwdTextField.setText("");
 		}
 	}
-	
+
 	public Button getLoginButton() {
 		return loginButton;
 	}
-	
+
 	public Button getLogoutButton() {
 		return logoutButton;
 	}

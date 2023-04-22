@@ -12,6 +12,7 @@ import model.WordleAccount;
 import model.WordleSerializer;
 
 import java.util.ArrayList;
+
 /**
  * This is a JUnit test case testing the model of Wordle.
  * 
@@ -401,7 +402,7 @@ public class WordleTest {
 		}
 
 	}
-	
+
 	@Test
 	public void testRealWords() {
 		Wordle wordleTest = new Wordle(true);
@@ -411,7 +412,7 @@ public class WordleTest {
 		assertFalse(wordleTest.isWord("W0Rd5"));
 
 	}
-	
+
 	@Test
 	public void testLeaderboards() {
 		Wordle wordleTest = new Wordle(true);
@@ -419,8 +420,8 @@ public class WordleTest {
 		Leaderboard leaderboardTest = new Leaderboard();
 		wordleTest.login("JJVH19", "nel");
 		assertNotNull(wordleTest.login("JJVH19", "nel"));
-		//wordleTest.setDailyWord("corgi");
-		//attempt 1
+		// wordleTest.setDailyWord("corgi");
+		// attempt 1
 		int[] checkedChars = wordleTest.guess("crank");
 		int firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
@@ -432,8 +433,8 @@ public class WordleTest {
 		assertEquals(fourthChar, 0);
 		int fifthChar = checkedChars[4];
 		assertEquals(fifthChar, 0);
-		
-		//attempt 2
+
+		// attempt 2
 		checkedChars = wordleTest.guess("cores");
 		firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
@@ -445,8 +446,8 @@ public class WordleTest {
 		assertEquals(fourthChar, 0);
 		fifthChar = checkedChars[4];
 		assertEquals(fifthChar, 0);
-		
-		//attempt 3
+
+		// attempt 3
 		checkedChars = wordleTest.guess("corgi");
 		firstChar = checkedChars[0];
 		assertEquals(firstChar, 1);
@@ -458,14 +459,14 @@ public class WordleTest {
 		assertEquals(fourthChar, 1);
 		fifthChar = checkedChars[4];
 		assertEquals(fifthChar, 1);
-		
-		accountTest.updateScore(3+1);
+
+		accountTest.updateScore(3 + 1);
 		wordleTest.updateAccount(accountTest);
 		wordleTest.save();
-		
+
 		leaderboardTest.addUser(accountTest);
 		ArrayList<WordleAccount> arr = leaderboardTest.getUsers();
 		assertNotEquals(arr.size(), 0);
 	}
-	
+
 }

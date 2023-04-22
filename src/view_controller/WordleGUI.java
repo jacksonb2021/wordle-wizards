@@ -210,6 +210,8 @@ public class WordleGUI extends Application {
 		button = new Button("submit guess");
 		buttonHandler = new ButtonHandler();
 		button.setOnAction(buttonHandler);
+		textbutton.setStyle("-fx-padding: 5 10 10 10;");
+		textbutton.setSpacing(5);
 		textbutton.getChildren().addAll(field, button);
 		field.setEditable(false);
 		button.setDisable(true);
@@ -220,6 +222,7 @@ public class WordleGUI extends Application {
 		this.keyboard = new Keyboard(qwerty);
 
 		keyboard.getChildren().add(textbutton);
+
 		everything.setBottom(keyboard);
 
 	}
