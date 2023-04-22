@@ -206,7 +206,7 @@ public class WordleGUI extends Application {
 
 		newGame.setOnAction(actionEvent -> {
 			mode.setText("Practice Mode");
-			wordle.setRandomWord(5);
+			//wordle.setRandomWord(5);
 			resetGame();
 		});
 
