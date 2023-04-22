@@ -6,6 +6,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
 import model.WordleSerializer;
@@ -331,7 +332,7 @@ public class WordleTest {
 	public void update() {
 		WordleSerializer ws = new WordleSerializer();
 		Wordle wordleTest = new Wordle(true);
-		ws.createNewUser("jackson","burns");
+		ws.createNewUser("jackson", "burns");
 		WordleAccount jackson = ws.getAccounts().get(0);
 		jackson.updateScore(5);
 		wordleTest.updateAccount(jackson);
@@ -345,8 +346,6 @@ public class WordleTest {
 		assertEquals(ws.getAccounts().get(0).getScore()[6], 1);
 		System.out.println(jackson.getScoreString());
 
-
-
 		WordleAccount wordleAcct = new WordleAccount("JJVH19", "nel");
 		System.out.println(wordleAcct.getScoreString());
 
@@ -355,7 +354,7 @@ public class WordleTest {
 	@Test
 	public void testUser() {
 		WordleSerializer ws = new WordleSerializer();
-		ws.createNewUser("jackson","burns");
+		ws.createNewUser("jackson", "burns");
 		assertNotNull(ws.verifyLogin("jackson", "burns"));
 		assertNull(ws.verifyLogin("jackson", "burns2"));
 	}
@@ -390,12 +389,79 @@ public class WordleTest {
 	}
 
 	@Test
-	public void testAverageGuesses(){
+	public void testAverageGuesses() {
 		WordleSerializer ws = new WordleSerializer();
 		ArrayList<WordleAccount> accounts = ws.getAccounts();
-		for(int i=0;i<accounts.size();i++){
-			System.out.println("name: "+accounts.get(i).getUsername()+"\naverage: " +accounts.get(i).getAverage());
+		for (int i = 0; i < accounts.size(); i++) {
+			System.out.println("name: " + accounts.get(i).getUsername() + "\naverage: " + accounts.get(i).getAverage());
 		}
 
 	}
+	
+	@Test
+	public void testRealWords() {
+		Wordle wordleTest = new Wordle(true);
+		assertFalse(wordleTest.isWord("word"));
+		assertFalse(wordleTest.isWord("w0rds"));
+		assertFalse(wordleTest.isWord("!@#$%"));
+		assertFalse(wordleTest.isWord("W0Rd5"));
+
+	}
+	
+	@Test
+	public void testLeaderboards() {
+		Wordle wordleTest = new Wordle(true);
+		WordleAccount accountTest = new WordleAccount("JJVH19", "nel");
+		Leaderboard leaderboardTest = new Leaderboard();
+		wordleTest.login("JJVH19", "nel");
+		assertNotNull(wordleTest.login("JJVH19", "nel"));
+		//wordleTest.setDailyWord("corgi");
+		//attempt 1
+		int[] checkedChars = wordleTest.guess("crank");
+		int firstChar = checkedChars[0];
+		assertEquals(firstChar, 1);
+		int secondChar = checkedChars[1];
+		assertEquals(secondChar, 2);
+		int thirdChar = checkedChars[2];
+		assertEquals(thirdChar, 0);
+		int fourthChar = checkedChars[3];
+		assertEquals(fourthChar, 0);
+		int fifthChar = checkedChars[4];
+		assertEquals(fifthChar, 0);
+		
+		//attempt 2
+		checkedChars = wordleTest.guess("cores");
+		firstChar = checkedChars[0];
+		assertEquals(firstChar, 1);
+		secondChar = checkedChars[1];
+		assertEquals(secondChar, 1);
+		thirdChar = checkedChars[2];
+		assertEquals(thirdChar, 1);
+		fourthChar = checkedChars[3];
+		assertEquals(fourthChar, 0);
+		fifthChar = checkedChars[4];
+		assertEquals(fifthChar, 0);
+		
+		//attempt 3
+		checkedChars = wordleTest.guess("corgi");
+		firstChar = checkedChars[0];
+		assertEquals(firstChar, 1);
+		secondChar = checkedChars[1];
+		assertEquals(secondChar, 1);
+		thirdChar = checkedChars[2];
+		assertEquals(thirdChar, 1);
+		fourthChar = checkedChars[3];
+		assertEquals(fourthChar, 1);
+		fifthChar = checkedChars[4];
+		assertEquals(fifthChar, 1);
+		
+		accountTest.updateScore(3+1);
+		wordleTest.updateAccount(accountTest);
+		wordleTest.save();
+		
+		leaderboardTest.addUser(accountTest);
+		ArrayList<WordleAccount> arr = leaderboardTest.getUsers();
+		assertNotEquals(arr.size(), 0);
+	}
+	
 }

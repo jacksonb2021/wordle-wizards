@@ -12,6 +12,7 @@ public class Wordle {
 	private String guessedWord;
 	private String randomWord;
 	private String toBeGuessed;
+	private boolean dailyChoice;
 	WordleSerializer ws;
 
 	public Wordle(boolean daily) {
@@ -20,31 +21,33 @@ public class Wordle {
 		map = ws.getMap();
 		dailyWord = randomWord(5, true);
 		setRandomWord(5);
-		if(daily){
-			toBeGuessed = dailyWord;
-		}
-		else{
-			toBeGuessed = randomWord;
-		}
+		dailyChoice = daily;
+//		if(daily){
+//			toBeGuessed = dailyWord;
+//		}
+//		else{
+//			toBeGuessed = randomWord;
+//		}
 	}
 
-	public boolean isWord(String word){
+	public boolean isWord(String word) {
 		return map.get(5).contains(word);
 	}
 
 	public WordleAccount login(String username, String password) {
 		for (WordleAccount account : ws.getAccounts()) {
 			if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
-				//loggedIn=true;
+				// loggedIn=true;
 				return account;
 			}
 		}
 		return null;
 	}
 
-	public boolean isLoggedIn(){
-		return loggedIn;
-	}
+//	public boolean isLoggedIn() {
+//		return loggedIn;
+//	}
+
 	public boolean createAccount(String username, String password) {
 		return ws.createNewUser(username, password);
 
@@ -83,29 +86,44 @@ public class Wordle {
 		final int WRONG = 0;
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
-
+		if (dailyChoice) {
+			toBeGuessed = dailyWord;
+		} else {
+			toBeGuessed = randomWord;
+		}
 		guessedWord = word;
-
 
 		for (int index = 0; index < word.length(); index++) {
 			char guessChar = word.charAt(index);
 			char correctChar = toBeGuessed.charAt(index);
-			int indexOfGuessChar = toBeGuessed.indexOf(guessChar);
-
-			// check if the character is in the string at all
-			if (indexOfGuessChar != -1) {
-				checkedChars[index] = CONTAINS;
-				// if the char is in the correct position we set it to correct.
-				if (guessChar == correctChar) {
-					checkedChars[index] = CORRECT;
+			if (guessChar == correctChar) {
+				checkedChars[index] = CORRECT;
+			} else if (toBeGuessed.indexOf(guessChar) != -1) {
+				boolean verifyRepeat = checkForRepeats(word, guessChar, toBeGuessed);
+				if (!verifyRepeat) {
+					checkedChars[index] = CONTAINS;
+				} else {
+					checkedChars[index] = WRONG;
 				}
+			} else {
+				checkedChars[index] = WRONG;
 			}
-			// otherwise, leave it as WRONG.
+//			int indexOfGuessChar = toBeGuessed.indexOf(guessChar);
+//			// check if the character is in the string at all
+//			if (indexOfGuessChar != -1) {
+//				
+//				checkedChars[index] = CONTAINS;
+//				// if the char is in the correct position we set it to correct.
+//				if (guessChar == correctChar) {
+//					checkedChars[index] = CORRECT;
+//				}
+//			}
+//			// otherwise, leave it as WRONG.
 		}
 		return checkedChars;
 	}
 
-	/*private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
+	private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
 		int verifyRepeatGuess = 0;
 		int verifyRepeatDailyWord = 0;
 		for (int character = 0; character < word.length(); character++) {
@@ -121,7 +139,7 @@ public class Wordle {
 		}
 		return true;
 
-	}*/
+	}
 
 	private String randomWord(int length, boolean daily) {
 		Random rand;
@@ -149,7 +167,7 @@ public class Wordle {
 			if (checkedChars[i] == 1) {
 				guess += guessedWord.charAt(i) + "(Green)";
 			} else if (checkedChars[i] == 2) {
-				guess += guessedWord.charAt(i)+ "(Yellow)";
+				guess += guessedWord.charAt(i) + "(Yellow)";
 			} else if (checkedChars[i] == 0) {
 				guess += guessedWord.charAt(i) + "(Gray)";
 			}
