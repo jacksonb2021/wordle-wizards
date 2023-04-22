@@ -118,13 +118,13 @@ public class WordleGUI extends Application {
 	private void resetGame() {
 		setBoard();
 		wordle = new Wordle(false);
-
 		//this.keyboard = new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
 		layoutKeyboard();
 		field.setEditable(true);
 		button.setDisable(false);
 		loginPane.logout();
 		counter = 0;
+		mode.setText("Practice mode (It will not count towards the leaderboards)");
 	}
 
 	private Button[] ButtonMaker() {
@@ -235,14 +235,14 @@ public class WordleGUI extends Application {
 		});
 
 		newGame.setOnAction(actionEvent -> {
-			mode.setText("Practice Mode");
+			mode.setText("Practice mode (It will not count towards the leaderboards)");
 			// wordle.setRandomWord(5);
 			resetGame();
 
 		});
 
 		practiceMode.setOnAction(event -> {
-			mode.setText("Practice Mode");
+			mode.setText("Practice mode (It will not count towards the leaderboards)");
 			buttonHandler.mode = false;
 			resetGame();
 		});
