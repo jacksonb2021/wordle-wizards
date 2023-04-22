@@ -110,10 +110,10 @@ public class Keyboard extends VBox {
 			this.setStyle("-fx-padding: 5 10 10 10;");
 			this.setFont(new Font("Courier New", 25));
 			this.setBackground(null);
-			this.setOnAction(event -> {
-				Button buttonClicked = (Button) event.getSource();
-				System.out.println(buttonClicked.getText());
-			});
+//			this.setOnAction(event -> {
+//				Button buttonClicked = (Button) event.getSource();
+//				System.out.println(buttonClicked.getText());
+//			});
 		}
 
 		/**

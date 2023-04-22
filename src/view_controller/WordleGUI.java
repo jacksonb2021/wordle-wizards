@@ -50,11 +50,13 @@ public class WordleGUI extends Application {
 	private LocalDate localDate;
 	private Button login;
 	private Button logout;
+	private boolean dailyOrRandom;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
 		wordle = new Wordle(true);
+		dailyOrRandom = true;
 		field = new TextField();
 		mode = new Label("Daily word");
 
@@ -70,10 +72,6 @@ public class WordleGUI extends Application {
 //		verifyLogin();
 		setBoard();
 		localDate = LocalDate.now();
-
-//		if(!loginPane.isLoggedIn()) {
-//			
-//		}
 
 		Scene scene = new Scene(everything, 600, 750);
 		stage.setScene(scene);
@@ -118,13 +116,30 @@ public class WordleGUI extends Application {
 	private void resetGame() {
 		setBoard();
 		wordle = new Wordle(false);
-		//this.keyboard = new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
+		dailyOrRandom = false;
+		// this.keyboard = new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
 		layoutKeyboard();
 		field.setEditable(true);
 		button.setDisable(false);
 		loginPane.logout();
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
+		button.setText("submit guess");
+	}
+
+	// ONLY BE USED WHEN A USER HASNT PLAYED THAT DAY
+	private void freshNewGame() {
+		setBoard();
+		wordle = new Wordle(true);
+		dailyOrRandom = true;
+		// this.keyboard = new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
+		layoutKeyboard();
+		field.setEditable(true);
+		button.setDisable(false);
+		loginPane.logout();
+		counter = 0;
+		mode.setText("Daily word");
+		button.setText("submit guess");
 	}
 
 	private Button[] ButtonMaker() {
@@ -156,10 +171,10 @@ public class WordleGUI extends Application {
 			header = "Score Statistics";
 		} else if (win) {
 			content = "You win!\n" + account.getScoreString();
-			header = "The word was " + wordle.getWord(true) + "\n\nScore Summary";
+			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
 		} else {
 			content = "Game over. You lose\n" + account.getScoreString();
-			header = "The word was " + wordle.getWord(true) + "\n\nScore Summary";
+			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
 		}
 		scoreAlert.setContentText(content);
 		scoreAlert.setHeaderText(header);
@@ -169,13 +184,21 @@ public class WordleGUI extends Application {
 		if (result.get() == ButtonType.OK) {
 			loginPane.logout();
 			everything.setDisable(false);
-			resetGame();
+			if (dailyOrRandom) {
+				freshNewGame();
+			} else {
+				resetGame();
+			}
 		} else {
 			// If you can figure out how to just make this alert one
 			// button feel free to do so
 			loginPane.logout();
 			everything.setDisable(false);
-			resetGame();
+			if (dailyOrRandom) {
+				freshNewGame();
+			} else {
+				resetGame();
+			}
 		}
 //		scoreAlert.show();
 	}
@@ -238,7 +261,6 @@ public class WordleGUI extends Application {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");
 			// wordle.setRandomWord(5);
 			resetGame();
-
 		});
 
 		practiceMode.setOnAction(event -> {
@@ -256,11 +278,15 @@ public class WordleGUI extends Application {
 				field.setEditable(true);
 				button.setDisable(false);
 			}
+
+			// TODO check if user already played this day
+			// if they did -> wordle(false);
+			// if they didnt -> wordle(true);
 		});
 
 		logout.setOnAction(event -> {
 			loginPane.logout();
-			resetGame();
+			freshNewGame();
 			field.setEditable(false);
 			button.setDisable(true);
 
@@ -278,7 +304,7 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			String guess = field.getText().strip();
+			String guess = field.getText().strip().toLowerCase();
 //			if (!loginPane.isLoggedIn()) {
 //				button.setText("you are not logged in");
 //				field.setText("");
@@ -310,12 +336,12 @@ public class WordleGUI extends Application {
 			counter++;
 			if (winCondition(curBoard)) {
 				everything.setDisable(true);
+
 //				account.updateScore(counter + 1);
 //				wordle.updateAccount(account);
 //				wordle.save();
 				field.setEditable(false);
 				button.setDisable(true);
-				button.setText("Logout to start a new game");
 				showScore(false, true, true);
 			} else if (counter == boardGameRs.length) {
 				everything.setDisable(true);
@@ -326,7 +352,6 @@ public class WordleGUI extends Application {
 				showScore(false, false, true);
 				field.setEditable(false);
 				button.setDisable(true);
-				button.setText("Logout to start a new game or select practice mode.");
 			}
 //			everything.setDisable(false);
 

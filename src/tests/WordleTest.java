@@ -12,7 +12,11 @@ import model.WordleAccount;
 import model.WordleSerializer;
 
 import java.util.ArrayList;
-
+/**
+ * This is a JUnit test case testing the model of Wordle.
+ * 
+ * @author Jose Juan Velasquez
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WordleTest {
 

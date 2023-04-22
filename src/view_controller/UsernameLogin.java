@@ -1,9 +1,9 @@
 package view_controller;
 
-import java.time.LocalDate;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+//import java.time.LocalDate;
+//
+//import javafx.collections.FXCollections;
+//import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,8 +16,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Wordle;
 import model.WordleAccount;
-import model.WordleSerializer;
-
+//import model.WordleSerializer;
+/**
+ * This class holds the GUI of the login section of WordleGUI
+ * 
+ * @author Jackson Burns, Jose Juan Velasquez
+ */
 
 public class UsernameLogin extends BorderPane {
 	private final Wordle wordle;
