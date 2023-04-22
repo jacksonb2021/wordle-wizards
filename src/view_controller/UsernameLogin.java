@@ -40,32 +40,13 @@ public class UsernameLogin extends BorderPane {
 		layoutWindow();
 		currentUser = null;
 
-		loginButton.setOnAction(event -> {
-			if (currentUser != null) {
-				loginStatus.setText("You are already logged in, please logout");
-				return;
-			}
-			String userName = userTextField.getText();
-			String password = pwdTextField.getText();
-			currentUser = wordle.login(userName, password);
-			if (currentUser != null) {
-				loginStatus.setText("You are now logged in as " + userName + "");
-				userTextField.setText("");
-				pwdTextField.setText("");
-				loggedIn = true;
-			} else {
-				loginStatus.setText("Incorrect Username or Password. Try Again");
-				userTextField.setText("");
-				pwdTextField.setText("");
-			}
-
-		});
-
-		logoutButton.setOnAction(event -> {
-			loggedIn = false;
-			currentUser = null;
-			loginStatus.setText("Please Login");
-		});
+//		loginButton.setOnAction(event -> {
+//			login();
+//		});
+//
+//		logoutButton.setOnAction(event -> {
+//			logout();
+//		});
 
 		createUserButton.setOnAction(event -> {
 			if (!loggedIn) {
@@ -90,6 +71,40 @@ public class UsernameLogin extends BorderPane {
 
 	public void setLoginStatus(String update) {
 		loginStatus.setText(update);
+	}
+	
+	public void logout() {
+		loggedIn = false;
+		currentUser = null;
+		loginStatus.setText("Please Login");
+	}
+	
+	public void login() {
+		if (currentUser != null) {
+			loginStatus.setText("You are already logged in, please logout");
+			return;
+		}
+		String userName = userTextField.getText();
+		String password = pwdTextField.getText();
+		currentUser = wordle.login(userName, password);
+		if (currentUser != null) {
+			loginStatus.setText("You are now logged in as " + userName + "");
+			userTextField.setText("");
+			pwdTextField.setText("");
+			loggedIn = true;
+		} else {
+			loginStatus.setText("Incorrect Username or Password. Try Again");
+			userTextField.setText("");
+			pwdTextField.setText("");
+		}
+	}
+	
+	public Button getLoginButton() {
+		return loginButton;
+	}
+	
+	public Button getLogoutButton() {
+		return logoutButton;
 	}
 
 	private void layoutAddWindow() {
