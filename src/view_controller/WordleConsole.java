@@ -9,6 +9,7 @@ package view_controller;
 import model.Wordle;
 import model.WordleAccount;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class WordleConsole {
@@ -58,7 +59,10 @@ public class WordleConsole {
 		System.out.println("Daily word (d) or random word (r)");
 		String wordChoice = s.nextLine().strip();
 		boolean isDaily;
-		if (wordChoice.equals("r")) {
+		if (account.getScoreString().equals(LocalDate.now())) {
+			System.out.println("You've already played one game of Wordle today, setting to practice.");
+			isDaily = false;
+		} else if (wordChoice.equals("r")) {
 			isDaily = false;
 		} else if (wordChoice.equals("d")) {
 			isDaily = true;
@@ -92,6 +96,7 @@ public class WordleConsole {
 					win = false;
 				}
 			}
+			account.setLastPlayed(LocalDate.now());
 			if (win) {
 				System.out.println("Game over. You win!");
 				System.out.println("You guessed the word in " + counter + " guesses.");
