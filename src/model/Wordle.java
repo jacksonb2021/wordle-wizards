@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class Wordle {
 	private String dailyWord;
+	private LocalDate currentDate;
 	private boolean loggedIn;
 	private final HashMap<Integer, ArrayList<String>> map;
 	private String guessedWord;
@@ -16,12 +17,16 @@ public class Wordle {
 	WordleSerializer ws;
 
 	public Wordle(boolean daily) {
+		this(daily, LocalDate.MIN);
+	}
+	public Wordle(boolean daily, LocalDate dateLastPlayed) {
 
 		ws = new WordleSerializer();
 		map = ws.getMap();
 		dailyWord = randomWord(5, true);
 		setRandomWord(5);
 		dailyChoice = daily;
+		currentDate = dateLastPlayed;
 //		if(daily){
 //			toBeGuessed = dailyWord;
 //		}
@@ -29,6 +34,8 @@ public class Wordle {
 //			toBeGuessed = randomWord;
 //		}
 	}
+
+
 
 	public boolean isWord(String word) {
 		return map.get(5).contains(word);
@@ -58,7 +65,8 @@ public class Wordle {
 	}
 
 	public String getWord(boolean daily) {
-		if (daily) {
+		boolean isDifferentDay = !(currentDate.equals(LocalDate.now()));
+		if (daily && isDifferentDay) {
 			return dailyWord;
 		} else {
 			return randomWord;
@@ -86,11 +94,13 @@ public class Wordle {
 		final int WRONG = 0;
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
+
 		if (dailyChoice) {
 			toBeGuessed = dailyWord;
 		} else {
 			toBeGuessed = randomWord;
 		}
+
 		guessedWord = word;
 
 		for (int index = 0; index < word.length(); index++) {

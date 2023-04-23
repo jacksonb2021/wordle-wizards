@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * This class represents a Wordle account, which stores a username, password,
@@ -12,15 +13,32 @@ import java.io.Serializable;
 public class WordleAccount implements Serializable{
 	private final String username;
 	private final String password;
+	private LocalDate lastPlayed;
 	private int[] score;
 
 	public WordleAccount(String username, String password) {
+		this.lastPlayed = LocalDate.MIN;
 		this.username = username;
 		this.password = password;
 		score = new int[7];
 		for (int i = 0; i < score.length; i++) {
 			score[i] = 0;
 		}
+	}
+
+	/**
+	 * Gets the last date the user played a game of wordle
+	 */
+	public LocalDate getLastPlayed() {
+		return lastPlayed;
+	}
+
+	/**
+	 * Sets the last date the user played a game of wordle
+	 * @param date a LocalDate object to update lastplayed to.
+	 */
+	public void setLastPlayed(LocalDate date) {
+		this.lastPlayed = date;
 	}
 
 	/**
