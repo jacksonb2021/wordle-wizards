@@ -75,7 +75,7 @@ public class WordleConsole {
 		System.out.println("Daily word (d) or random word (r)");
 		String wordChoice = s.nextLine().strip();
 		boolean isDaily;
-		if (account.getScoreString().equals(LocalDate.now())) {
+		if (account.getLastPlayed().equals(LocalDate.now())) {
 			System.out.println("You've already played one game of Wordle today, setting to practice.");
 			isDaily = false;
 		} else if (wordChoice.equals("r")) {
