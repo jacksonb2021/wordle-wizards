@@ -79,6 +79,10 @@ public class WordleAccount implements Serializable{
 		return score;
 	}
 
+	/**
+	 * Shows the user how many times they've had some number of guesses
+	 * @return the number of guesses taken to win a Wordle game in the past
+	 */
 	public String getScoreString() {
 		String s = "";
 		s+= "Total Games: " + getTotalGames()+'\n';

@@ -91,8 +91,8 @@ public class Wordle {
 	/**
 	 * this function gets the word, and takes a parameter if it wants the daily word. it will
 	 * return the daily word if the day is different than the stored date
-	 * @param daily
-	 * @return
+	 * @param daily returns the dailyWord if true, random otherwise.
+	 * @return the correct guess
 	 */
 	public String getWord(boolean daily) {
 		boolean isDifferentDay = !(currentDate.equals(LocalDate.now()));

@@ -52,6 +52,7 @@ public class WordleGUI extends Application {
 	private Button logout;
 	private boolean dailyOrRandom;
 
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
