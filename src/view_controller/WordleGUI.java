@@ -240,7 +240,6 @@ public class WordleGUI extends Application {
 	private void layoutGUI() {
 		everything = new BorderPane();
 		loginPane = new UsernameLogin(wordle);
-		leaderboardWindow = new LeaderboardGUI();
 
 		MenuBar menuBar = new MenuBar();
 

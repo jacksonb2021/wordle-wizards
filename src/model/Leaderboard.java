@@ -35,7 +35,7 @@ public class Leaderboard {
 	public String toString() {
 		String out = "";
 		for(WordleAccount u : contents) {
-			out += u.getTotalGames() + ": " + u.getUsername();
+			out += u.getTotalGames() + ": " + u.getUsername() + "\n";
 		}
 		return out;
 	}
