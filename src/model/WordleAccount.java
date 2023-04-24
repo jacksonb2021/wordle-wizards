@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * This class represents a Wordle account, which stores a username, password,
  * and score. It can retreive all three of these values, and update the score.
  * 
- * @author Jackson Burns, Amon Guinan
+ * @author Jackson Burns, Amon Guinan, Duke Speed
  */
 @SuppressWarnings("serial")
 public class WordleAccount implements Serializable{
@@ -113,6 +113,10 @@ public class WordleAccount implements Serializable{
 		return (int) ((double) score[i] / getTotalGames() * 100);
 	}
 
+	/**
+	 * Shows the total number of Wordle games completed by the user.
+	 * @return number of Wordle games completed
+	 */
 	public int getTotalGames() {
 		int total = 0;
 		for (int i = 0; i < score.length; i++) {
@@ -121,35 +125,4 @@ public class WordleAccount implements Serializable{
 		return total;
 	}
 
-//
-//	/**
-//	 *
-//	 * @return
-//	 */
-//	private int totalGuesses() {
-//		int retVal = 0;
-//		for(int i = 0; i < score.length; i++) {
-//			retVal += score[i];
-//		}
-//		return retVal;
-//	}
-//	public int totalScore() {
-//		return totalGuesses() / getTotalGames();
-//	}
-//
-//
-//	/**
-//	 * 	Assumes score is from a game with a 5 letter word.
-//	 * 	Need to record word length and implement general scoring function
-//	 * 	in order to fairly compare scores from different word length games.
-//	 * @param other the object to be compared.
-//	 * @return
-//	 */
-//	@Override
-//	public int compareTo(WordleAccount other) {
-//		//>0 if this is larger than other.
-//		//0 if equal
-//		//<0 if other larger.
-//		return this.totalScore() - other.totalScore();
-//	}
 }
