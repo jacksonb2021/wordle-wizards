@@ -11,6 +11,7 @@ import model.Wordle;
 import model.WordleAccount;
 import model.WordleSerializer;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -418,9 +419,12 @@ public class WordleTest {
 		Wordle wordleTest = new Wordle(true);
 		WordleAccount accountTest = new WordleAccount("JJVH19", "nel");
 		Leaderboard leaderboardTest = new Leaderboard();
+		WordleAccount accountTest2 = new WordleAccount("jackson", "burns");
+		wordleTest.login("jackson", "burns");
+		assertNotNull(wordleTest.login("jackson", "burns"));
 		wordleTest.login("JJVH19", "nel");
 		assertNotNull(wordleTest.login("JJVH19", "nel"));
-		// wordleTest.setDailyWord("corgi");
+		wordleTest.setDailyWord("corgi");
 		// attempt 1
 		int[] checkedChars = wordleTest.guess("crank");
 		int firstChar = checkedChars[0];
@@ -463,10 +467,69 @@ public class WordleTest {
 		accountTest.updateScore(3 + 1);
 		wordleTest.updateAccount(accountTest);
 		wordleTest.save();
-
 		leaderboardTest.addUser(accountTest);
 		ArrayList<WordleAccount> arr = leaderboardTest.getUsers();
-		assertNotEquals(arr.size(), 0);
+		assertEquals(arr.size(), 1);
+
+		System.out.println(leaderboardTest.toString());
+		System.out.println(accountTest.totalScore());
+
+		accountTest2.updateScore(2 + 1);
+		wordleTest.updateAccount(accountTest2);
+		wordleTest.save();
+		leaderboardTest.addUser(accountTest2);
+		arr = leaderboardTest.getUsers();
+		assertEquals(arr.size(), 2);
+
+		Leaderboard leaderboardTest2 = new Leaderboard(arr);
+
+		System.out.println(leaderboardTest2.toString());
+		System.out.println(accountTest2.totalScore());
+
+		assertEquals(accountTest.compareTo(accountTest2), 0);
+		assertEquals(accountTest.compareTo(accountTest), 0);
+
+	}
+
+	@Test
+	public void testDates() {
+		LocalDate dateTest = LocalDate.now();
+		WordleAccount accountTest = new WordleAccount("JJVH19", "nel");
+		Wordle wordleTest = new Wordle(true);
+		Wordle wordleTestSameDay = new Wordle(true);
+		Leaderboard leaderboardTest = new Leaderboard();
+		accountTest.updateScore(3 + 1);
+		wordleTest.updateAccount(accountTest);
+		wordleTest.save();
+		leaderboardTest.addUser(accountTest);
+		ArrayList<WordleAccount> arr = leaderboardTest.getUsers();
+		assertEquals(arr.size(), 1);
+
+		System.out.println(leaderboardTest.toString());
+		System.out.println(accountTest.totalScore());
+		
+		
+		wordleTest.setDailyWord("corgi");
+		String firstAttempt = wordleTest.getWord(true);
+		assertEquals(firstAttempt, "corgi");
+		String secondAttempt = wordleTestSameDay.getWord(true);
+		assertNotEquals(secondAttempt, "corgi");
+		assertNotEquals(firstAttempt, secondAttempt);
+		
+		wordleTestSameDay = new Wordle(true, LocalDate.now().plusDays(1));
+		secondAttempt = wordleTestSameDay.getWord(true);
+		assertNotEquals(secondAttempt, "corgi");
+		assertNotEquals(firstAttempt, secondAttempt);
+		
+		
+		accountTest.setLastPlayed(dateTest);
+		assertEquals(accountTest.getLastPlayed(), dateTest);
+		assertNotEquals(accountTest.getLastPlayed(), dateTest.plusDays(1));
+
+		ArrayList<WordleAccount> accounts = wordleTest.getAccounts();
+		assertEquals(accounts.size(), 2);
+		Wordle wordleTest2 = new Wordle(false);
+		assertNotEquals(wordleTest.getWord(true), wordleTest2.getWord(false));
 	}
 
 }
