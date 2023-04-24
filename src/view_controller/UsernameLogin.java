@@ -1,9 +1,5 @@
 package view_controller;
 
-//import java.time.LocalDate;
-//
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,6 +33,10 @@ public class UsernameLogin extends BorderPane {
 	private static final int height = 110;
 	private boolean loggedIn;
 
+
+	/**
+	 * @param login a Wordle object, so we can set the user for our current game state
+	 */
 	@SuppressWarnings("unused")
 	public UsernameLogin(Wordle login) {
 		this.wordle = login;
@@ -65,24 +65,41 @@ public class UsernameLogin extends BorderPane {
 
 	}
 
+	/**
+	 * @return true if logged in, false otherwise.
+	 */
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
 
+	/**
+	 * Provides a way of manipulating the current wordle account directly.
+	 * @return the current WordleAccount that is logged in.
+	 */
 	public WordleAccount getCurrentUser() {
 		return currentUser;
 	}
 
+	/**
+	 * Updates the text in the loginStatus text box, useful for telling user if they're logged in.
+	 * @param update a string telling the user if they're logged in or not
+	 */
 	public void setLoginStatus(String update) {
 		loginStatus.setText(update);
 	}
 
+	/**
+	 * Sets the current user to null, and logged out.
+	 */
 	public void logout() {
 		loggedIn = false;
 		currentUser = null;
 		loginStatus.setText("Please Login");
 	}
 
+	/**
+	 * Logs the user in, creating a new WordleAccount object based on entered username and password.
+	 */
 	public void login() {
 		if (currentUser != null) {
 			loginStatus.setText("You are already logged in, please logout");
@@ -103,14 +120,25 @@ public class UsernameLogin extends BorderPane {
 		}
 	}
 
+	/**
+	 * The logoutButton is useful for when the parent object needs to change some parameter in this object.
+	 * @return a Button that logs the user in
+	 */
 	public Button getLoginButton() {
 		return loginButton;
 	}
 
+	/**
+	 * The logoutButton is useful for when the parent object needs to change some parameter in this object.
+	 * @return a Button that logs the user out
+	 */
 	public Button getLogoutButton() {
 		return logoutButton;
 	}
 
+	/**
+	 * Adds text fields and buttons for password/username input to the current window.
+	 */
 	private void layoutAddWindow() {
 		TextField newUserTextField = new TextField();
 		TextField newPwdTextField = new TextField();
@@ -156,28 +184,26 @@ public class UsernameLogin extends BorderPane {
 			}
 			addWindow.close();
 		});
-		cancel.setOnAction(Cancel -> {
-			addWindow.close();
-		});
+		cancel.setOnAction(Cancel -> addWindow.close());
 	}
 
+	/**
+	 * Creates a pane for login, allowing users to create password-protected accounts.
+	 */
 	private void layoutWindow() {
 		HBox topLabel = new HBox();
 		topLabel.getChildren().add(loginStatus);
 		topLabel.setAlignment(Pos.BASELINE_CENTER);
 
 		HBox accountLane = new HBox();
-		accountLane.getChildren().add(new Label("Account Name"));
-		accountLane.getChildren().add(userTextField);
-		accountLane.getChildren().add(loginButton);
+		accountLane.getChildren().addAll(new Label("Account Name"), userTextField, loginButton);
+
 		accountLane.setAlignment(Pos.BASELINE_CENTER);
 		accountLane.setStyle("-fx-padding: 5 50 5 10;");
 		accountLane.setSpacing(5);
 
 		HBox pwdLane = new HBox();
-		pwdLane.getChildren().add(new Label("Password"));
-		pwdLane.getChildren().add(pwdTextField);
-		pwdLane.getChildren().add(logoutButton);
+		pwdLane.getChildren().addAll(new Label("Password"), pwdTextField, logoutButton);
 		pwdLane.setAlignment(Pos.BASELINE_CENTER);
 		pwdLane.setStyle("-fx-padding: 5 0 5 0;");
 		pwdLane.setSpacing(5);

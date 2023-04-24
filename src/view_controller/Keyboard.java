@@ -36,7 +36,7 @@ public class Keyboard extends VBox {
 	}
 
 	/**
-	 * This function generates a list of rows/HBoxs of buttons that correspond to
+	 * This function generates a list of rows/HBoxs of buttons that correspond to &
 	 * the characters given in keys
 	 * 
 	 * @param keys     the list of characters to put on the keyboard
