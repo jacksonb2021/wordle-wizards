@@ -21,10 +21,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Leaderboard;
@@ -53,6 +53,9 @@ public class WordleGUI extends Application {
 	private Button logout;
 	private boolean dailyOrRandom;
 	private LeaderboardGUI leaderboardWindow;
+	private int curBoxX = 0;
+	private int curBoxY = 0;
+
 
 
 	@Override
@@ -83,12 +86,31 @@ public class WordleGUI extends Application {
 
 		Scene scene = new Scene(everything, 600, 750);
 		stage.setScene(scene);
+
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyboardInput);
 		stage.show();
 	}
 
 	private void handleKeyboardInput(KeyEvent event) {
 		String key = event.getText();
+		if (loginPane.isFocusWithin()) return;
+
+		if (event.getCode() == KeyCode.BACK_SPACE) {
+			if (curBoxX >4) curBoxX = 4;
+			if (curBoxX <= 0) {
+				curBoxX = 0;
+				boardGameRs[curBoxY][curBoxX].setText(key);
+				return;
+			}
+			boardGameRs[curBoxY][curBoxX].setText(key);
+			curBoxX--;
+		} else if (curBoxX < 5) {
+			boardGameRs[curBoxY][curBoxX].setText(key);
+			curBoxX++;
+		}
+
+
+
 	}
 
 	private void setBoard() {
@@ -155,10 +177,12 @@ public class WordleGUI extends Application {
 	private Button[] ButtonMaker() {
 		Button[] temp = new Button[5];
 		for (int i = 0; i < 5; i++) {
-			temp[i] = new Button("_");
+			temp[i] = new Button("");
+			temp[i].setMinWidth(40);
 			temp[i].setStyle("-fx-padding: 5 10 10 10;");
 			temp[i].setFont(new Font("Courier New", 25));
 			temp[i].setBackground(null);
+			temp[i].setBorder(Border.stroke(Paint.valueOf("black")));
 			temp[i].setOnAction(event -> {
 				Button buttonClicked = (Button) event.getSource();
 				System.out.println(buttonClicked.getText());
@@ -452,13 +476,17 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
+
 			if (!isDarkMode) {
 				everything.setStyle("-fx-background-color: #000000; ");
 				isDarkMode = true;
+
 			} else {
 				everything.setStyle("-fx-background-color: #FFFFFF; ");
 				isDarkMode = false;
+
 			}
+			keyboard.setDarkMode(isDarkMode);
 
 		}
 	}
