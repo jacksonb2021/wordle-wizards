@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * @author Jackson Burns, Amon Guinan, Duke Speed
  */
 @SuppressWarnings("serial")
-public class WordleAccount implements Serializable{
+public class WordleAccount implements Serializable, Comparable{
 	private final String username;
 	private final String password;
 	private LocalDate lastPlayed;
@@ -129,4 +129,36 @@ public class WordleAccount implements Serializable{
 		return total;
 	}
 
+
+	//This should only be used for comparison.
+	/**
+	 *
+	 * @return
+	 */
+	private int totalGuesses() {
+		int retVal = 0;
+		for(int i = 0; i < score.length; i++) {
+			retVal += score[i];
+		}
+		return retVal;
+	}
+	public int totalScore() {
+		return totalGuesses() / getTotalGames();
+	}
+
+
+	/**
+	 * 	Returns difference in 'total score', a value that
+	 *  collates user performance for comparison against other users.
+	 * @param other the object to be compared.
+	 * @return
+	 */
+	@Override
+	public int compareTo(Object o) {
+		WordleAccount other = (WordleAccount) o;
+		if(this == other) {
+			return 0;
+		}
+		return this.totalScore() - other.totalScore();
+	}
 }
