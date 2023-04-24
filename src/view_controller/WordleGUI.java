@@ -27,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
 
@@ -51,6 +52,7 @@ public class WordleGUI extends Application {
 	private Button login;
 	private Button logout;
 	private boolean dailyOrRandom;
+	private LeaderboardGUI leaderboardWindow;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -66,6 +68,11 @@ public class WordleGUI extends Application {
 			System.out.println(text);
 		});
 
+		leaderboardWindow = new LeaderboardGUI();
+		for(WordleAccount u : wordle.getAccounts()) {
+			System.out.println(u.getUsername());
+			leaderboardWindow.getLeaderboard().addUser(u);
+		}
 		layoutGUI();
 		layoutKeyboard();
 		// setupText();
@@ -202,6 +209,7 @@ public class WordleGUI extends Application {
 				resetGame(true);
 			}
 		}
+		leaderboardWindow.getLeaderboard().addUser(account);
 //		scoreAlert.show();
 	}
 
@@ -232,6 +240,7 @@ public class WordleGUI extends Application {
 	private void layoutGUI() {
 		everything = new BorderPane();
 		loginPane = new UsernameLogin(wordle);
+		leaderboardWindow = new LeaderboardGUI();
 
 		MenuBar menuBar = new MenuBar();
 
@@ -253,7 +262,8 @@ public class WordleGUI extends Application {
 		everything.setTop(holder);
 
 		darkMode.setOnAction(new DarkMode());
-		score.setOnAction(actionEvent -> {
+		
+		personalScore.setOnAction(actionEvent -> {
 			account = loginPane.getCurrentUser();
 			if (account == null) {
 				showScore(true, false, false);
@@ -261,6 +271,11 @@ public class WordleGUI extends Application {
 				showScore(true, false, true);
 			}
 		});
+		
+		leaderboard.setOnAction(actionEvent -> {
+			leaderboardWindow.show();
+		});
+		
 
 		newGame.setOnAction(actionEvent -> {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");

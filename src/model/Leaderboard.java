@@ -17,8 +17,6 @@ public class Leaderboard {
 	}
 	
 	public Leaderboard(ArrayList<WordleAccount> accounts) {
-		//contents = (ArrayList<WordleAccount>) accounts.clone();
-		//likely not necessary...
 		contents = accounts;
 		contents.sort(null); 
 		//vanilla ArrayList uses a version of mergesort.
@@ -32,5 +30,13 @@ public class Leaderboard {
 	@SuppressWarnings("unchecked")
 	public ArrayList<WordleAccount> getUsers() {
 		return (ArrayList<WordleAccount>) contents.clone();
+	}
+	
+	public String toString() {
+		String out = "";
+		for(WordleAccount u : contents) {
+			out += u.getTotalGames() + ": " + u.getUsername();
+		}
+		return out;
 	}
 }

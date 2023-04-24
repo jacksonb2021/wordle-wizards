@@ -191,4 +191,7 @@ public class Wordle {
 		dailyWord = test;
 	}
 
+	public ArrayList<WordleAccount> getAccounts() {
+		return ws.getAccounts();
+	}
 }
