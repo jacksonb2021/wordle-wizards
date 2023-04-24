@@ -93,17 +93,21 @@ public class WordleGUI extends Application {
 
 	private void handleKeyboardInput(KeyEvent event) {
 		String key = event.getText();
+		if (event.getCode() == KeyCode.ENTER) {
+			buttonHandler.handle(new ActionEvent());
+			return;
+		}
 		if (loginPane.isFocusWithin()) return;
 
 		if (event.getCode() == KeyCode.BACK_SPACE) {
+			if (curBoxX != 0) curBoxX--;
 			if (curBoxX >4) curBoxX = 4;
 			if (curBoxX <= 0) {
 				curBoxX = 0;
-				boardGameRs[curBoxY][curBoxX].setText(key);
-				return;
+
 			}
 			boardGameRs[curBoxY][curBoxX].setText(key);
-			curBoxX--;
+
 		} else if (curBoxX < 5) {
 			boardGameRs[curBoxY][curBoxX].setText(key);
 			curBoxX++;
@@ -157,6 +161,7 @@ public class WordleGUI extends Application {
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
 		button.setText("submit guess");
+
 	}
 
 	// ONLY BE USED WHEN A USER HASNT PLAYED THAT DAY
@@ -247,7 +252,7 @@ public class WordleGUI extends Application {
 		button.setOnAction(buttonHandler);
 		textbutton.setStyle("-fx-padding: 5 10 10 10;");
 		textbutton.setSpacing(5);
-		textbutton.getChildren().addAll(field, button);
+		textbutton.getChildren().addAll( button);
 		field.setEditable(false);
 		button.setDisable(true);
 
@@ -357,7 +362,13 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			String guess = field.getText().strip().toLowerCase();
+			// get the text from boxes and make sure its a length or something. fire evenmt??
+			Button[] gues = boardGameRs[curBoxY];
+			String guess = "";
+			for (Button but : gues) {
+				guess += but.getText();
+			}
+			System.out.println(guess);
 //			if (!loginPane.isLoggedIn()) {
 //				button.setText("you are not logged in");
 //				field.setText("");
@@ -371,6 +382,7 @@ public class WordleGUI extends Application {
 				field.setText("");
 				return;
 			}
+
 			field.setText("");
 			button.setText("submit guess");
 			int[] guessStr;
@@ -387,7 +399,8 @@ public class WordleGUI extends Application {
 			colorKeyboard(guess, guessStr);
 
 			counter++;
-
+			curBoxX = 0;
+			curBoxY = counter;
 			if (winCondition(curBoard)) {
 				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
@@ -398,6 +411,8 @@ public class WordleGUI extends Application {
 				field.setEditable(false);
 				button.setDisable(true);
 				showScore(false, true, true);
+				curBoxX = 0;
+				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
 				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
@@ -408,7 +423,10 @@ public class WordleGUI extends Application {
 				showScore(false, false, true);
 				field.setEditable(false);
 				button.setDisable(true);
+				curBoxX = 0;
+				curBoxY = counter;
 			}
+
 
 //			everything.setDisable(false);
 

@@ -143,6 +143,7 @@ public class WordleAccount implements Serializable, Comparable{
 		return retVal;
 	}
 	public int totalScore() {
+		if (getTotalGames() == 0) return 0;
 		return totalGuesses() / getTotalGames();
 	}
 
@@ -150,7 +151,7 @@ public class WordleAccount implements Serializable, Comparable{
 	/**
 	 * 	Returns difference in 'total score', a value that
 	 *  collates user performance for comparison against other users.
-	 * @param other the object to be compared.
+	 * @param o the object to be compared.
 	 * @return
 	 */
 	@Override
