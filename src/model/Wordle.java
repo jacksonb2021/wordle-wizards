@@ -35,12 +35,23 @@ public class Wordle {
 //		}
 	}
 
-
-
+	/**
+	 * this function takes a word, and tests to see if the arraylist contains the word, returning
+	 * a boolean if it does
+	 * @param word - a string of the word to check
+	 * @return - boolean if the word is a valid word
+	 */
 	public boolean isWord(String word) {
 		return map.get(5).contains(word);
 	}
 
+	/**
+	 * this method takes a username and password, checks to see if they are in the serialized
+	 * accounts arraylist, and returns the WorleAccount object if it is. if not, it returns null
+	 * @param username - String of the username
+	 * @param password - String of the password
+	 * @return - WordleAccount object of the user requested
+	 */
 	public WordleAccount login(String username, String password) {
 		for (WordleAccount account : ws.getAccounts()) {
 			if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
@@ -51,19 +62,33 @@ public class Wordle {
 		return null;
 	}
 
-//	public boolean isLoggedIn() {
-//		return loggedIn;
-//	}
 
+	/**
+	 * this function creates an account and serializes it in the ArrayList of WordleAccounts
+	 * @param username - String of the username of the account
+	 * @param password - String of the password of the account
+	 * @return - The WordleAccount object created. if it is created already, it will return the
+	 * existing account
+	 */
 	public boolean createAccount(String username, String password) {
 		return ws.createNewUser(username, password);
-
 	}
 
+	/**
+	 * This method is called when saving a new score. It updates the WordleAccount object to be
+	 * serialized with the new modified object
+	 * @param account - WordleAccount to be changed
+	 */
 	public void updateAccount(WordleAccount account) {
 		ws.update(account);
 	}
 
+	/**
+	 * this function gets the word, and takes a parameter if it wants the daily word. it will
+	 * return the daily word if the day is different than the stored date
+	 * @param daily
+	 * @return
+	 */
 	public String getWord(boolean daily) {
 		boolean isDifferentDay = !(currentDate.equals(LocalDate.now()));
 		if (daily && isDifferentDay) {
@@ -73,6 +98,10 @@ public class Wordle {
 		}
 	}
 
+	/**
+	 * this function calls the saveAccounts function from the WordleSerializer, which serializes
+	 * the ArrayList of WordleAccounts
+	 */
 	public void save() {
 		ws.saveAccounts();
 	}
@@ -118,20 +147,11 @@ public class Wordle {
 			} else {
 				checkedChars[index] = WRONG;
 			}
-//			int indexOfGuessChar = toBeGuessed.indexOf(guessChar);
-//			// check if the character is in the string at all
-//			if (indexOfGuessChar != -1) {
-//				
-//				checkedChars[index] = CONTAINS;
-//				// if the char is in the correct position we set it to correct.
-//				if (guessChar == correctChar) {
-//					checkedChars[index] = CORRECT;
-//				}
-//			}
-//			// otherwise, leave it as WRONG.
+
 		}
 		return checkedChars;
 	}
+
 
 	private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
 		int verifyRepeatGuess = 0;
