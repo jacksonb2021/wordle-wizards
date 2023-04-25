@@ -65,8 +65,9 @@ public class WordleGUI extends Application {
 
 		field.setOnAction(event -> {
 			String text = field.getText();
-			field.setText("");
 			System.out.println(text);
+			buttonHandler.handle(event);
+
 		});
 
 		leaderboardWindow = new LeaderboardGUI();
