@@ -17,15 +17,30 @@ import javafx.stage.Stage;
 import model.Leaderboard;
 import model.WordleAccount;
 
+/**
+ * 
+ * @author Amon Guinan
+ * This class contains a JavaFX GUI for the Leaderboard object, available in the model folder.
+ *
+ */
 public class LeaderboardGUI {
 	private Leaderboard lb;
 	private Text lb_out;
 	
+	/**
+	 * Constructor.
+	 * Initializes private vars.
+	 */
 	public LeaderboardGUI(){
 		lb = new Leaderboard();
 		lb_out = new Text("");
 	}
 	
+	/**
+	 * Constructor.
+	 * @param users
+	 * Adds contents of users to initialized Leaderboard.
+	 */
 	public LeaderboardGUI(ArrayList<WordleAccount> users){
 		lb = new Leaderboard();
 		for(WordleAccount u : users) {
@@ -34,6 +49,9 @@ public class LeaderboardGUI {
 		lb_out.setText(lb.toString());
 	}
 	
+	/**
+	 * Generates window.
+	 */
 	public void show() {
 		
 		BorderPane window = new BorderPane();
@@ -53,6 +71,10 @@ public class LeaderboardGUI {
 		s.show();
 	}
 	
+	/**
+	 * 
+	 * @return leaderboard object
+	 */
 	public Leaderboard getLeaderboard() {
 		return lb;
 	}
