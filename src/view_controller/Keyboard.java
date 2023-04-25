@@ -2,8 +2,10 @@ package view_controller;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -32,7 +34,9 @@ public class Keyboard extends VBox {
 	 * @param dark if true, enables dark mode. if false, enables light mode
 	 */
 	public void setDarkMode(boolean dark) {
-
+		for (Key key : this.getKeys()) {
+			key.setDarkMode(dark);
+		}
 	}
 
 	/**
@@ -104,9 +108,11 @@ public class Keyboard extends VBox {
 			this.keyChar = letter;
 
 			// default style options, can be changed if wanted.
-			this.setStyle("-fx-padding: 5 10 10 10;");
+			this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; " +
+					"-fx-text-fill: ladder(background, white 49%, black 50%);");
 			this.setFont(new Font("Courier New", 25));
 			this.setBackground(null);
+
 
 		}
 
@@ -116,6 +122,16 @@ public class Keyboard extends VBox {
 		 */
 		public String getKeyVal() {
 			return keyChar;
+		}
+
+		public void setDarkMode(boolean darkMode) {
+			if (darkMode) {
+				this.setStyle("-fx-padding: 5 10 10 10; " + "background: black; " +
+						"-fx-text-fill: ladder(background, white 49%, black 50%);");
+			} else {
+				this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; " +
+						"-fx-text-fill: ladder(background, white 49%, black 50%);");
+			}
 		}
 	}
 }

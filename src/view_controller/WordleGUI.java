@@ -21,10 +21,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Leaderboard;
@@ -53,6 +53,9 @@ public class WordleGUI extends Application {
 	private Button logout;
 	private boolean dailyOrRandom;
 	private LeaderboardGUI leaderboardWindow;
+	private int curBoxX = 0;
+	private int curBoxY = 0;
+
 
 
 	@Override
@@ -84,12 +87,35 @@ public class WordleGUI extends Application {
 
 		Scene scene = new Scene(everything, 600, 750);
 		stage.setScene(scene);
+
 		stage.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyboardInput);
 		stage.show();
 	}
 
 	private void handleKeyboardInput(KeyEvent event) {
 		String key = event.getText();
+		if (event.getCode() == KeyCode.ENTER) {
+			buttonHandler.handle(new ActionEvent());
+			return;
+		}
+		if (loginPane.isFocusWithin()) return;
+
+		if (event.getCode() == KeyCode.BACK_SPACE) {
+			if (curBoxX != 0) curBoxX--;
+			if (curBoxX >4) curBoxX = 4;
+			if (curBoxX <= 0) {
+				curBoxX = 0;
+
+			}
+			boardGameRs[curBoxY][curBoxX].setText(key);
+
+		} else if (curBoxX < 5) {
+			boardGameRs[curBoxY][curBoxX].setText(key);
+			curBoxX++;
+		}
+
+
+
 	}
 
 	private void setBoard() {
@@ -136,6 +162,7 @@ public class WordleGUI extends Application {
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
 		button.setText("submit guess");
+
 	}
 
 	// ONLY BE USED WHEN A USER HASNT PLAYED THAT DAY
@@ -156,10 +183,12 @@ public class WordleGUI extends Application {
 	private Button[] ButtonMaker() {
 		Button[] temp = new Button[5];
 		for (int i = 0; i < 5; i++) {
-			temp[i] = new Button("_");
+			temp[i] = new Button("");
+			temp[i].setMinWidth(40);
 			temp[i].setStyle("-fx-padding: 5 10 10 10;");
 			temp[i].setFont(new Font("Courier New", 25));
 			temp[i].setBackground(null);
+			temp[i].setBorder(Border.stroke(Paint.valueOf("black")));
 			temp[i].setOnAction(event -> {
 				Button buttonClicked = (Button) event.getSource();
 				System.out.println(buttonClicked.getText());
@@ -224,7 +253,7 @@ public class WordleGUI extends Application {
 		button.setOnAction(buttonHandler);
 		textbutton.setStyle("-fx-padding: 5 10 10 10;");
 		textbutton.setSpacing(5);
-		textbutton.getChildren().addAll(field, button);
+		textbutton.getChildren().addAll( button);
 		field.setEditable(false);
 		button.setDisable(true);
 
@@ -334,7 +363,13 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			String guess = field.getText().strip().toLowerCase();
+			// get the text from boxes and make sure its a length or something. fire evenmt??
+			Button[] gues = boardGameRs[curBoxY];
+			String guess = "";
+			for (Button but : gues) {
+				guess += but.getText();
+			}
+			System.out.println(guess);
 //			if (!loginPane.isLoggedIn()) {
 //				button.setText("you are not logged in");
 //				field.setText("");
@@ -348,6 +383,7 @@ public class WordleGUI extends Application {
 				field.setText("");
 				return;
 			}
+
 			field.setText("");
 			button.setText("submit guess");
 			int[] guessStr;
@@ -364,7 +400,8 @@ public class WordleGUI extends Application {
 			colorKeyboard(guess, guessStr);
 
 			counter++;
-
+			curBoxX = 0;
+			curBoxY = counter;
 			if (winCondition(curBoard)) {
 				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
@@ -375,6 +412,8 @@ public class WordleGUI extends Application {
 				field.setEditable(false);
 				button.setDisable(true);
 				showScore(false, true, true);
+				curBoxX = 0;
+				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
 				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
@@ -385,7 +424,10 @@ public class WordleGUI extends Application {
 				showScore(false, false, true);
 				field.setEditable(false);
 				button.setDisable(true);
+				curBoxX = 0;
+				curBoxY = counter;
 			}
+
 
 //			everything.setDisable(false);
 
@@ -453,13 +495,17 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
+
 			if (!isDarkMode) {
 				everything.setStyle("-fx-background-color: #000000; ");
 				isDarkMode = true;
+
 			} else {
 				everything.setStyle("-fx-background-color: #FFFFFF; ");
 				isDarkMode = false;
+
 			}
+			keyboard.setDarkMode(isDarkMode);
 
 		}
 	}
