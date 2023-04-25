@@ -11,21 +11,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * A keyboard, represented by rows of Button objects.
+ */
 public class Keyboard extends VBox {
-	private List<HBox> rows;
-	private VBox board;
 	private HashMap<String, Key> keyMap;
 
-	/**
-	 *
-	 * @param keys
-	 */
 	public Keyboard(char[] keys) {
 		super();
-		this.rows = generateKeys(keys, 3, 10);
-		this.board = new VBox();
-		this.board.getChildren().addAll(this.rows);
-		this.getChildren().addAll(this.rows);
+		List<HBox> rows = generateKeys(keys, 3, 10);
+		VBox board = new VBox();
+		board.getChildren().addAll(rows);
+		this.getChildren().addAll(rows);
 	}
 
 	/**
@@ -39,13 +36,13 @@ public class Keyboard extends VBox {
 	}
 
 	/**
-	 * This function generates a list of rows/HBoxs of buttons that correspond to
+	 * This function generates a list of rows/HBoxs of buttons that correspond to &
 	 * the characters given in keys
 	 * 
 	 * @param keys     the list of characters to put on the keyboard
 	 * @param rowCount the max number of rows
-	 * @paraam maxRowLength the max length of each row
-	 * @return
+	 * @param maxRowLength the max length of each row
+	 * @return list of HBox objects that contain Buttons
 	 */
 	private List<HBox> generateKeys(char[] keys, int rowCount, int maxRowLength) {
 		this.keyMap = new HashMap<>();
@@ -77,6 +74,10 @@ public class Keyboard extends VBox {
 		return keyBoardGui;
 	}
 
+	/**
+	 * Returns a Collection object that consists of all the keys in the keyboard.
+	 * @return all the key objects in the keyboard
+	 */
 	public Collection<Key> getKeys() {
 		return this.keyMap.values();
 	}
@@ -85,24 +86,19 @@ public class Keyboard extends VBox {
 	 * Returns the Key object that the letter corresponds to.
 	 * 
 	 * @param letter the letter linked to the Key we want to find
-	 * @return a Key that corresponds to letter
+	 * @return a Key that corresponds to a letter
 	 */
 	public Key getKey(String letter) {
 		return keyMap.get(letter);
 	}
 
 	/**
-	 *
+	 * Represents a single key on a keyboard, can represent any character
+	 * or string of characters.
 	 */
-	class Key extends Button {
+	static class Key extends Button {
+		private final String keyChar;
 
-		private String keyChar;
-
-		/**
-		 * Constructor. Links the letter to the object for later retrieval.
-		 * 
-		 * @param letter
-		 */
 		public Key(String letter) {
 			super(letter);
 			this.keyChar = letter;
@@ -111,13 +107,11 @@ public class Keyboard extends VBox {
 			this.setStyle("-fx-padding: 5 10 10 10;");
 			this.setFont(new Font("Courier New", 25));
 			this.setBackground(null);
-//			this.setOnAction(event -> {
-//				Button buttonClicked = (Button) event.getSource();
-//				System.out.println(buttonClicked.getText());
-//			});
+
 		}
 
 		/**
+		 * Returns the value that the Key is set to.
 		 * @return the letter with which this Key object corresponds to
 		 */
 		public String getKeyVal() {

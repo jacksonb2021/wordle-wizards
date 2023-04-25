@@ -175,7 +175,7 @@ public class WordleSerializer {
 	/**
 	 * This method returns the words hashmap
 	 * 
-	 * @return - words hashmap <Integer, ArrayList<String>>
+	 * @return  words hashmap {@literal <Integer, ArrayList<String>>}
 	 */
 	public HashMap<Integer, ArrayList<String>> getMap() {
 		return words;

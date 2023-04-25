@@ -54,6 +54,7 @@ public class WordleGUI extends Application {
 	private boolean dailyOrRandom;
 	private LeaderboardGUI leaderboardWindow;
 
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
