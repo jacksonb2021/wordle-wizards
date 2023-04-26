@@ -124,6 +124,8 @@ public class Keyboard extends VBox {
 			return keyChar;
 		}
 
+
+
 		public void setDarkMode(boolean darkMode) {
 			if (darkMode) {
 				this.setStyle("-fx-padding: 5 10 10 10; " + "background: black; " +
