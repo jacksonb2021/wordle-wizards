@@ -2,7 +2,6 @@ package model;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -17,7 +16,7 @@ public class WordleSerializer {
 	private final String wordsPath = "WordleWords.txt";
 	private final String wordsDatabasePath = "database.ser";
 	private final String accountsDatabasePath = "accounts.ser";
-	private HashMap<Integer, ArrayList<String>> words;
+	private ArrayList<String> words;
 	private ArrayList<WordleAccount> accounts;
 
 	/**
@@ -26,14 +25,14 @@ public class WordleSerializer {
 	 */
 	public WordleSerializer() {
 
-		words = new HashMap<>();
+		words = new ArrayList<>();
 		accounts = new ArrayList<>();
 		// load or create the words dataabase
 		try {
 			FileInputStream rawBytes = new FileInputStream(wordsDatabasePath); // Read the .ser file just created
 			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
 			// words = (ArrayList<String>[]) inFile.readObject();
-			words = (HashMap<Integer, ArrayList<String>>) inFile.readObject();
+			words = (ArrayList<String>) inFile.readObject();
 			inFile.close();
 			System.out.println("Loaded words");
 		} catch (IOException | ClassNotFoundException e) {
@@ -108,12 +107,8 @@ public class WordleSerializer {
 		// int largest = 0;
 		while (s.hasNext()) {
 			String word = s.next().strip();
-			if (words.containsKey(word.length())) {
-				words.get(word.length()).add(word);
-			} else {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(word);
-				words.put(word.length(), temp);
+			if(word.length()==5) {
+				words.add(word);
 			}
 		}
 	}
@@ -177,7 +172,7 @@ public class WordleSerializer {
 	 * 
 	 * @return  words hashmap {@literal <Integer, ArrayList<String>>}
 	 */
-	public HashMap<Integer, ArrayList<String>> getMap() {
+	public ArrayList<String> getList() {
 		return words;
 	}
 

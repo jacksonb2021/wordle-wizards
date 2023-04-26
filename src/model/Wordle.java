@@ -14,7 +14,7 @@ public class Wordle {
 	private String dailyWord;
 	private LocalDate currentDate;
 	private boolean loggedIn;
-	private final HashMap<Integer, ArrayList<String>> map;
+	private final ArrayList<String> list;
 	private String guessedWord;
 	private String randomWord;
 	private String toBeGuessed;
@@ -27,8 +27,8 @@ public class Wordle {
 	public Wordle(boolean daily, LocalDate dateLastPlayed) {
 
 		ws = new WordleSerializer();
-		map = ws.getMap();
-		dailyWord = randomWord(5, true);
+		list = ws.getList();
+		dailyWord = randomWord(true);
 		setRandomWord(5);
 		dailyChoice = daily;
 		currentDate = dateLastPlayed;
@@ -47,7 +47,7 @@ public class Wordle {
 	 * @return - boolean if the word is a valid word
 	 */
 	public boolean isWord(String word) {
-		return map.get(5).contains(word);
+		return list.contains(word);
 	}
 
 	/**
@@ -188,16 +188,16 @@ public class Wordle {
 	 * @param daily bases the word on a date-based seed if true
 	 * @return a random string from the Wordle dictionary
 	 */
-	private String randomWord(int length, boolean daily) {
+	private String randomWord(boolean daily) {
 		Random rand;
 		if (daily) {
 			rand = new Random(LocalDate.now().hashCode());
 		} else {
 			rand = new Random();
 		}
-		int len = map.get(length).size();
+		int len = list.size();
 		int randomIndex = rand.nextInt(len + 1);
-		return map.get(length).get(randomIndex);
+		return list.get(randomIndex);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class Wordle {
 	 * @param length how long the random word should be
 	 */
 	public void setRandomWord(int length) {
-		randomWord = randomWord(length, false);
+		randomWord = randomWord(false);
 	}
 
 	/**
