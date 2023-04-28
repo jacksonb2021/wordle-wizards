@@ -56,8 +56,6 @@ public class WordleGUI extends Application {
 	private int curBoxX = 0;
 	private int curBoxY = 0;
 
-
-
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
@@ -74,7 +72,7 @@ public class WordleGUI extends Application {
 		});
 
 		leaderboardWindow = new LeaderboardGUI();
-		for(WordleAccount u : wordle.getAccounts()) {
+		for (WordleAccount u : wordle.getAccounts()) {
 			System.out.println(u.getUsername());
 			leaderboardWindow.getLeaderboard().addUser(u);
 		}
@@ -83,7 +81,6 @@ public class WordleGUI extends Application {
 		// setupText();
 //		verifyLogin();
 		setBoard();
-
 
 		Scene scene = new Scene(everything, 600, 750);
 		stage.setScene(scene);
@@ -98,11 +95,14 @@ public class WordleGUI extends Application {
 			buttonHandler.handle(new ActionEvent());
 			return;
 		}
-		if (loginPane.isFocusWithin()) return;
+		if (loginPane.isFocusWithin())
+			return;
 
 		if (event.getCode() == KeyCode.BACK_SPACE) {
-			if (curBoxX != 0) curBoxX--;
-			if (curBoxX >4) curBoxX = 4;
+			if (curBoxX != 0)
+				curBoxX--;
+			if (curBoxX > 4)
+				curBoxX = 4;
 			if (curBoxX <= 0) {
 				curBoxX = 0;
 
@@ -113,8 +113,6 @@ public class WordleGUI extends Application {
 			boardGameRs[curBoxY][curBoxX].setText(key);
 			curBoxX++;
 		}
-
-
 
 	}
 
@@ -157,7 +155,7 @@ public class WordleGUI extends Application {
 
 		field.setEditable(true);
 		button.setDisable(false);
-		//loginPane.logout();
+		// loginPane.logout();
 
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
@@ -174,7 +172,7 @@ public class WordleGUI extends Application {
 		layoutKeyboard();
 		field.setEditable(true);
 		button.setDisable(false);
-		//loginPane.logout();
+		// loginPane.logout();
 		counter = 0;
 		mode.setText("Daily word");
 		button.setText("submit guess");
@@ -222,7 +220,7 @@ public class WordleGUI extends Application {
 		Optional<ButtonType> result = scoreAlert.showAndWait();
 
 		if (result.get() == ButtonType.OK) {
-			//loginPane.logout();
+			// loginPane.logout();
 			everything.setDisable(false);
 			if (dailyOrRandom) {
 				freshNewGame();
@@ -232,7 +230,7 @@ public class WordleGUI extends Application {
 		} else {
 			// If you can figure out how to just make this alert one
 			// button feel free to do so
-			//loginPane.logout();
+			// loginPane.logout();
 			everything.setDisable(false);
 			if (dailyOrRandom) {
 				freshNewGame();
@@ -253,7 +251,7 @@ public class WordleGUI extends Application {
 		button.setOnAction(buttonHandler);
 		textbutton.setStyle("-fx-padding: 5 10 10 10;");
 		textbutton.setSpacing(5);
-		textbutton.getChildren().addAll( button);
+		textbutton.getChildren().addAll(button);
 		field.setEditable(false);
 		button.setDisable(true);
 
@@ -292,7 +290,7 @@ public class WordleGUI extends Application {
 		everything.setTop(holder);
 
 		darkMode.setOnAction(new DarkMode());
-		
+
 		personalScore.setOnAction(actionEvent -> {
 			account = loginPane.getCurrentUser();
 			if (account == null) {
@@ -301,11 +299,10 @@ public class WordleGUI extends Application {
 				showScore(true, false, true);
 			}
 		});
-		
+
 		leaderboard.setOnAction(actionEvent -> {
 			leaderboardWindow.show();
 		});
-		
 
 		newGame.setOnAction(actionEvent -> {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");
@@ -335,7 +332,8 @@ public class WordleGUI extends Application {
 				if (isDifferentDay) {
 					freshNewGame();
 				} else {
-					Alert alreadyWordled = new Alert(AlertType.INFORMATION, "You've already played a game of Wordle today. Going to practice mode.");
+					Alert alreadyWordled = new Alert(AlertType.INFORMATION,
+							"You've already played a game of Wordle today. Going to practice mode.");
 					alreadyWordled.showAndWait();
 					resetGame(false);
 				}
@@ -363,7 +361,8 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// get the text from boxes and make sure its a length or something. fire evenmt??
+			// get the text from boxes and make sure its a length or something. fire
+			// evenmt??
 			Button[] gues = boardGameRs[curBoxY];
 			String guess = "";
 			for (Button but : gues) {
@@ -429,7 +428,6 @@ public class WordleGUI extends Application {
 				curBoxY = counter;
 			}
 
-
 //			everything.setDisable(false);
 
 		}
@@ -463,20 +461,19 @@ public class WordleGUI extends Application {
 					if (splitGuess[i].equals(key.getText())) {
 
 						switch (guessStr[i]) {
-							case WRONG -> {
-								if (!key.getStyle().contains("-fx-background-color")) {
-									key.setStyle("-fx-background-color: #808080; ");
-								}
+						case WRONG -> {
+							if (!key.getStyle().contains("-fx-background-color")) {
+								key.setStyle("-fx-background-color: #808080; ");
 							}
-							case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
+						}
+						case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
 
-							case CONTAINS -> {
+						case CONTAINS -> {
 
-								if (!key.getStyle().contains("-fx-background-color: #00FF00;")) {
-									key.setStyle("-fx-background-color: #FFFF00; ");
-								}
+							if (!key.getStyle().contains("-fx-background-color: #00FF00;")) {
+								key.setStyle("-fx-background-color: #FFFF00; ");
 							}
-
+						}
 
 						}
 					}

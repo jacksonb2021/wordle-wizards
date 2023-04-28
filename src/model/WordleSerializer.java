@@ -19,8 +19,8 @@ public class WordleSerializer {
 	private ArrayList<WordleAccount> accounts;
 
 	/**
-	 * this constructor creates the words arraylist, and the accounts arraylist, then it
-	 * loads the databases. if they dont exist, it creates them.
+	 * this constructor creates the words arraylist, and the accounts arraylist,
+	 * then it loads the databases. if they dont exist, it creates them.
 	 */
 	public WordleSerializer() {
 
@@ -92,20 +92,21 @@ public class WordleSerializer {
 	}
 
 	/**
-	 * This method loads the words from the WordleWords.txt file into the words arraylist
+	 * This method loads the words from the WordleWords.txt file into the words
+	 * arraylist
 	 */
 	private void loadList() {
 
 		Scanner s = null;
 		try {
-			s = new Scanner(new File( "WordleWords.txt"));
+			s = new Scanner(new File("WordleWords.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		// int largest = 0;
 		while (s.hasNext()) {
 			String word = s.next().strip();
-			if(word.length()==5) {
+			if (word.length() == 5) {
 				words.add(word);
 			}
 		}
