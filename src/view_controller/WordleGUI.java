@@ -1,5 +1,7 @@
 package view_controller;
 
+import java.io.File;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,12 +25,15 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import model.AudioManager;
-import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
 
@@ -44,7 +49,7 @@ public class WordleGUI extends Application {
 	private Wordle wordle;
 	private ButtonHandler buttonHandler;
 	private WordleAccount account;
-	private AudioManager audio;
+	private MediaPlayer mediaPlayer;
 	private BorderPane everything;
 	private Label mode;
 	Button[][] boardGameRs = new Button[6][5];
@@ -65,7 +70,7 @@ public class WordleGUI extends Application {
 		dailyOrRandom = true;
 		field = new TextField();
 		mode = new Label("Daily word");
-		audio = new AudioManager();
+		//audio = new AudioManager();
 
 		field.setOnAction(event -> {
 			String text = field.getText();
@@ -213,11 +218,11 @@ public class WordleGUI extends Application {
 		} else if (win) {
 			content = "You win!\n" + account.getScoreString();
 			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
-			audio.playASong("gameOverWin.mp3");
+			playASong("gameOverWin.mp3");
 		} else {
 			content = "Game over. You lose\n" + account.getScoreString();
 			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
-			audio.playASong("gameOverLoss.mp3");
+			playASong("gameOverLoss.mp3");
 		}
 		scoreAlert.setContentText(content);
 		scoreAlert.setHeaderText(header);
@@ -491,7 +496,7 @@ public class WordleGUI extends Application {
 			for (int i = 0; i < 5; i++) {
 				//sleep();
 				boardGameR[i].setText(temp[i].toUpperCase());
-				audio.playASong("tileFlip.mp3");
+				playASong("tileFlip.mp3");
 				if (guessStr[i] == 1) {
 					boardGameR[i].setStyle("-fx-background-color: #00FF00; ");
 				} else if (guessStr[i] == 2) {
@@ -526,12 +531,29 @@ public class WordleGUI extends Application {
 		}
 	}
 	
-	private void sleep() {
+	public void playASong(String name) {
+		// Need a File and URI object so the path works on all OSs
+		File file = new File("audioFiles/" + name);
+		URI uri = file.toURI();
+		System.out.println(uri);
+		// Play one mp3 and and have code run when the song ends
+		Media media = new Media(uri.toString());
+		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.play();
+		mediaPlayer.setOnEndOfMedia(new Waiter());
 		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	}
+
+	private class Waiter implements Runnable {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+			mediaPlayer.dispose();
 		}
+
 	}
 }
