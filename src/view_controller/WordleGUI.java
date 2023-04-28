@@ -387,6 +387,11 @@ public class WordleGUI extends Application {
 			field.setEditable(true);
 			button.setDisable(false);
 			account = loginPane.getCurrentUser();
+			if(account==null){
+				button.setText("you are not logged in");
+				field.setText("");
+				return;
+			}
 			if (guess.length() != 5) {
 				button.setText("invalid length, try again");
 				field.setText("");
