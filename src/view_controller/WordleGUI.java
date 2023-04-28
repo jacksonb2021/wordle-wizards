@@ -222,7 +222,7 @@ public class WordleGUI extends Application {
 		Optional<ButtonType> result = scoreAlert.showAndWait();
 
 		if (result.get() == ButtonType.OK) {
-			loginPane.logout();
+			//loginPane.logout();
 			everything.setDisable(false);
 			if (dailyOrRandom) {
 				freshNewGame();
@@ -232,7 +232,7 @@ public class WordleGUI extends Application {
 		} else {
 			// If you can figure out how to just make this alert one
 			// button feel free to do so
-			loginPane.logout();
+			//loginPane.logout();
 			everything.setDisable(false);
 			if (dailyOrRandom) {
 				freshNewGame();
@@ -412,6 +412,7 @@ public class WordleGUI extends Application {
 				field.setEditable(false);
 				button.setDisable(true);
 				showScore(false, true, true);
+				loginPane.logout();
 				curBoxX = 0;
 				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
@@ -439,9 +440,6 @@ public class WordleGUI extends Application {
 					return false;
 				}
 			}
-//			System.out.println("Game over. You win!");
-//			System.out.println("You guessed the word in " + counter + " guesses.");
-//			System.out.println("The word was " + wordle.getWord(true));
 			account = loginPane.getCurrentUser();
 			account.updateScore(counter);
 //			System.out.println(account.getScoreString());
