@@ -27,6 +27,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.AudioManager;
 import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
@@ -43,6 +44,7 @@ public class WordleGUI extends Application {
 	private Wordle wordle;
 	private ButtonHandler buttonHandler;
 	private WordleAccount account;
+	private AudioManager audio;
 	private BorderPane everything;
 	private Label mode;
 	Button[][] boardGameRs = new Button[6][5];
@@ -63,6 +65,7 @@ public class WordleGUI extends Application {
 		dailyOrRandom = true;
 		field = new TextField();
 		mode = new Label("Daily word");
+		audio = new AudioManager();
 
 		field.setOnAction(event -> {
 			String text = field.getText();
@@ -210,9 +213,11 @@ public class WordleGUI extends Application {
 		} else if (win) {
 			content = "You win!\n" + account.getScoreString();
 			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
+			audio.playASong("gameOverWin.mp3");
 		} else {
 			content = "Game over. You lose\n" + account.getScoreString();
 			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
+			audio.playASong("gameOverLoss.mp3");
 		}
 		scoreAlert.setContentText(content);
 		scoreAlert.setHeaderText(header);
@@ -484,7 +489,9 @@ public class WordleGUI extends Application {
 		private Button[] colorBoard(String guess, int[] guessStr, Button[] boardGameR) {
 			String[] temp = guess.split("");
 			for (int i = 0; i < 5; i++) {
+				//sleep();
 				boardGameR[i].setText(temp[i].toUpperCase());
+				audio.playASong("tileFlip.mp3");
 				if (guessStr[i] == 1) {
 					boardGameR[i].setStyle("-fx-background-color: #00FF00; ");
 				} else if (guessStr[i] == 2) {
@@ -492,6 +499,7 @@ public class WordleGUI extends Application {
 				} else if (guessStr[i] == 0) {
 					boardGameR[i].setStyle("-fx-background-color: #808080; ");
 				}
+				
 			}
 			return boardGameR;
 		}
@@ -515,6 +523,15 @@ public class WordleGUI extends Application {
 			}
 			keyboard.setDarkMode(isDarkMode);
 
+		}
+	}
+	
+	private void sleep() {
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }
