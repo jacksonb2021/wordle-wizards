@@ -2,7 +2,6 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -13,7 +12,6 @@ import java.util.Random;
 public class Wordle {
 	private String dailyWord;
 	private LocalDate currentDate;
-	private boolean loggedIn;
 	private final ArrayList<String> list;
 	private String guessedWord;
 	private String randomWord;
@@ -32,12 +30,7 @@ public class Wordle {
 		setRandomWord(5);
 		dailyChoice = daily;
 		currentDate = dateLastPlayed;
-//		if(daily){
-//			toBeGuessed = dailyWord;
-//		}
-//		else{
-//			toBeGuessed = randomWord;
-//		}
+
 	}
 
 	/**
@@ -60,7 +53,6 @@ public class Wordle {
 	public WordleAccount login(String username, String password) {
 		for (WordleAccount account : ws.getAccounts()) {
 			if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
-				// loggedIn=true;
 				return account;
 			}
 		}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Wordle serializer stores the words hashmap and the accounts arraylist in a
+ * Wordle serializer stores the words arraylist and the accounts arraylist in a
  * .ser file. It also loads the words and accounts from the .ser file if it
  * exists. Finally, it can verify if a user exists, and it can add a new user to
  * the database
@@ -20,7 +20,7 @@ public class WordleSerializer {
 	private ArrayList<WordleAccount> accounts;
 
 	/**
-	 * this parameter creates the words hashmap, and the accounts arraylist, then it
+	 * this parameter creates the words arraylist, and the accounts arraylist, then it
 	 * loads the databases. if they dont exist, it creates them.
 	 */
 	public WordleSerializer() {
@@ -36,8 +36,8 @@ public class WordleSerializer {
 			inFile.close();
 			System.out.println("Loaded words");
 		} catch (IOException | ClassNotFoundException e) {
-			loadMap();
-			saveMap();
+			loadList();
+			saveList();
 			System.out.println("words not found, creating new database");
 		}
 		// load or create the accounts database
@@ -79,9 +79,9 @@ public class WordleSerializer {
 	}
 
 	/**
-	 * This method saves the words hashmap to the database.ser file
+	 * This method saves the words arraylist to the database.ser file
 	 */
-	private void saveMap() {
+	private void saveList() {
 		try {
 			FileOutputStream bytesToDisk = new FileOutputStream(wordsDatabasePath);
 			ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
@@ -93,10 +93,9 @@ public class WordleSerializer {
 	}
 
 	/**
-	 * This method loads the words from the WordleWords.txt file into the words
-	 * hashmap
+	 * This method loads the words from the WordleWords.txt file into the words arraylist
 	 */
-	private void loadMap() {
+	private void loadList() {
 
 		Scanner s = null;
 		try {
@@ -167,11 +166,6 @@ public class WordleSerializer {
 		return containsAcct;
 	}
 
-	/**
-	 * This method returns the words hashmap
-	 * 
-	 * @return  words hashmap {@literal <Integer, ArrayList<String>>}
-	 */
 	public ArrayList<String> getList() {
 		return words;
 	}
