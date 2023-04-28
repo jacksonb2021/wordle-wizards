@@ -2,11 +2,10 @@ package model;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * Wordle serializer stores the words hashmap and the accounts arraylist in a
+ * Wordle serializer stores the words arraylist and the accounts arraylist in a
  * .ser file. It also loads the words and accounts from the .ser file if it
  * exists. Finally, it can verify if a user exists, and it can add a new user to
  * the database
@@ -14,31 +13,30 @@ import java.util.Scanner;
  * @author Jackson Burns
  */
 public class WordleSerializer {
-	private final String wordsPath = "WordleWords.txt";
 	private final String wordsDatabasePath = "database.ser";
 	private final String accountsDatabasePath = "accounts.ser";
-	private HashMap<Integer, ArrayList<String>> words;
+	private ArrayList<String> words;
 	private ArrayList<WordleAccount> accounts;
 
 	/**
-	 * this parameter creates the words hashmap, and the accounts arraylist, then it
+	 * this constructor creates the words arraylist, and the accounts arraylist, then it
 	 * loads the databases. if they dont exist, it creates them.
 	 */
 	public WordleSerializer() {
 
-		words = new HashMap<>();
+		words = new ArrayList<>();
 		accounts = new ArrayList<>();
 		// load or create the words dataabase
 		try {
 			FileInputStream rawBytes = new FileInputStream(wordsDatabasePath); // Read the .ser file just created
 			ObjectInputStream inFile = new ObjectInputStream(rawBytes);
 			// words = (ArrayList<String>[]) inFile.readObject();
-			words = (HashMap<Integer, ArrayList<String>>) inFile.readObject();
+			words = (ArrayList<String>) inFile.readObject();
 			inFile.close();
 			System.out.println("Loaded words");
 		} catch (IOException | ClassNotFoundException e) {
-			loadMap();
-			saveMap();
+			loadList();
+			saveList();
 			System.out.println("words not found, creating new database");
 		}
 		// load or create the accounts database
@@ -80,9 +78,9 @@ public class WordleSerializer {
 	}
 
 	/**
-	 * This method saves the words hashmap to the database.ser file
+	 * This method saves the words arraylist to the database.ser file
 	 */
-	private void saveMap() {
+	private void saveList() {
 		try {
 			FileOutputStream bytesToDisk = new FileOutputStream(wordsDatabasePath);
 			ObjectOutputStream outFile = new ObjectOutputStream(bytesToDisk);
@@ -94,26 +92,21 @@ public class WordleSerializer {
 	}
 
 	/**
-	 * This method loads the words from the WordleWords.txt file into the words
-	 * hashmap
+	 * This method loads the words from the WordleWords.txt file into the words arraylist
 	 */
-	private void loadMap() {
+	private void loadList() {
 
 		Scanner s = null;
 		try {
-			s = new Scanner(new File(wordsPath));
+			s = new Scanner(new File( "WordleWords.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		// int largest = 0;
 		while (s.hasNext()) {
 			String word = s.next().strip();
-			if (words.containsKey(word.length())) {
-				words.get(word.length()).add(word);
-			} else {
-				ArrayList<String> temp = new ArrayList<String>();
-				temp.add(word);
-				words.put(word.length(), temp);
+			if(word.length()==5) {
+				words.add(word);
 			}
 		}
 	}
@@ -172,12 +165,7 @@ public class WordleSerializer {
 		return containsAcct;
 	}
 
-	/**
-	 * This method returns the words hashmap
-	 * 
-	 * @return  words hashmap {@literal <Integer, ArrayList<String>>}
-	 */
-	public HashMap<Integer, ArrayList<String>> getMap() {
+	public ArrayList<String> getList() {
 		return words;
 	}
 
