@@ -8,6 +8,8 @@ import java.util.Random;
  * The main game object for this entire project, represents the current game state of Wordle.
  * The class allows the user to amke guesses, log in, play with a random word, and informs them
  * how they got their guess wrong. Only allows one daily wordle game a day epr user, though.
+ *
+ * @author Jackson Burns, Duke Speed, Jose Juan Velasquez
  */
 public class Wordle {
 	private String dailyWord;

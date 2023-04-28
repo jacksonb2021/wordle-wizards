@@ -13,14 +13,13 @@ import java.util.Scanner;
  * @author Jackson Burns
  */
 public class WordleSerializer {
-	private final String wordsPath = "WordleWords.txt";
 	private final String wordsDatabasePath = "database.ser";
 	private final String accountsDatabasePath = "accounts.ser";
 	private ArrayList<String> words;
 	private ArrayList<WordleAccount> accounts;
 
 	/**
-	 * this parameter creates the words arraylist, and the accounts arraylist, then it
+	 * this constructor creates the words arraylist, and the accounts arraylist, then it
 	 * loads the databases. if they dont exist, it creates them.
 	 */
 	public WordleSerializer() {
@@ -99,7 +98,7 @@ public class WordleSerializer {
 
 		Scanner s = null;
 		try {
-			s = new Scanner(new File(wordsPath));
+			s = new Scanner(new File( "WordleWords.txt"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
