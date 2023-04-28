@@ -176,7 +176,6 @@ public class Wordle {
 
 	/**
 	 * Picks a word from the Wordle dictionary at random, making sure it is the correct length.
-	 * @param length the length of the word to find
 	 * @param daily bases the word on a date-based seed if true
 	 * @return a random string from the Wordle dictionary
 	 */
