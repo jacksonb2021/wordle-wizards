@@ -70,9 +70,6 @@ public class LeaderboardGUI {
 		title.setFont(f3);
 		lb_out.setText(lb.toString());
 		lb_out.setFont(f2);
-		
-		//contents.setAlignment(Pos.TOP_LEFT);
-		
 		contents.getChildren().setAll(header,title, lb_out);
 		contents.setSpacing(15);
 		window.getChildren().setAll(contents);
