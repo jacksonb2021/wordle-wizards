@@ -169,7 +169,7 @@ public class Wordle {
 				verifyRepeatDailyWord++;
 			}
 		}
-		if (verifyRepeatGuess == verifyRepeatDailyWord) {
+		if (verifyRepeatGuess <= verifyRepeatDailyWord) {// used to be ==
 			return false;
 		}
 		return true;

@@ -32,3 +32,7 @@ hs_err_pid*
 
 accounts.ser
 database.ser
+
+# writing some of my own tests for a specific bug.
+# might add it to the repo if it gets big/significant.
+localtests.java
