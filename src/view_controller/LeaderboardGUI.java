@@ -8,6 +8,7 @@ package view_controller;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -56,17 +57,24 @@ public class LeaderboardGUI {
 	public void show() {
 		
 		BorderPane window = new BorderPane();
+
+
 		VBox contents = new VBox();
+		contents.setPadding(new Insets(15, 15, 15, 15));
 		Font f = new Font("Courier", 30);
 		Font f2 = new Font("Courier", 18);
+		Font f3 = new Font("Courier", 22);
 		Text header = new Text("Leaderboard");
+		Text title = new Text("Total Wordles completed");
 		header.setFont(f);
+		title.setFont(f3);
 		lb_out.setText(lb.toString());
 		lb_out.setFont(f2);
 		
 		//contents.setAlignment(Pos.TOP_LEFT);
 		
-		contents.getChildren().setAll(header, lb_out);
+		contents.getChildren().setAll(header,title, lb_out);
+		contents.setSpacing(15);
 		window.getChildren().setAll(contents);
 		Stage s = new Stage();
 		s.setWidth(400);
