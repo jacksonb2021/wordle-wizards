@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -37,12 +36,15 @@ import javafx.stage.Stage;
 import model.Wordle;
 import model.WordleAccount;
 
+
+/**
+ * this class creates an interactive wordle game in a GUI, using javafx.
+ *
+ * @author Jackson Burns, Jose Juan Velasquez, Duke Speed, Amon Guinon
+ */
 public class WordleGUI extends Application {
-	private static final int WRONG = 0;
-	private static final int CORRECT = 1;
-	private static final int CONTAINS = 2;
+
 	private UsernameLogin loginPane;
-	private TextArea text;
 	private Button button;
 	private int counter = 0; // TODO stop game after 6 guesses
 	private TextField field;
@@ -53,15 +55,16 @@ public class WordleGUI extends Application {
 	private BorderPane everything;
 	private Label mode;
 	Button[][] boardGameRs = new Button[6][5];
-	ArrayList<ArrayList<Button>> keyboardRows = new ArrayList<>();
 	protected Keyboard keyboard;
-	private LocalDate localDate;
-	private Button login;
-	private Button logout;
 	private boolean dailyOrRandom;
 	private LeaderboardGUI leaderboardWindow;
 	private int curBoxX = 0;
 	private int curBoxY = 0;
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -70,7 +73,6 @@ public class WordleGUI extends Application {
 		dailyOrRandom = true;
 		field = new TextField();
 		mode = new Label("Daily word");
-		//audio = new AudioManager();
 
 		field.setOnAction(event -> {
 			String text = field.getText();
@@ -86,8 +88,7 @@ public class WordleGUI extends Application {
 		}
 		layoutGUI();
 		layoutKeyboard();
-		// setupText();
-//		verifyLogin();
+
 		setBoard();
 
 		Scene scene = new Scene(everything, 600, 750);
@@ -324,7 +325,8 @@ public class WordleGUI extends Application {
 			buttonHandler.mode = false;
 			resetGame();
 		});
-
+		Button login;
+		Button logout;
 		login = loginPane.getLoginButton();
 		logout = loginPane.getLogoutButton();
 
@@ -333,6 +335,8 @@ public class WordleGUI extends Application {
 			if (loginPane.isLoggedIn()) {
 				field.setEditable(true);
 				button.setDisable(false);
+				LocalDate localDate;
+
 				localDate = loginPane.getCurrentUser().getLastPlayed();
 
 				System.out.println(localDate);
@@ -360,9 +364,6 @@ public class WordleGUI extends Application {
 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 
 	private class ButtonHandler implements EventHandler<ActionEvent> {
 
@@ -370,19 +371,13 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// get the text from boxes and make sure its a length or something. fire
-			// evenmt??
+
 			Button[] gues = boardGameRs[curBoxY];
 			String guess = "";
 			for (Button but : gues) {
 				guess += but.getText();
 			}
 			System.out.println(guess);
-//			if (!loginPane.isLoggedIn()) {
-//				button.setText("you are not logged in");
-//				field.setText("");
-//				return;
-//			}
 			field.setEditable(true);
 			button.setDisable(false);
 			account = loginPane.getCurrentUser();
@@ -466,6 +461,9 @@ public class WordleGUI extends Application {
 			Collection<Keyboard.Key> keys = keyboard.getKeys();
 
 			keys.forEach((key -> {
+				final int WRONG = 0;
+				final int CORRECT = 1;
+				final int CONTAINS = 2;
 				// iterate over every key
 				String letter = key.getKeyVal();
 
@@ -513,14 +511,23 @@ public class WordleGUI extends Application {
 
 	}
 
+	/**
+	 * This class is used  to change the display to a dark mode.
+	 *
+	 * @author jackson burns
+	 */
 	private class DarkMode implements EventHandler<ActionEvent> {
 		boolean isDarkMode = false;
 
+		/**
+		 * This method is used to change the display to a dark mode.
+		 * @param actionEvent - the event that triggers the method
+		 */
 		@Override
 		public void handle(ActionEvent actionEvent) {
 
 			if (!isDarkMode) {
-				everything.setStyle("-fx-background-color: #000000; ");
+				everything.setStyle("-fx-background-color: #212121; ");
 				isDarkMode = true;
 
 			} else {
