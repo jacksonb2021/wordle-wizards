@@ -2,10 +2,8 @@ package view_controller;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -15,6 +13,8 @@ import java.util.List;
 
 /**
  * A keyboard, represented by rows of Button objects.
+ *
+ * @author Duke Speed
  */
 public class Keyboard extends VBox {
 	private HashMap<String, Key> keyMap;
