@@ -2,16 +2,21 @@ package view_controller;
 
 import java.io.File;
 import java.net.URI;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,7 +37,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
 
@@ -404,6 +412,9 @@ public class WordleGUI extends Application {
 			}
 
 			Button[] curBoard = boardGameRs[counter];
+
+
+			Thread dab = new Thread();
 			boardGameRs[counter] = colorBoard(guess, guessStr, curBoard);
 			colorKeyboard(guess, guessStr);
 
@@ -492,6 +503,15 @@ public class WordleGUI extends Application {
 		}
 
 		private Button[] colorBoard(String guess, int[] guessStr, Button[] boardGameR) {
+
+
+			for (Button b : boardGameR) {
+				RotateTransition dab = createRotator(b);
+				dab.play();
+			}
+
+
+
 			String[] temp = guess.split("");
 			for (int i = 0; i < 5; i++) {
 				//sleep();
@@ -504,7 +524,7 @@ public class WordleGUI extends Application {
 				} else if (guessStr[i] == 0) {
 					boardGameR[i].setStyle("-fx-background-color: #808080; ");
 				}
-				
+
 			}
 			return boardGameR;
 		}
@@ -539,7 +559,17 @@ public class WordleGUI extends Application {
 
 		}
 	}
-	
+	private RotateTransition createRotator(Node node) {
+		RotateTransition rotator = new RotateTransition(Duration.millis(1000), node);
+		rotator.setAxis(Rotate.Y_AXIS);
+		rotator.setFromAngle(90);
+		rotator.setToAngle(0);
+		rotator.setInterpolator(Interpolator.LINEAR);
+		rotator.setCycleCount(1);
+
+		return rotator;
+	}
+
 	public void playASong(String name) {
 		// Need a File and URI object so the path works on all OSs
 		File file = new File("audioFiles/" + name);
@@ -550,7 +580,7 @@ public class WordleGUI extends Application {
 		mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.play();
 		mediaPlayer.setOnEndOfMedia(new Waiter());
-		
+
 	}
 
 	private class Waiter implements Runnable {
