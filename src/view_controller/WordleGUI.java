@@ -154,7 +154,7 @@ public class WordleGUI extends Application {
 
 	}
 
-	private void resetGame(Boolean logOut) {
+	private void resetGame() {
 		setBoard();
 		wordle = new Wordle(false);
 		dailyOrRandom = false;
@@ -163,7 +163,6 @@ public class WordleGUI extends Application {
 
 		field.setEditable(true);
 		button.setDisable(false);
-		// loginPane.logout();
 
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
@@ -235,7 +234,7 @@ public class WordleGUI extends Application {
 			if (dailyOrRandom) {
 				freshNewGame();
 			} else {
-				resetGame(true);
+				resetGame();
 			}
 		} else {
 			// If you can figure out how to just make this alert one
@@ -245,7 +244,7 @@ public class WordleGUI extends Application {
 			if (dailyOrRandom) {
 				freshNewGame();
 			} else {
-				resetGame(true);
+				resetGame();
 			}
 		}
 		leaderboardWindow.getLeaderboard().addUser(account);
@@ -317,13 +316,13 @@ public class WordleGUI extends Application {
 		newGame.setOnAction(actionEvent -> {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");
 			// wordle.setRandomWord(5);
-			resetGame(true);
+			resetGame();
 		});
 
 		practiceMode.setOnAction(event -> {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");
 			buttonHandler.mode = false;
-			resetGame(true);
+			resetGame();
 		});
 
 		login = loginPane.getLoginButton();
@@ -345,7 +344,7 @@ public class WordleGUI extends Application {
 					Alert alreadyWordled = new Alert(AlertType.INFORMATION,
 							"You've already played a game of Wordle today. Going to practice mode.");
 					alreadyWordled.showAndWait();
-					resetGame(false);
+					resetGame();
 				}
 			}
 
@@ -426,16 +425,14 @@ public class WordleGUI extends Application {
 				field.setEditable(false);
 				button.setDisable(true);
 				showScore(false, true, true);
-				loginPane.logout();
+				//loginPane.logout();
 				curBoxX = 0;
 				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
 				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
 				System.out.println("Game over.\n the word was " + wordle.getWord(mode) + "\n");
-//				account.updateScore(counter + 1);
-//				wordle.updateAccount(account);
-//				wordle.save();
+				account.updateScore(counter + 1);
 				showScore(false, false, true);
 				field.setEditable(false);
 				button.setDisable(true);
