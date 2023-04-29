@@ -156,7 +156,7 @@ public class Wordle {
 	 * @param word the word entered by the user
 	 * @param guessChar the character we want to check
 	 * @param toBeGuessed the correct word
-	 * @return true if there are more than one of guessChar, false otherwise.
+	 * @return true if there are more duplicates of guessChar in the daily word than in the guessed word.
 	 */
 	private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
 		int verifyRepeatGuess = 0;

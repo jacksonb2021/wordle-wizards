@@ -72,7 +72,6 @@ public class LeaderboardGUI {
 	}
 	
 	/**
-	 * 
 	 * @return leaderboard object
 	 */
 	public Leaderboard getLeaderboard() {
