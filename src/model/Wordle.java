@@ -2,19 +2,19 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
  * The main game object for this entire project, represents the current game state of Wordle.
  * The class allows the user to amke guesses, log in, play with a random word, and informs them
  * how they got their guess wrong. Only allows one daily wordle game a day epr user, though.
+ *
+ * @author Jackson Burns, Duke Speed, Jose Juan Velasquez
  */
 public class Wordle {
 	private String dailyWord;
 	private LocalDate currentDate;
-	private boolean loggedIn;
-	private final HashMap<Integer, ArrayList<String>> map;
+	private final ArrayList<String> list;
 	private String guessedWord;
 	private String randomWord;
 	private String toBeGuessed;
@@ -27,17 +27,12 @@ public class Wordle {
 	public Wordle(boolean daily, LocalDate dateLastPlayed) {
 
 		ws = new WordleSerializer();
-		map = ws.getMap();
-		dailyWord = randomWord(5, true);
+		list = ws.getList();
+		dailyWord = randomWord(true);
 		setRandomWord(5);
 		dailyChoice = daily;
 		currentDate = dateLastPlayed;
-//		if(daily){
-//			toBeGuessed = dailyWord;
-//		}
-//		else{
-//			toBeGuessed = randomWord;
-//		}
+
 	}
 
 	/**
@@ -47,7 +42,7 @@ public class Wordle {
 	 * @return - boolean if the word is a valid word
 	 */
 	public boolean isWord(String word) {
-		return map.get(5).contains(word);
+		return list.contains(word);
 	}
 
 	/**
@@ -60,7 +55,6 @@ public class Wordle {
 	public WordleAccount login(String username, String password) {
 		for (WordleAccount account : ws.getAccounts()) {
 			if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
-				// loggedIn=true;
 				return account;
 			}
 		}
@@ -184,20 +178,19 @@ public class Wordle {
 
 	/**
 	 * Picks a word from the Wordle dictionary at random, making sure it is the correct length.
-	 * @param length the length of the word to find
 	 * @param daily bases the word on a date-based seed if true
 	 * @return a random string from the Wordle dictionary
 	 */
-	private String randomWord(int length, boolean daily) {
+	private String randomWord(boolean daily) {
 		Random rand;
 		if (daily) {
 			rand = new Random(LocalDate.now().hashCode());
 		} else {
 			rand = new Random();
 		}
-		int len = map.get(length).size();
+		int len = list.size();
 		int randomIndex = rand.nextInt(len + 1);
-		return map.get(length).get(randomIndex);
+		return list.get(randomIndex);
 	}
 
 	/**
@@ -205,7 +198,7 @@ public class Wordle {
 	 * @param length how long the random word should be
 	 */
 	public void setRandomWord(int length) {
-		randomWord = randomWord(length, false);
+		randomWord = randomWord(false);
 	}
 
 	/**

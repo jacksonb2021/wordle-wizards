@@ -1,5 +1,7 @@
 package view_controller;
 
+import java.io.File;
+import java.net.URI;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,7 +30,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
@@ -50,6 +57,7 @@ public class WordleGUI extends Application {
 	private Wordle wordle;
 	private ButtonHandler buttonHandler;
 	private WordleAccount account;
+	private MediaPlayer mediaPlayer;
 	private BorderPane everything;
 	private Label mode;
 	Button[][] boardGameRs = new Button[6][5];
@@ -63,8 +71,6 @@ public class WordleGUI extends Application {
 	private int curBoxX = 0;
 	private int curBoxY = 0;
 
-
-
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
@@ -72,6 +78,7 @@ public class WordleGUI extends Application {
 		dailyOrRandom = true;
 		field = new TextField();
 		mode = new Label("Daily word");
+		//audio = new AudioManager();
 
 		field.setOnAction(event -> {
 			String text = field.getText();
@@ -81,7 +88,7 @@ public class WordleGUI extends Application {
 		});
 
 		leaderboardWindow = new LeaderboardGUI();
-		for(WordleAccount u : wordle.getAccounts()) {
+		for (WordleAccount u : wordle.getAccounts()) {
 			System.out.println(u.getUsername());
 			leaderboardWindow.getLeaderboard().addUser(u);
 		}
@@ -90,7 +97,6 @@ public class WordleGUI extends Application {
 		// setupText();
 //		verifyLogin();
 		setBoard();
-
 
 		Scene scene = new Scene(everything, 600, 750);
 		stage.setScene(scene);
@@ -105,11 +111,14 @@ public class WordleGUI extends Application {
 			buttonHandler.handle(new ActionEvent());
 			return;
 		}
-		if (loginPane.isFocusWithin()) return;
+		if (loginPane.isFocusWithin())
+			return;
 
 		if (event.getCode() == KeyCode.BACK_SPACE) {
-			if (curBoxX != 0) curBoxX--;
-			if (curBoxX >4) curBoxX = 4;
+			if (curBoxX != 0)
+				curBoxX--;
+			if (curBoxX > 4)
+				curBoxX = 4;
 			if (curBoxX <= 0) {
 				curBoxX = 0;
 
@@ -120,8 +129,6 @@ public class WordleGUI extends Application {
 			boardGameRs[curBoxY][curBoxX].setText(key);
 			curBoxX++;
 		}
-
-
 
 	}
 
@@ -164,7 +171,7 @@ public class WordleGUI extends Application {
 
 		field.setEditable(true);
 		button.setDisable(false);
-		//loginPane.logout();
+		// loginPane.logout();
 
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
@@ -181,7 +188,7 @@ public class WordleGUI extends Application {
 		layoutKeyboard();
 		field.setEditable(true);
 		button.setDisable(false);
-		//loginPane.logout();
+		// loginPane.logout();
 		counter = 0;
 		mode.setText("Daily word");
 		button.setText("submit guess");
@@ -219,9 +226,11 @@ public class WordleGUI extends Application {
 		} else if (win) {
 			content = "You win!\n" + account.getScoreString();
 			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
+			playASong("gameOverWin.mp3");
 		} else {
 			content = "Game over. You lose\n" + account.getScoreString();
 			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
+			playASong("gameOverLoss.mp3");
 		}
 		scoreAlert.setContentText(content);
 		scoreAlert.setHeaderText(header);
@@ -229,7 +238,7 @@ public class WordleGUI extends Application {
 		Optional<ButtonType> result = scoreAlert.showAndWait();
 
 		if (result.get() == ButtonType.OK) {
-			loginPane.logout();
+			// loginPane.logout();
 			everything.setDisable(false);
 			if (dailyOrRandom) {
 				freshNewGame();
@@ -239,7 +248,7 @@ public class WordleGUI extends Application {
 		} else {
 			// If you can figure out how to just make this alert one
 			// button feel free to do so
-			loginPane.logout();
+			// loginPane.logout();
 			everything.setDisable(false);
 			if (dailyOrRandom) {
 				freshNewGame();
@@ -260,7 +269,7 @@ public class WordleGUI extends Application {
 		button.setOnAction(buttonHandler);
 		textbutton.setStyle("-fx-padding: 5 10 10 10;");
 		textbutton.setSpacing(5);
-		textbutton.getChildren().addAll( button);
+		textbutton.getChildren().addAll(button);
 		field.setEditable(false);
 		button.setDisable(true);
 
@@ -299,7 +308,7 @@ public class WordleGUI extends Application {
 		everything.setTop(holder);
 
 		darkMode.setOnAction(new DarkMode());
-		
+
 		personalScore.setOnAction(actionEvent -> {
 			account = loginPane.getCurrentUser();
 			if (account == null) {
@@ -308,11 +317,10 @@ public class WordleGUI extends Application {
 				showScore(true, false, true);
 			}
 		});
-		
+
 		leaderboard.setOnAction(actionEvent -> {
 			leaderboardWindow.show();
 		});
-		
 
 		newGame.setOnAction(actionEvent -> {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");
@@ -342,7 +350,8 @@ public class WordleGUI extends Application {
 				if (isDifferentDay) {
 					freshNewGame();
 				} else {
-					Alert alreadyWordled = new Alert(AlertType.INFORMATION, "You've already played a game of Wordle today. Going to practice mode.");
+					Alert alreadyWordled = new Alert(AlertType.INFORMATION,
+							"You've already played a game of Wordle today. Going to practice mode.");
 					alreadyWordled.showAndWait();
 					resetGame(false);
 				}
@@ -370,7 +379,8 @@ public class WordleGUI extends Application {
 
 		@Override
 		public void handle(ActionEvent actionEvent) {
-			// get the text from boxes and make sure its a length or something. fire evenmt??
+			// get the text from boxes and make sure its a length or something. fire
+			// evenmt??
 			Button[] gues = boardGameRs[curBoxY];
 			String guess = "";
 			for (Button but : gues) {
@@ -385,6 +395,11 @@ public class WordleGUI extends Application {
 			field.setEditable(true);
 			button.setDisable(false);
 			account = loginPane.getCurrentUser();
+			if(account==null){
+				button.setText("you are not logged in");
+				field.setText("");
+				return;
+			}
 			if (guess.length() != 5) {
 				button.setText("invalid length, try again");
 				field.setText("");
@@ -422,6 +437,7 @@ public class WordleGUI extends Application {
 				field.setEditable(false);
 				button.setDisable(true);
 				showScore(false, true, true);
+				loginPane.logout();
 				curBoxX = 0;
 				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
@@ -438,7 +454,6 @@ public class WordleGUI extends Application {
 				curBoxY = counter;
 			}
 
-
 //			everything.setDisable(false);
 
 		}
@@ -449,9 +464,6 @@ public class WordleGUI extends Application {
 					return false;
 				}
 			}
-//			System.out.println("Game over. You win!");
-//			System.out.println("You guessed the word in " + counter + " guesses.");
-//			System.out.println("The word was " + wordle.getWord(true));
 			account = loginPane.getCurrentUser();
 			account.updateScore(counter);
 //			System.out.println(account.getScoreString());
@@ -475,25 +487,21 @@ public class WordleGUI extends Application {
 					if (splitGuess[i].equals(key.getText())) {
 
 						switch (guessStr[i]) {
-							case WRONG -> {
-								if (!key.getStyle().contains("-fx-background-color")) {
-									key.setStyle("-fx-background-color: #808080; ");
-								}
+						case WRONG -> {
+							if (!key.getStyle().contains("-fx-background-color")) {
+								key.setStyle("-fx-background-color: #808080; ");
 							}
-							case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
+						}
+						case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
 
-							case CONTAINS -> {
+						case CONTAINS -> {
 
-								if (!key.getStyle().contains("-fx-background-color: #00FF00;")) {
-									key.setStyle("-fx-background-color: #FFFF00; ");
-								}
+							if (!key.getStyle().contains("-fx-background-color: #00FF00;")) {
+								key.setStyle("-fx-background-color: #FFFF00; ");
 							}
-
-
+						}
 
 						}
-						//
-
 					}
 				}
 			}));
@@ -511,7 +519,9 @@ public class WordleGUI extends Application {
 
 			String[] temp = guess.split("");
 			for (int i = 0; i < 5; i++) {
+				//sleep();
 				boardGameR[i].setText(temp[i].toUpperCase());
+				playASong("tileFlip.mp3");
 				if (guessStr[i] == 1) {
 					boardGameR[i].setStyle("-fx-background-color: #00FF00; ");
 				} else if (guessStr[i] == 2) {
@@ -554,5 +564,31 @@ public class WordleGUI extends Application {
 		rotator.setCycleCount(1);
 
 		return rotator;
+	}
+
+	public void playASong(String name) {
+		// Need a File and URI object so the path works on all OSs
+		File file = new File("audioFiles/" + name);
+		URI uri = file.toURI();
+		System.out.println(uri);
+		// Play one mp3 and and have code run when the song ends
+		Media media = new Media(uri.toString());
+		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.play();
+		mediaPlayer.setOnEndOfMedia(new Waiter());
+
+	}
+
+	private class Waiter implements Runnable {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+			mediaPlayer.dispose();
+		}
+
 	}
 }

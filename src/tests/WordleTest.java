@@ -1,6 +1,13 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -11,8 +18,6 @@ import model.Wordle;
 import model.WordleAccount;
 import model.WordleSerializer;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * This is a JUnit test case testing the model of Wordle.
@@ -531,5 +536,6 @@ public class WordleTest {
 		Wordle wordleTest2 = new Wordle(false);
 		assertNotEquals(wordleTest.getWord(true), wordleTest2.getWord(false));
 	}
+	
 
 }

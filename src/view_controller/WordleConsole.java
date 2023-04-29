@@ -17,6 +17,8 @@ import java.util.Scanner;
  * Command line interface for Wordle, allowing the user to play entirely based on a keybaord.
  * Contains the entire game loop of wordle, indicating where/when guesses are correct or in the
  * wrong place. Also allows the user to look back on past Wordle scores.
+ *
+ * @author Amon Guinon, Jackson Burns, Duke Speed, Jose Juan Velasquez
  */
 public class WordleConsole {
 
