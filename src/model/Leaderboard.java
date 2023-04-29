@@ -9,6 +9,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * 
@@ -33,7 +35,7 @@ public class Leaderboard {
 	 */
 	public Leaderboard(ArrayList<WordleAccount> accounts) {
 		contents = accounts;
-		contents.sort(null); 
+		contents.sort(Collections.reverseOrder()); 
 		//vanilla ArrayList uses a version of mergesort.
 	}
 	
@@ -44,7 +46,7 @@ public class Leaderboard {
 	 */
 	public void addUser(WordleAccount user) {
 		contents.add(user);
-		contents.sort(null);
+		contents.sort(Collections.reverseOrder());
 	}
 	
 	/**

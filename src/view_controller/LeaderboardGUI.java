@@ -8,6 +8,7 @@ package view_controller;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -63,9 +64,13 @@ public class LeaderboardGUI {
 		lb_out.setText(lb.toString());
 		lb_out.setFont(f2);
 		
+		//contents.setAlignment(Pos.TOP_LEFT);
+		
 		contents.getChildren().setAll(header, lb_out);
 		window.getChildren().setAll(contents);
 		Stage s = new Stage();
+		s.setWidth(400);
+		s.setHeight(600);
 		Scene scene = new Scene(window);
 		s.setScene(scene);
 		s.show();
