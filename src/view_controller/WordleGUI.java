@@ -11,6 +11,7 @@ import java.util.Optional;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -42,7 +43,6 @@ import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
 
-
 /**
  * this class creates an interactive wordle game in a GUI, using javafx.
  *
@@ -70,7 +70,6 @@ public class WordleGUI extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -220,18 +219,25 @@ public class WordleGUI extends Application {
 			header = "Score Statistics";
 		} else if (win) {
 			content = "You win!\n" + account.getScoreString();
-			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
+			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary\nPress OK to play or Cancel to quit";
 			playASong("gameOverWin.mp3");
 		} else {
 			content = "Game over. You lose\n" + account.getScoreString();
-			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary";
+			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary\nPress OK to play or Cancel to quit";
 			playASong("gameOverLoss.mp3");
 		}
 		scoreAlert.setContentText(content);
 		scoreAlert.setHeaderText(header);
 
 		Optional<ButtonType> result = scoreAlert.showAndWait();
-		resetGame();
+		if(result.get() == ButtonType.OK) {
+			resetGame();
+		} else {
+			//resetGame();
+			Platform.exit();
+			System.exit(0);
+		}
+		
 		everything.setDisable(false);
 		leaderboardWindow.getLeaderboard().addUser(account);
 //		scoreAlert.show();
@@ -324,7 +330,6 @@ public class WordleGUI extends Application {
 
 				localDate = loginPane.getCurrentUser().getLastPlayed();
 
-
 				boolean isDifferentDay = !(localDate.equals(LocalDate.now()));
 				if (isDifferentDay) {
 					freshNewGame();
@@ -348,7 +353,6 @@ public class WordleGUI extends Application {
 
 	}
 
-
 	private class ButtonHandler implements EventHandler<ActionEvent> {
 
 		public boolean mode = true;
@@ -364,7 +368,7 @@ public class WordleGUI extends Application {
 			field.setEditable(true);
 			button.setDisable(false);
 			account = loginPane.getCurrentUser();
-			if(account==null){
+			if (account == null) {
 				button.setText("you are not logged in");
 				field.setText("");
 				return;
@@ -388,7 +392,6 @@ public class WordleGUI extends Application {
 
 			Button[] curBoard = boardGameRs[counter];
 
-
 			Thread dab = new Thread();
 			boardGameRs[counter] = colorBoard(guess, guessStr, curBoard);
 			colorKeyboard(guess, guessStr);
@@ -406,7 +409,7 @@ public class WordleGUI extends Application {
 				field.setEditable(false);
 				button.setDisable(true);
 				showScore(false, true, true);
-				//loginPane.logout();
+				// loginPane.logout();
 				curBoxX = 0;
 				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
@@ -477,17 +480,14 @@ public class WordleGUI extends Application {
 
 		private Button[] colorBoard(String guess, int[] guessStr, Button[] boardGameR) {
 
-
 			for (Button b : boardGameR) {
 				RotateTransition dab = createRotator(b);
 				dab.play();
 			}
 
-
-
 			String[] temp = guess.split("");
 			for (int i = 0; i < 5; i++) {
-				//sleep();
+				// sleep();
 				boardGameR[i].setText(temp[i].toUpperCase());
 				playASong("tileFlip.mp3");
 				if (guessStr[i] == 1) {
@@ -505,7 +505,7 @@ public class WordleGUI extends Application {
 	}
 
 	/**
-	 * This class is used  to change the display to a dark mode.
+	 * This class is used to change the display to a dark mode.
 	 *
 	 * @author jackson burns
 	 */
@@ -514,6 +514,7 @@ public class WordleGUI extends Application {
 
 		/**
 		 * This method is used to change the display to a dark mode.
+		 * 
 		 * @param actionEvent - the event that triggers the method
 		 */
 		@Override
@@ -532,6 +533,7 @@ public class WordleGUI extends Application {
 
 		}
 	}
+
 	private RotateTransition createRotator(Node node) {
 		RotateTransition rotator = new RotateTransition(Duration.millis(1000), node);
 		rotator.setAxis(Rotate.Y_AXIS);

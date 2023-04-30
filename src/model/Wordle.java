@@ -3,11 +3,13 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 /**
- * The main game object for this entire project, represents the current game state of Wordle.
- * The class allows the user to amke guesses, log in, play with a random word, and informs them
- * how they got their guess wrong. Only allows one daily wordle game a day epr user, though.
+ * The main game object for this entire project, represents the current game
+ * state of Wordle. The class allows the user to amke guesses, log in, play with
+ * a random word, and informs them how they got their guess wrong. Only allows
+ * one daily wordle game a day epr user, though.
  *
  * @author Jackson Burns, Duke Speed, Jose Juan Velasquez
  */
@@ -24,6 +26,7 @@ public class Wordle {
 	public Wordle(boolean daily) {
 		this(daily, LocalDate.MIN);
 	}
+
 	public Wordle(boolean daily, LocalDate dateLastPlayed) {
 
 		ws = new WordleSerializer();
@@ -36,8 +39,9 @@ public class Wordle {
 	}
 
 	/**
-	 * this function takes a word, and tests to see if the arraylist contains the word, returning
-	 * a boolean if it does
+	 * this function takes a word, and tests to see if the arraylist contains the
+	 * word, returning a boolean if it does
+	 * 
 	 * @param word - a string of the word to check
 	 * @return - boolean if the word is a valid word
 	 */
@@ -46,8 +50,10 @@ public class Wordle {
 	}
 
 	/**
-	 * this method takes a username and password, checks to see if they are in the serialized
-	 * accounts arraylist, and returns the WorleAccount object if it is. if not, it returns null
+	 * this method takes a username and password, checks to see if they are in the
+	 * serialized accounts arraylist, and returns the WorleAccount object if it is.
+	 * if not, it returns null
+	 * 
 	 * @param username - String of the username
 	 * @param password - String of the password
 	 * @return - WordleAccount object of the user requested
@@ -61,21 +67,23 @@ public class Wordle {
 		return null;
 	}
 
-
 	/**
-	 * this function creates an account and serializes it in the ArrayList of WordleAccounts
+	 * this function creates an account and serializes it in the ArrayList of
+	 * WordleAccounts
+	 * 
 	 * @param username - String of the username of the account
 	 * @param password - String of the password of the account
-	 * @return - The WordleAccount object created. if it is created already, it will return the
-	 * existing account
+	 * @return - The WordleAccount object created. if it is created already, it will
+	 *         return the existing account
 	 */
 	public boolean createAccount(String username, String password) {
 		return ws.createNewUser(username, password);
 	}
 
 	/**
-	 * This method is called when saving a new score. It updates the WordleAccount object to be
-	 * serialized with the new modified object
+	 * This method is called when saving a new score. It updates the WordleAccount
+	 * object to be serialized with the new modified object
+	 * 
 	 * @param account - WordleAccount to be changed
 	 */
 	public void updateAccount(WordleAccount account) {
@@ -83,8 +91,10 @@ public class Wordle {
 	}
 
 	/**
-	 * this function gets the word, and takes a parameter if it wants the daily word. it will
-	 * return the daily word if the day is different than the stored date
+	 * this function gets the word, and takes a parameter if it wants the daily
+	 * word. it will return the daily word if the day is different than the stored
+	 * date
+	 * 
 	 * @param daily returns the dailyWord if true, random otherwise.
 	 * @return the correct guess
 	 */
@@ -98,8 +108,8 @@ public class Wordle {
 	}
 
 	/**
-	 * this function calls the saveAccounts function from the WordleSerializer, which serializes
-	 * the ArrayList of WordleAccounts
+	 * this function calls the saveAccounts function from the WordleSerializer,
+	 * which serializes the ArrayList of WordleAccounts
 	 */
 	public void save() {
 		ws.saveAccounts();
@@ -119,6 +129,7 @@ public class Wordle {
 		// Also now it checks for repeated characters
 
 		int[] checkedChars = new int[word.length()];
+
 		final int WRONG = 0;
 		final int CORRECT = 1;
 		final int CONTAINS = 2;
@@ -128,56 +139,34 @@ public class Wordle {
 		} else {
 			toBeGuessed = randomWord;
 		}
-
 		guessedWord = word;
-
+		String remainingLetters = toBeGuessed;
+		String ch = "_";
 		for (int index = 0; index < word.length(); index++) {
 			char guessChar = word.charAt(index);
 			char correctChar = toBeGuessed.charAt(index);
 			if (guessChar == correctChar) {
 				checkedChars[index] = CORRECT;
-			} else if (toBeGuessed.indexOf(guessChar) != -1) {
-				boolean verifyRepeat = checkForRepeats(word, guessChar, toBeGuessed);
-				if (!verifyRepeat) {
-					checkedChars[index] = CONTAINS;
-				} else {
-					checkedChars[index] = WRONG;
-				}
+				remainingLetters = remainingLetters.replaceFirst(guessChar + "", ch);
 			} else {
 				checkedChars[index] = WRONG;
 			}
-
+		}
+		for (int index = 0; index < 5; index++) {
+			char guessChar = word.charAt(index);
+			char correctChar = toBeGuessed.charAt(index);
+			if ((remainingLetters.contains(guessChar + "") && guessChar != correctChar)) {
+				remainingLetters = remainingLetters.replaceFirst(guessChar + "", ch);
+				checkedChars[index] = CONTAINS;
+			}
 		}
 		return checkedChars;
 	}
 
 	/**
-	 * Checks if the guess given by the user repeats a given character.
-	 * @param word the word entered by the user
-	 * @param guessChar the character we want to check
-	 * @param toBeGuessed the correct word
-	 * @return true if there are more duplicates of guessChar in the daily word than in the guessed word.
-	 */
-	private boolean checkForRepeats(String word, char guessChar, String toBeGuessed) {
-		int verifyRepeatGuess = 0;
-		int verifyRepeatDailyWord = 0;
-		for (int character = 0; character < word.length(); character++) {
-			if (word.charAt(character) == guessChar) {
-				verifyRepeatGuess++;
-			}
-			if (toBeGuessed.charAt(character) == guessChar) {
-				verifyRepeatDailyWord++;
-			}
-		}
-		if (verifyRepeatGuess <= verifyRepeatDailyWord) {// used to be ==
-			return false;
-		}
-		return true;
-
-	}
-
-	/**
-	 * Picks a word from the Wordle dictionary at random, making sure it is the correct length.
+	 * Picks a word from the Wordle dictionary at random, making sure it is the
+	 * correct length.
+	 * 
 	 * @param daily bases the word on a date-based seed if true
 	 * @return a random string from the Wordle dictionary
 	 */
@@ -195,6 +184,7 @@ public class Wordle {
 
 	/**
 	 * Generates a random word as long as length.
+	 * 
 	 * @param length how long the random word should be
 	 */
 	public void setRandomWord(int length) {
@@ -202,7 +192,9 @@ public class Wordle {
 	}
 
 	/**
-	 * The daily word is generated by generating from a seed based of the current day.
+	 * The daily word is generated by generating from a seed based of the current
+	 * day.
+	 * 
 	 * @return the current daily word
 	 */
 	public String getDailyWord() {
@@ -211,8 +203,11 @@ public class Wordle {
 
 	/**
 	 * Converts the current guess into string, denoting which chars are wrong.
-	 * @param checkedChars array of 0,1,2 denoting if the character is wrong,correct, or in the wrong index
-	 * @return a string telling the user which chars are wrong/right/in the wrong place
+	 * 
+	 * @param checkedChars array of 0,1,2 denoting if the character is
+	 *                     wrong,correct, or in the wrong index
+	 * @return a string telling the user which chars are wrong/right/in the wrong
+	 *         place
 	 */
 	public String guessToString(int[] checkedChars) {
 		String guess = "";
