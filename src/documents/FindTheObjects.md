@@ -9,6 +9,10 @@ Wordle
  - daily word will be set length, serialized
  - randomizer for the daily word, seed based on the LocalDate, so it will be the same every day
 
+WordleAccount
+ - saves username, password, and statistics
+ - knows when daily word has been played
+
 WordleSerializer
  - saves and loads your score/user + statistics
          statistics contain average guesses per word, amount of daily games played
@@ -17,30 +21,29 @@ WordleSerializer
  - serializes the boggle dictionary wordlist
  - serializes map: username -> statistics as ArrayList<String>
 
-WordleSolver
- - automated solver for wordle, can be "AI".
- - better than brute force. should be able to solve in < 6 tries.
- - shows tries each time.
-
+Leaderboard
+ - saves the top users by amount of wordles completed
 
 # view/controller
 =========================
 
 WordleGUI
- - on startup, ask if they want practice mode or daily mode
- - small area
- - Textarea (????) in center to display word, each letter different color (green, grey, yellow etc)
- - Textfield to enter word
- - Button to submit word
- - button to switch to practice mode (randomizes the word but stays on same screen)
+ - start on daily mode, if user completed daily, move to practice mode
+ - login pane
+ - buttons that flip to display the words
+ - keyboard to show guesses
+ - menubar to change mode, dark mode, practice mode, leaderboard, scores
+
+Keyboard
+ - has buttons to display a keyboard with colored letters, to tell which
+ letters have been guessed incorrectly, correctly, or incorrect location
 
 OutputScreen
- - extends BorderPane, could also be shown as alert.
-        could open as seperate JavaFX application
- - shows your score, saves on exit
-        if logged in, show averages and past.
-        if not logged in, show # of guesses and # of words. local save but cannot save until logged in. make an alert
- - shows old scores, asks if you want to play again, on practice mode.
+ - shows as an alert
+ - shows distribution of the scores
+
+LeaderboardGUI
+ - seperate javafx application to show top users of all time
 
  UsernameLogin
   - extends a pane object, so we can use it inside WordleGUI
@@ -50,6 +53,5 @@ OutputScreen
 
  WordleConsole
   - console view of wordle. to test before gui is implemented
-  -
 
 
