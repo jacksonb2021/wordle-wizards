@@ -45,6 +45,13 @@ public class Leaderboard {
 	 * Adds a WordleAccount to the arraylist.
 	 */
 	public void addUser(WordleAccount user) {
+		for(WordleAccount u : contents) {
+			if(u.getUsername().equals(user.getUsername())) {
+				contents.remove(u);
+				contents.add(user);
+				return;
+			}
+		}
 		contents.add(user);
 		contents.sort(Collections.reverseOrder());
 	}

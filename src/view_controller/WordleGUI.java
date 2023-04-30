@@ -236,26 +236,28 @@ public class WordleGUI extends Application {
 		scoreAlert.setHeaderText(header);
 
 		Optional<ButtonType> result = scoreAlert.showAndWait();
-
-		if (result.get() == ButtonType.OK) {
-			// loginPane.logout();
-			everything.setDisable(false);
-			if (dailyOrRandom) {
-				freshNewGame();
-			} else {
-				resetGame();
-			}
-		} else {
-			// If you can figure out how to just make this alert one
-			// button feel free to do so
-			// loginPane.logout();
-			everything.setDisable(false);
-			if (dailyOrRandom) {
-				freshNewGame();
-			} else {
-				resetGame();
-			}
-		}
+//
+//		if (result.get() == ButtonType.OK) {
+//			// loginPane.logout();
+//			everything.setDisable(false);
+//			if (dailyOrRandom) {
+//				freshNewGame();
+//			} else {
+//				resetGame();
+//			}
+//		} else {
+//			// If you can figure out how to just make this alert one
+//			// button feel free to do so
+//			// loginPane.logout();
+//			everything.setDisable(false);
+//			if (dailyOrRandom) {
+//				freshNewGame();
+//			} else {
+//				resetGame();
+//			}
+//		}
+		resetGame();
+		everything.setDisable(false);
 		leaderboardWindow.getLeaderboard().addUser(account);
 //		scoreAlert.show();
 	}
