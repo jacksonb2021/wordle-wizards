@@ -84,14 +84,12 @@ public class WordleGUI extends Application {
 
 		field.setOnAction(event -> {
 			String text = field.getText();
-			System.out.println(text);
 			buttonHandler.handle(event);
 
 		});
 
 		leaderboardWindow = new LeaderboardGUI();
 		for (WordleAccount u : wordle.getAccounts()) {
-			System.out.println(u.getUsername());
 			leaderboardWindow.getLeaderboard().addUser(u);
 		}
 		layoutGUI();
@@ -205,7 +203,6 @@ public class WordleGUI extends Application {
 			temp[i].setBorder(Border.stroke(Paint.valueOf("black")));
 			temp[i].setOnAction(event -> {
 				Button buttonClicked = (Button) event.getSource();
-				System.out.println(buttonClicked.getText());
 			});
 		}
 		return temp;
@@ -236,26 +233,6 @@ public class WordleGUI extends Application {
 		scoreAlert.setHeaderText(header);
 
 		Optional<ButtonType> result = scoreAlert.showAndWait();
-//
-//		if (result.get() == ButtonType.OK) {
-//			// loginPane.logout();
-//			everything.setDisable(false);
-//			if (dailyOrRandom) {
-//				freshNewGame();
-//			} else {
-//				resetGame();
-//			}
-//		} else {
-//			// If you can figure out how to just make this alert one
-//			// button feel free to do so
-//			// loginPane.logout();
-//			everything.setDisable(false);
-//			if (dailyOrRandom) {
-//				freshNewGame();
-//			} else {
-//				resetGame();
-//			}
-//		}
 		resetGame();
 		everything.setDisable(false);
 		leaderboardWindow.getLeaderboard().addUser(account);
@@ -349,8 +326,7 @@ public class WordleGUI extends Application {
 
 				localDate = loginPane.getCurrentUser().getLastPlayed();
 
-				System.out.println(localDate);
-				System.out.println(LocalDate.now());
+
 				boolean isDifferentDay = !(localDate.equals(LocalDate.now()));
 				if (isDifferentDay) {
 					freshNewGame();
@@ -387,7 +363,6 @@ public class WordleGUI extends Application {
 			for (Button but : gues) {
 				guess += but.getText();
 			}
-			System.out.println(guess);
 			field.setEditable(true);
 			button.setDisable(false);
 			account = loginPane.getCurrentUser();
@@ -439,7 +414,6 @@ public class WordleGUI extends Application {
 			} else if (counter == boardGameRs.length) {
 				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
-				System.out.println("Game over.\n the word was " + wordle.getWord(mode) + "\n");
 				account.updateScore(counter + 1);
 				showScore(false, false, true);
 				field.setEditable(false);
@@ -460,7 +434,6 @@ public class WordleGUI extends Application {
 			}
 			account = loginPane.getCurrentUser();
 			account.updateScore(counter);
-//			System.out.println(account.getScoreString());
 			wordle.updateAccount(account);
 			wordle.save();
 
@@ -576,7 +549,6 @@ public class WordleGUI extends Application {
 		// Need a File and URI object so the path works on all OSs
 		File file = new File("audioFiles/" + name);
 		URI uri = file.toURI();
-		System.out.println(uri);
 		// Play one mp3 and and have code run when the song ends
 		Media media = new Media(uri.toString());
 		mediaPlayer = new MediaPlayer(media);
