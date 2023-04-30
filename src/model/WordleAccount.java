@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * @author Jackson Burns, Amon Guinan, Duke Speed
  */
 @SuppressWarnings("serial")
-public class WordleAccount implements Serializable, Comparable{
+public class WordleAccount implements Serializable, Comparable {
 	private final String username;
 	private final String password;
 	private LocalDate lastPlayed;
@@ -35,6 +35,7 @@ public class WordleAccount implements Serializable, Comparable{
 
 	/**
 	 * Sets the last date the user played a game of wordle
+	 * 
 	 * @param date a LocalDate object to update lastplayed to.
 	 */
 	public void setLastPlayed(LocalDate date) {
@@ -81,11 +82,12 @@ public class WordleAccount implements Serializable, Comparable{
 
 	/**
 	 * Shows the user how many times they've had some number of guesses
+	 * 
 	 * @return the number of guesses taken to win a Wordle game in the past
 	 */
 	public String getScoreString() {
 		String s = "";
-		s+= "Total Games: " + getTotalGames()+'\n';
+		s += "Total Games: " + getTotalGames() + '\n';
 		for (int i = 0; i < score.length; i++) {
 			if (i == 6) {
 				s += "more than 6: " + score[i] + " (" + percent(i) + "%)" + '\n';
@@ -97,7 +99,9 @@ public class WordleAccount implements Serializable, Comparable{
 	}
 
 	/**
-	 * This method returns the average number of guesses it took the user to guess a word
+	 * This method returns the average number of guesses it took the user to guess a
+	 * word
+	 * 
 	 * @return - a float of the average guesses per word
 	 */
 	public float getAverage() {
@@ -110,6 +114,7 @@ public class WordleAccount implements Serializable, Comparable{
 
 	/**
 	 * this method returns the percent of games that took i guesses
+	 * 
 	 * @param i - the number of guesses
 	 * @return - the percent of games that took i guesses
 	 */
@@ -119,6 +124,7 @@ public class WordleAccount implements Serializable, Comparable{
 
 	/**
 	 * Shows the total number of Wordle games completed by the user.
+	 * 
 	 * @return number of Wordle games completed
 	 */
 	public int getTotalGames() {
@@ -129,35 +135,36 @@ public class WordleAccount implements Serializable, Comparable{
 		return total;
 	}
 
-
-	//This should only be used for comparison.
+	// This should only be used for comparison.
 	/**
 	 *
 	 * @return
 	 */
 	private int totalGuesses() {
 		int retVal = 0;
-		for(int i = 0; i < score.length; i++) {
+		for (int i = 0; i < score.length; i++) {
 			retVal += score[i];
 		}
 		return retVal;
 	}
+
 	public int totalScore() {
-		if (getTotalGames() == 0) return 0;
+		if (getTotalGames() == 0)
+			return 0;
 		return totalGuesses() / getTotalGames();
 	}
 
-
 	/**
-	 * 	Returns difference in 'total score', a value that
-	 *  collates user performance for comparison against other users.
+	 * Returns difference in 'total score', a value that collates user performance
+	 * for comparison against other users.
+	 * 
 	 * @param o the object to be compared.
 	 * @return
 	 */
 	@Override
 	public int compareTo(Object o) {
 		WordleAccount other = (WordleAccount) o;
-		if(this == other) {
+		if (this == other) {
 			return 0;
 		}
 		return this.totalScore() - other.totalScore();

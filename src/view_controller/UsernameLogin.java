@@ -33,9 +33,9 @@ public class UsernameLogin extends BorderPane {
 	private static final int height = 110;
 	private boolean loggedIn;
 
-
 	/**
-	 * @param login a Wordle object, so we can set the user for our current game state
+	 * @param login a Wordle object, so we can set the user for our current game
+	 *              state
 	 */
 	@SuppressWarnings("unused")
 	public UsernameLogin(Wordle login) {
@@ -74,6 +74,7 @@ public class UsernameLogin extends BorderPane {
 
 	/**
 	 * Provides a way of manipulating the current wordle account directly.
+	 * 
 	 * @return the current WordleAccount that is logged in.
 	 */
 	public WordleAccount getCurrentUser() {
@@ -81,7 +82,9 @@ public class UsernameLogin extends BorderPane {
 	}
 
 	/**
-	 * Updates the text in the loginStatus text box, useful for telling user if they're logged in.
+	 * Updates the text in the loginStatus text box, useful for telling user if
+	 * they're logged in.
+	 * 
 	 * @param update a string telling the user if they're logged in or not
 	 */
 	public void setLoginStatus(String update) {
@@ -98,7 +101,8 @@ public class UsernameLogin extends BorderPane {
 	}
 
 	/**
-	 * Logs the user in, creating a new WordleAccount object based on entered username and password.
+	 * Logs the user in, creating a new WordleAccount object based on entered
+	 * username and password.
 	 */
 	public void login() {
 		if (currentUser != null) {
@@ -121,7 +125,9 @@ public class UsernameLogin extends BorderPane {
 	}
 
 	/**
-	 * The logoutButton is useful for when the parent object needs to change some parameter in this object.
+	 * The logoutButton is useful for when the parent object needs to change some
+	 * parameter in this object.
+	 * 
 	 * @return a Button that logs the user in
 	 */
 	public Button getLoginButton() {
@@ -129,7 +135,9 @@ public class UsernameLogin extends BorderPane {
 	}
 
 	/**
-	 * The logoutButton is useful for when the parent object needs to change some parameter in this object.
+	 * The logoutButton is useful for when the parent object needs to change some
+	 * parameter in this object.
+	 * 
 	 * @return a Button that logs the user out
 	 */
 	public Button getLogoutButton() {
@@ -137,7 +145,8 @@ public class UsernameLogin extends BorderPane {
 	}
 
 	/**
-	 * Adds text fields and buttons for password/username input to the current window.
+	 * Adds text fields and buttons for password/username input to the current
+	 * window.
 	 */
 	private void layoutAddWindow() {
 		TextField newUserTextField = new TextField();
@@ -188,7 +197,8 @@ public class UsernameLogin extends BorderPane {
 	}
 
 	/**
-	 * Creates a pane for login, allowing users to create password-protected accounts.
+	 * Creates a pane for login, allowing users to create password-protected
+	 * accounts.
 	 */
 	private void layoutWindow() {
 		HBox topLabel = new HBox();

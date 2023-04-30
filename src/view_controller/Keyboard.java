@@ -43,8 +43,8 @@ public class Keyboard extends VBox {
 	 * This function generates a list of rows/HBoxs of buttons that correspond to &
 	 * the characters given in keys
 	 * 
-	 * @param keys     the list of characters to put on the keyboard
-	 * @param rowCount the max number of rows
+	 * @param keys         the list of characters to put on the keyboard
+	 * @param rowCount     the max number of rows
 	 * @param maxRowLength the max length of each row
 	 * @return list of HBox objects that contain Buttons
 	 */
@@ -80,6 +80,7 @@ public class Keyboard extends VBox {
 
 	/**
 	 * Returns a Collection object that consists of all the keys in the keyboard.
+	 * 
 	 * @return all the key objects in the keyboard
 	 */
 	public Collection<Key> getKeys() {
@@ -97,8 +98,8 @@ public class Keyboard extends VBox {
 	}
 
 	/**
-	 * Represents a single key on a keyboard, can represent any character
-	 * or string of characters.
+	 * Represents a single key on a keyboard, can represent any character or string
+	 * of characters.
 	 */
 	static class Key extends Button {
 		private final String keyChar;
@@ -108,31 +109,29 @@ public class Keyboard extends VBox {
 			this.keyChar = letter;
 
 			// default style options, can be changed if wanted.
-			this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; " +
-					"-fx-text-fill: ladder(background, white 49%, black 50%);");
+			this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; "
+					+ "-fx-text-fill: ladder(background, white 49%, black 50%);");
 			this.setFont(new Font("Courier New", 25));
 			this.setBackground(null);
-
 
 		}
 
 		/**
 		 * Returns the value that the Key is set to.
+		 * 
 		 * @return the letter with which this Key object corresponds to
 		 */
 		public String getKeyVal() {
 			return keyChar;
 		}
 
-
-
 		public void setDarkMode(boolean darkMode) {
 			if (darkMode) {
-				this.setStyle("-fx-padding: 5 10 10 10; " + "background: black; " +
-						"-fx-text-fill: ladder(background, white 49%, black 50%);");
+				this.setStyle("-fx-padding: 5 10 10 10; " + "background: black; "
+						+ "-fx-text-fill: ladder(background, white 49%, black 50%);");
 			} else {
-				this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; " +
-						"-fx-text-fill: ladder(background, white 49%, black 50%);");
+				this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; "
+						+ "-fx-text-fill: ladder(background, white 49%, black 50%);");
 			}
 		}
 	}

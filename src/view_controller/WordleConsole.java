@@ -12,11 +12,11 @@ import model.WordleAccount;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-
 /**
- * Command line interface for Wordle, allowing the user to play entirely based on a keybaord.
- * Contains the entire game loop of wordle, indicating where/when guesses are correct or in the
- * wrong place. Also allows the user to look back on past Wordle scores.
+ * Command line interface for Wordle, allowing the user to play entirely based
+ * on a keybaord. Contains the entire game loop of wordle, indicating where/when
+ * guesses are correct or in the wrong place. Also allows the user to look back
+ * on past Wordle scores.
  *
  * @author Amon Guinon, Jackson Burns, Duke Speed, Jose Juan Velasquez
  */
@@ -39,10 +39,11 @@ public class WordleConsole {
 	}
 
 	/**
-	 * Provides the main game loop of the console GUI. Allows the user to login,
-	 * and create accounts if needed. Asks the user for input,
-	 * uses that input to change the game state represented in our Wordle object.
-	 * Checks and sanitizes said inputs to prevent crashing/unintended bugs.
+	 * Provides the main game loop of the console GUI. Allows the user to login, and
+	 * create accounts if needed. Asks the user for input, uses that input to change
+	 * the game state represented in our Wordle object. Checks and sanitizes said
+	 * inputs to prevent crashing/unintended bugs.
+	 * 
 	 * @param game the Wordle object to manipulate
 	 */
 	private static void gameLoop(Wordle game) {
@@ -109,8 +110,8 @@ public class WordleConsole {
 
 			// if guess is correct
 			boolean win = true;
-			for(int i=0;i<results.length;i++){
-				if(results[i]!=1){
+			for (int i = 0; i < results.length; i++) {
+				if (results[i] != 1) {
 					win = false;
 				}
 			}

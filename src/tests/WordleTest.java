@@ -18,9 +18,9 @@ import model.Wordle;
 import model.WordleAccount;
 import model.WordleSerializer;
 
-
 /**
- * This is a JUnit test case testing the model of Wordle.
+ * This is a JUnit test case testing the model of Wordle, WordleAccount,
+ * WordleSerializer and Leaderboard.
  * 
  * @author Jose Juan Velasquez
  */
@@ -270,26 +270,26 @@ public class WordleTest {
 		System.out.println('\n' + wordleTest.guessToString(checkedChars) + '\n');
 	}
 
-//	@Test
-//	public void testRepetitions6() {
-//		Wordle wordleTest = new Wordle(true);
-//		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
-//		wordleTest.setDailyWord("fafaf");
-//		System.out.println(wordleTest.getDailyWord() + " I ran twelveth");
-//		int[] checkedChars = wordleTest.guess("afffa");
-//		int firstChar = checkedChars[0];
-//		assertEquals(firstChar, 2);
-//		int secondChar = checkedChars[1];
-//		assertEquals(secondChar, 2);
-//		int thirdChar = checkedChars[2];
-//		assertEquals(thirdChar, 1);
-//		int fourthChar = checkedChars[3];
-//		assertEquals(fourthChar, 2);
-//		int fifthChar = checkedChars[4];
-//		assertEquals(fifthChar, 2);
-//
-//		System.out.println('\n' + wordleTest.guessToString(checkedChars) + '\n');
-//	}
+	@Test
+	public void testRepetitions6() {
+		Wordle wordleTest = new Wordle(true);
+		// HashMap<Integer, Integer> checkedChars = new HashMap<>();
+		wordleTest.setDailyWord("fafaf");
+		System.out.println(wordleTest.getDailyWord() + " I ran twelveth");
+		int[] checkedChars = wordleTest.guess("afffa");
+		int firstChar = checkedChars[0];
+		assertEquals(firstChar, 2);
+		int secondChar = checkedChars[1];
+		assertEquals(secondChar, 2);
+		int thirdChar = checkedChars[2];
+		assertEquals(thirdChar, 1);
+		int fourthChar = checkedChars[3];
+		assertEquals(fourthChar, 2);
+		int fifthChar = checkedChars[4];
+		assertEquals(fifthChar, 2);
+
+		System.out.println('\n' + wordleTest.guessToString(checkedChars) + '\n');
+	}
 
 	@Test
 	public void testRepetitions7() {
@@ -369,12 +369,6 @@ public class WordleTest {
 		assertNotNull(ws.verifyLogin("jackson", "burns"));
 		assertNull(ws.verifyLogin("jackson", "burns2"));
 	}
-
-//	@Test
-//	public void getMap() {
-//		WordleSerializer ws = new WordleSerializer();
-//		System.out.println(ws.getMap());
-//	}
 
 	@Test
 	public void testLogin() {
@@ -512,21 +506,19 @@ public class WordleTest {
 
 		System.out.println(leaderboardTest.toString());
 		System.out.println(accountTest.totalScore());
-		
-		
+
 		wordleTest.setDailyWord("corgi");
 		String firstAttempt = wordleTest.getWord(true);
 		assertEquals(firstAttempt, "corgi");
 		String secondAttempt = wordleTestSameDay.getWord(true);
 		assertNotEquals(secondAttempt, "corgi");
 		assertNotEquals(firstAttempt, secondAttempt);
-		
+
 		wordleTestSameDay = new Wordle(true, LocalDate.now().plusDays(1));
 		secondAttempt = wordleTestSameDay.getWord(true);
 		assertNotEquals(secondAttempt, "corgi");
 		assertNotEquals(firstAttempt, secondAttempt);
-		
-		
+
 		accountTest.setLastPlayed(dateTest);
 		assertEquals(accountTest.getLastPlayed(), dateTest);
 		assertNotEquals(accountTest.getLastPlayed(), dateTest.plusDays(1));
@@ -536,7 +528,7 @@ public class WordleTest {
 		Wordle wordleTest2 = new Wordle(false);
 		assertNotEquals(wordleTest.getWord(true), wordleTest2.getWord(false));
 	}
-	
+
 	@Test
 	public void testRepetitionsBug() {
 		Wordle wordleTest = new Wordle(true);
@@ -556,6 +548,5 @@ public class WordleTest {
 
 		System.out.println('\n' + wordleTest.guessToString(checkedChars) + '\n');
 	}
-	
 
 }

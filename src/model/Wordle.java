@@ -125,8 +125,6 @@ public class Wordle {
 	 *         position, 2 for in the string, wrong position.
 	 */
 	public int[] guess(String word) {
-		// Completed toString method and can print an indication of the tiles
-		// Also now it checks for repeated characters
 
 		int[] checkedChars = new int[word.length()];
 
@@ -224,11 +222,21 @@ public class Wordle {
 		return guess;
 	}
 
-	// Only used for testing
+	/**
+	 * Hard codes a daily word for testing purposes
+	 * 
+	 * @param the word we want to set as the Daily Word
+	 * @return the modified daily word
+	 */
 	public void setDailyWord(String test) {
 		dailyWord = test;
 	}
 
+	/**
+	 * Gets the array containing all the accounts
+	 * 
+	 * @return an ArrayList containing all the registered accounts
+	 */
 	public ArrayList<WordleAccount> getAccounts() {
 		return ws.getAccounts();
 	}

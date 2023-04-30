@@ -174,16 +174,13 @@ public class WordleGUI extends Application {
 
 	}
 
-	// ONLY BE USED WHEN A USER HASNT PLAYED THAT DAY
 	private void freshNewGame() {
 		setBoard();
 		wordle = new Wordle(true);
 		dailyOrRandom = true;
-		// this.keyboard = new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
 		layoutKeyboard();
 		field.setEditable(true);
 		button.setDisable(false);
-		// loginPane.logout();
 		counter = 0;
 		mode.setText("Daily word");
 		button.setText("submit guess");
@@ -219,28 +216,29 @@ public class WordleGUI extends Application {
 			header = "Score Statistics";
 		} else if (win) {
 			content = "You win!\n" + account.getScoreString();
-			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary\nPress OK to play or Cancel to quit";
+			header = "The word was " + wordle.getWord(dailyOrRandom)
+					+ "\n\nScore Summary\nPress OK to play or Cancel to quit";
 			playASong("gameOverWin.mp3");
 		} else {
 			content = "Game over. You lose\n" + account.getScoreString();
-			header = "The word was " + wordle.getWord(dailyOrRandom) + "\n\nScore Summary\nPress OK to play or Cancel to quit";
+			header = "The word was " + wordle.getWord(dailyOrRandom)
+					+ "\n\nScore Summary\nPress OK to play or Cancel to quit";
 			playASong("gameOverLoss.mp3");
 		}
 		scoreAlert.setContentText(content);
 		scoreAlert.setHeaderText(header);
 
 		Optional<ButtonType> result = scoreAlert.showAndWait();
-		if(result.get() == ButtonType.OK) {
+		if (result.get() == ButtonType.OK) {
 			resetGame();
 		} else {
-			//resetGame();
+//			resetGame();
 			Platform.exit();
 			System.exit(0);
 		}
-		
+
 		everything.setDisable(false);
 		leaderboardWindow.getLeaderboard().addUser(account);
-//		scoreAlert.show();
 	}
 
 	private void layoutKeyboard() {
@@ -545,6 +543,12 @@ public class WordleGUI extends Application {
 		return rotator;
 	}
 
+	/**
+	 * This method manages the audio that should be according to the current
+	 * situation
+	 *
+	 * @param the name of the audio file that should be played
+	 */
 	public void playASong(String name) {
 		// Need a File and URI object so the path works on all OSs
 		File file = new File("audioFiles/" + name);
