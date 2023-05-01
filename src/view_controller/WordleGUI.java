@@ -46,7 +46,7 @@ import model.WordleAccount;
 /**
  * this class creates an interactive wordle game in a GUI, using javafx.
  *
- * @author Jackson Burns, Jose Juan Velasquez, Duke Speed, Amon Guinon
+ * @author Jackson Burns, Jose Juan Velasquez, Duke Speed, Amon Guinan
  */
 public class WordleGUI extends Application {
 
