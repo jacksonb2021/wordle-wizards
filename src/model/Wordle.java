@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 /**
  * The main game object for this entire project, represents the current game

@@ -1,7 +1,6 @@
 package view_controller;
 
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,6 +25,8 @@ public class UsernameLogin extends BorderPane {
 	private final TextField userTextField = new TextField();
 	private final TextField pwdTextField = new PasswordField();
 	private final Label loginStatus = new Label("Please Login");
+	private final Label accountLabel = new Label("Account Name");
+	private final Label pwdLabel = new Label("Password");
 	private final Button loginButton = new Button("Login");
 	private final Button logoutButton = new Button("Log out");
 	private final Button createUserButton = new Button("Create New User");
@@ -46,14 +47,6 @@ public class UsernameLogin extends BorderPane {
 		Stage stage = new Stage();
 		layoutWindow();
 		currentUser = null;
-
-//		loginButton.setOnAction(event -> {
-//			login();
-//		});
-//
-//		logoutButton.setOnAction(event -> {
-//			logout();
-//		});
 
 		createUserButton.setOnAction(event -> {
 			if (!loggedIn) {
@@ -91,6 +84,33 @@ public class UsernameLogin extends BorderPane {
 	 */
 	public void setLoginStatus(String update) {
 		loginStatus.setText(update);
+	}
+
+	/**
+	 * Provides a way of changes colors of login status for dark mode
+	 * 
+	 * @return the login status label.
+	 */
+	public Label getLoginStatus() {
+		return loginStatus;
+	}
+
+	/**
+	 * Provides a way of changes colors of account label for dark mode
+	 * 
+	 * @return the account label.
+	 */
+	public Label getAccountLabel() {
+		return accountLabel;
+	}
+
+	/**
+	 * Provides a way of changes colors of password label for dark mode
+	 * 
+	 * @return the password label.
+	 */
+	public Label getPwdLabel() {
+		return pwdLabel;
 	}
 
 	/**
@@ -209,14 +229,13 @@ public class UsernameLogin extends BorderPane {
 		topLabel.setAlignment(Pos.BASELINE_CENTER);
 
 		HBox accountLane = new HBox();
-		accountLane.getChildren().addAll(new Label("Account Name"), userTextField, loginButton);
+		accountLane.getChildren().addAll(accountLabel, userTextField, loginButton);
 
 		accountLane.setAlignment(Pos.BASELINE_CENTER);
 		accountLane.setStyle("-fx-padding: 5 50 5 10;");
 		accountLane.setSpacing(5);
 
-
-		pwdLane.getChildren().addAll(new Label("Password"), pwdTextField, logoutButton);
+		pwdLane.getChildren().addAll(pwdLabel, pwdTextField, logoutButton);
 		pwdLane.setAlignment(Pos.BASELINE_CENTER);
 		pwdLane.setStyle("-fx-padding: 5 0 5 0;");
 		pwdLane.setSpacing(5);

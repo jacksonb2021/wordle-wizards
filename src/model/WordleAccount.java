@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * 
  * @author Jackson Burns, Amon Guinan, Duke Speed
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "rawtypes" })
 public class WordleAccount implements Serializable, Comparable {
 	private final String username;
 	private final String password;

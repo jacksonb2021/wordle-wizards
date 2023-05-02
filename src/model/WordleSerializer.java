@@ -22,6 +22,7 @@ public class WordleSerializer {
 	 * this constructor creates the words arraylist, and the accounts arraylist,
 	 * then it loads the databases. if they dont exist, it creates them.
 	 */
+	@SuppressWarnings("unchecked")
 	public WordleSerializer() {
 
 		words = new ArrayList<>();

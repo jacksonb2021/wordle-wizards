@@ -50,6 +50,7 @@ public class WordleConsole {
 		int counter = 0;
 		String guess;
 		int results[];
+		@SuppressWarnings("resource")
 		Scanner s = new Scanner(System.in);
 		WordleAccount account = null;
 		System.out.println("Login (l) or create account (c)");
@@ -127,6 +128,7 @@ public class WordleConsole {
 				return;
 			}
 		}
+		s.close();
 		System.out.println("Game over. You lose.\nThe word was " + game.getWord(isDaily));
 		account.updateScore(counter + 1);
 		System.out.println(account.getScoreString());

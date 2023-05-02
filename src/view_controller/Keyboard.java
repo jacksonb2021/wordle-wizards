@@ -111,7 +111,7 @@ public class Keyboard extends VBox {
 			// default style options, can be changed if wanted.
 			this.setStyle("-fx-padding: 5 10 10 10; " + "background: white; "
 					+ "-fx-text-fill: ladder(background, white 49%, black 50%);");
-			this.setFont(new Font("Courier New", 25));
+			this.setFont(new Font("Arial", 25));
 			this.setBackground(null);
 
 		}

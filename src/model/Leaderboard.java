@@ -9,12 +9,12 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * The Leaderboard class implements an object capable of
- * storing WordleAccount objects using a sorted ArrayList.
+ * The Leaderboard class implements an object capable of storing WordleAccount
+ * objects using a sorted ArrayList.
+ * 
  * @author Amon Guinan, Jackson Burns
  */
 public class Leaderboard {

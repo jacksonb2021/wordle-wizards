@@ -34,21 +34,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Leaderboard;
 import model.Wordle;
 import model.WordleAccount;
 
 /**
- * This class creates an interactive wordle game in a GUI, using javafx.
- * The Wordle game is simulated using a Wordle game object, using WordleAccount
- * to limit user games per day and track scoring. This file also creates a
- * Leaderboard object that records and stores user WordleAccounts to track 
- * user performance across games.
+ * This class creates an interactive wordle game in a GUI, using javafx. The
+ * Wordle game is simulated using a Wordle game object, using WordleAccount to
+ * limit user games per day and track scoring. This file also creates a
+ * Leaderboard object that records and stores user WordleAccounts to track user
+ * performance across games.
  *
  * @author Jackson Burns, Jose Juan Velasquez, Duke Speed, Amon Guinan
  */
@@ -64,15 +64,20 @@ public class WordleGUI extends Application {
 	private MediaPlayer mediaPlayer;
 	private BorderPane everything;
 	private Label mode;
+	private Label loginStatus;
+	private Label accountLabel;
+	private Label passwordLabel;
 	Button[][] boardGameRs = new Button[6][5];
 	protected Keyboard keyboard;
 	private boolean dailyOrRandom;
 	private LeaderboardGUI leaderboardWindow;
+	private boolean isDarkMode;
 	private int curBoxX = 0;
 	private int curBoxY = 0;
 
 	/**
 	 * Calls launch() from javafx.application.Application.launch().
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -89,9 +94,9 @@ public class WordleGUI extends Application {
 		dailyOrRandom = true;
 		field = new TextField();
 		mode = new Label("Daily word");
+		isDarkMode = false;
 
 		field.setOnAction(event -> {
-			String text = field.getText();
 			buttonHandler.handle(event);
 
 		});
@@ -104,6 +109,9 @@ public class WordleGUI extends Application {
 		layoutKeyboard();
 
 		setBoard();
+		loginStatus = loginPane.getLoginStatus();
+		accountLabel = loginPane.getAccountLabel();
+		passwordLabel = loginPane.getPwdLabel();
 
 		Scene scene = new Scene(everything, 600, 750);
 		stage.setScene(scene);
@@ -114,41 +122,54 @@ public class WordleGUI extends Application {
 
 	/**
 	 * Implements direct keyboard input for game window.
+	 * 
 	 * @param event
 	 */
 	private void handleKeyboardInput(KeyEvent event) {
 		String key = event.getText();
-		if (event.getCode() == KeyCode.ENTER) {
-			buttonHandler.handle(new ActionEvent());
-			return;
-		}
-		if (loginPane.isFocusWithin())
-			return;
 
-		if (event.getCode() == KeyCode.BACK_SPACE) {
-			if (curBoxX != 0)
-				curBoxX--;
-			if (curBoxX > 4)
-				curBoxX = 4;
-			if (curBoxX <= 0) {
-				curBoxX = 0;
-
+		if (loginPane.isLoggedIn()) {
+			if (event.getCode() == KeyCode.ENTER) {
+				buttonHandler.handle(new ActionEvent());
+				return;
 			}
-			boardGameRs[curBoxY][curBoxX].setText(key);
+			if (loginPane.isFocusWithin()) {
+				return;
+			}
 
-		} else if (curBoxX < 5) {
-			boardGameRs[curBoxY][curBoxX].setText(key);
-			curBoxX++;
+			if (event.getCode() == KeyCode.BACK_SPACE) {
+				if (curBoxX != 0)
+					curBoxX--;
+				if (curBoxX > 4)
+					curBoxX = 4;
+				if (curBoxX <= 0) {
+					curBoxX = 0;
+				}
+
+				boardGameRs[curBoxY][curBoxX].setText(key);
+				setDarkModeText();
+			} else if (curBoxX < 5) {
+				boardGameRs[curBoxY][curBoxX].setText(key);
+				setDarkModeText();
+				curBoxX++;
+			}
+
 		}
+	}
 
+	private void setDarkModeText() {
+		if (isDarkMode) {
+			boardGameRs[curBoxY][curBoxX].setTextFill(Color.WHITE);
+		} else {
+			boardGameRs[curBoxY][curBoxX].setTextFill(Color.BLACK);
+		}
 	}
 
 	/**
-	 * Initializes graphical objects for the game board,
-	 * and sets javafx window values.
+	 * Initializes graphical objects for the game board, and sets javafx window
+	 * values.
 	 */
 	private void setBoard() {
-		// Label word = new Label(wordle.getWord(true));
 		List<HBox> rows = new ArrayList<>();
 
 		for (int i = 0; i < 6; i++) {
@@ -177,9 +198,8 @@ public class WordleGUI extends Application {
 	}
 
 	/**
-	 * Reinitializes the Wordle object that simulates the game,
-	 * and sets the game to 'practice mode' which doesn't record user
-	 * scorig for leaderboard purposes.
+	 * Reinitializes the Wordle object that simulates the game, and sets the game to
+	 * 'practice mode' which doesn't record user scorig for leaderboard purposes.
 	 */
 	private void resetGame() {
 		setBoard();
@@ -198,8 +218,8 @@ public class WordleGUI extends Application {
 	}
 
 	/**
-	 * Initializes the wordle game object for the first time.
-	 * User score is recorded.
+	 * Initializes the wordle game object for the first time. User score is
+	 * recorded.
 	 */
 	private void freshNewGame() {
 		setBoard();
@@ -215,6 +235,7 @@ public class WordleGUI extends Application {
 
 	/**
 	 * Initializes button objects.
+	 * 
 	 * @return array of initialized button objects.
 	 */
 	private Button[] ButtonMaker() {
@@ -226,16 +247,17 @@ public class WordleGUI extends Application {
 			temp[i].setFont(new Font("Courier New", 25));
 			temp[i].setBackground(null);
 			temp[i].setBorder(Border.stroke(Paint.valueOf("black")));
-			temp[i].setOnAction(event -> {
-				Button buttonClicked = (Button) event.getSource();
-			});
+//			temp[i].setOnAction(event -> {
+//				Button buttonClicked = (Button) event.getSource();
+//			});
 		}
 		return temp;
 	}
 
 	/**
-	 * Opens statistics window, which reflects the outcome of the game,
-	 * and user performance therein. 
+	 * Opens statistics window, which reflects the outcome of the game, and user
+	 * performance therein.
+	 * 
 	 * @param menu
 	 * @param win
 	 * @param loggedIn
@@ -305,10 +327,10 @@ public class WordleGUI extends Application {
 		everything.setBottom(keyboard);
 
 	}
-	
+
 	/**
-	 * Initializes various javafx objects, and calls/organizes
-	 * individual GUI elements in window.
+	 * Initializes various javafx objects, and calls/organizes individual GUI
+	 * elements in window.
 	 */
 	private void layoutGUI() {
 		everything = new BorderPane();
@@ -394,7 +416,7 @@ public class WordleGUI extends Application {
 			holder.getChildren().remove(logout);
 			loginPane.getPwdLane().getChildren().add(logout);
 			loginPane.setVisible(true);
-			//holder.setAlignment(Pos.TOP_CENTER);
+			// holder.setAlignment(Pos.TOP_CENTER);
 			loginPane.logout();
 			freshNewGame();
 			field.setEditable(false);
@@ -405,11 +427,11 @@ public class WordleGUI extends Application {
 	}
 
 	/**
-	 * Implements javafx button EventHandler logic for responding
-	 * to user input.
+	 * Implements javafx button EventHandler logic for responding to user input.
 	 */
 	private class ButtonHandler implements EventHandler<ActionEvent> {
 
+		@SuppressWarnings("unused")
 		public boolean mode = true;
 
 		@Override
@@ -447,7 +469,6 @@ public class WordleGUI extends Application {
 
 			Button[] curBoard = boardGameRs[counter];
 
-			Thread dab = new Thread();
 			boardGameRs[counter] = colorBoard(guess, guessStr, curBoard);
 			colorKeyboard(guess, guessStr);
 
@@ -481,14 +502,16 @@ public class WordleGUI extends Application {
 //			everything.setDisable(false);
 
 		}
+
 		/**
 		 * Determines if the game was won by the user.
+		 * 
 		 * @param boardGame
 		 * @return true if game was won, false if otherwise.
 		 */
 		private boolean winCondition(Button[] boardGame) {
 			for (int i = 0; i < boardGame.length; i++) {
-				if (!boardGame[i].getStyle().contains("-fx-background-color: #00FF00; ")) {
+				if (!boardGame[i].getStyle().contains("-fx-background-color: #53C448; ")) {
 					return false;
 				}
 			}
@@ -503,6 +526,7 @@ public class WordleGUI extends Application {
 
 		/**
 		 * Handles changes in color for keyboard GUI elements.
+		 * 
 		 * @param guess
 		 * @param guessStr
 		 */
@@ -517,7 +541,6 @@ public class WordleGUI extends Application {
 				final int CORRECT = 1;
 				final int CONTAINS = 2;
 				// iterate over every key
-				String letter = key.getKeyVal();
 
 				for (int i = 0; i < guessStr.length; i++) {
 					if (splitGuess[i].equals(key.getText())) {
@@ -528,11 +551,11 @@ public class WordleGUI extends Application {
 								key.setStyle("-fx-background-color: #808080; ");
 							}
 						}
-						case CORRECT -> key.setStyle("-fx-background-color: #00FF00; ");
+						case CORRECT -> key.setStyle("-fx-background-color: #53C448; ");
 
 						case CONTAINS -> {
 
-							if (!key.getStyle().contains("-fx-background-color: #00FF00;")) {
+							if (!key.getStyle().contains("-fx-background-color: #E9E546;")) {
 								key.setStyle("-fx-background-color: #FFFF00; ");
 							}
 						}
@@ -544,9 +567,9 @@ public class WordleGUI extends Application {
 		}
 
 		/**
-		 * handles color logic for the game board, allowing char tiles to be
-		 * animated and change color, depending on whether the user guessed
-		 * correctly or not.
+		 * handles color logic for the game board, allowing char tiles to be animated
+		 * and change color, depending on whether the user guessed correctly or not.
+		 * 
 		 * @param guess
 		 * @param guessStr
 		 * @param boardGameR
@@ -565,10 +588,13 @@ public class WordleGUI extends Application {
 				boardGameR[i].setText(temp[i].toUpperCase());
 				playASong("tileFlip.mp3");
 				if (guessStr[i] == 1) {
-					boardGameR[i].setStyle("-fx-background-color: #00FF00; ");
+					boardGameR[i].setTextFill(Color.WHITE);
+					boardGameR[i].setStyle("-fx-background-color: #53C448; ");
 				} else if (guessStr[i] == 2) {
-					boardGameR[i].setStyle("-fx-background-color: #FFFF00; ");
+					boardGameR[i].setTextFill(Color.WHITE);
+					boardGameR[i].setStyle("-fx-background-color: #E9E546; ");
 				} else if (guessStr[i] == 0) {
+					boardGameR[i].setTextFill(Color.WHITE);
 					boardGameR[i].setStyle("-fx-background-color: #808080; ");
 				}
 
@@ -584,7 +610,6 @@ public class WordleGUI extends Application {
 	 * @author jackson burns
 	 */
 	private class DarkMode implements EventHandler<ActionEvent> {
-		boolean isDarkMode = false;
 
 		/**
 		 * This method is used to change the display to a dark mode.
@@ -596,10 +621,18 @@ public class WordleGUI extends Application {
 
 			if (!isDarkMode) {
 				everything.setStyle("-fx-background-color: #212121; ");
+				mode.setTextFill(Color.WHITE);
+				loginStatus.setTextFill(Color.WHITE);
+				accountLabel.setTextFill(Color.WHITE);
+				passwordLabel.setTextFill(Color.WHITE);
 				isDarkMode = true;
 
 			} else {
 				everything.setStyle("-fx-background-color: #FFFFFF; ");
+				mode.setTextFill(Color.BLACK);
+				loginStatus.setTextFill(Color.BLACK);
+				accountLabel.setTextFill(Color.BLACK);
+				passwordLabel.setTextFill(Color.BLACK);
 				isDarkMode = false;
 
 			}
@@ -615,7 +648,6 @@ public class WordleGUI extends Application {
 		rotator.setToAngle(0);
 		rotator.setInterpolator(Interpolator.LINEAR);
 		rotator.setCycleCount(1);
-
 		return rotator;
 	}
 
