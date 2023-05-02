@@ -1,6 +1,7 @@
 package view_controller;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,6 +29,7 @@ public class UsernameLogin extends BorderPane {
 	private final Button loginButton = new Button("Login");
 	private final Button logoutButton = new Button("Log out");
 	private final Button createUserButton = new Button("Create New User");
+	private HBox pwdLane = new HBox();
 	private WordleAccount currentUser;
 	private static final int width = 700;
 	private static final int height = 110;
@@ -95,6 +97,7 @@ public class UsernameLogin extends BorderPane {
 	 * Sets the current user to null, and logged out.
 	 */
 	public void logout() {
+		setHideLogin(false);
 		loggedIn = false;
 		currentUser = null;
 		loginStatus.setText("Please Login");
@@ -212,7 +215,7 @@ public class UsernameLogin extends BorderPane {
 		accountLane.setStyle("-fx-padding: 5 50 5 10;");
 		accountLane.setSpacing(5);
 
-		HBox pwdLane = new HBox();
+
 		pwdLane.getChildren().addAll(new Label("Password"), pwdTextField, logoutButton);
 		pwdLane.setAlignment(Pos.BASELINE_CENTER);
 		pwdLane.setStyle("-fx-padding: 5 0 5 0;");
@@ -226,5 +229,18 @@ public class UsernameLogin extends BorderPane {
 		loginPane.getChildren().addAll(topLabel, accountLane, pwdLane, newUserLane);
 		this.setCenter(loginPane);
 
+	}
+
+	public HBox getPwdLane() {
+		return this.pwdLane;
+	}
+
+	private void setHideLogin(boolean hide) {
+
+		userTextField.setVisible(!hide);
+		pwdTextField.setVisible(!hide);
+		loginStatus.setVisible(!hide);
+		loginButton.setVisible(!hide);
+		createUserButton.setVisible(!hide);
 	}
 }

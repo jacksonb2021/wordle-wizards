@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * 
- * @author Amon Guinan The Leaderboard class implements an object capable of
- *         storing WordleAccount objects using a sorted ArrayList.
+ * The Leaderboard class implements an object capable of
+ * storing WordleAccount objects using a sorted ArrayList.
+ * @author Amon Guinan, Jackson Burns
  */
 public class Leaderboard {
 
@@ -47,6 +47,7 @@ public class Leaderboard {
 			if (u.getUsername().equals(user.getUsername())) {
 				contents.remove(u);
 				contents.add(user);
+				contents.sort(Collections.reverseOrder());
 				return;
 			}
 		}
