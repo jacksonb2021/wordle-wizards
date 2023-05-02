@@ -205,7 +205,6 @@ public class WordleGUI extends Application {
 		setBoard();
 		wordle = new Wordle(false);
 		dailyOrRandom = false;
-		// this.keyboard = new Keyboard("QWERTYUIOPASDFGHJKLZXCVBNM".toCharArray());
 		layoutKeyboard();
 
 		field.setEditable(true);
@@ -248,9 +247,6 @@ public class WordleGUI extends Application {
 			temp[i].setFont(new Font("Courier New", 25));
 			temp[i].setBackground(null);
 			temp[i].setBorder(Border.stroke(Paint.valueOf("black")));
-//			temp[i].setOnAction(event -> {
-//				Button buttonClicked = (Button) event.getSource();
-//			});
 		}
 		return temp;
 	}
@@ -373,7 +369,6 @@ public class WordleGUI extends Application {
 
 		newGame.setOnAction(actionEvent -> {
 			mode.setText("Practice mode (It will not count towards the leaderboards)");
-			// wordle.setRandomWord(5);
 			resetGame();
 		});
 
@@ -653,7 +648,7 @@ public class WordleGUI extends Application {
 	 * This method manages the audio that should be according to the current
 	 * situation
 	 *
-	 * @param the name of the audio file that should be played
+	 * @param name - the name of the audio file that should be played
 	 */
 	public void playASong(String name) {
 		// Need a File and URI object so the path works on all OSs

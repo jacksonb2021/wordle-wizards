@@ -135,10 +135,9 @@ public class WordleAccount implements Serializable, Comparable {
 		return total;
 	}
 
-	// This should only be used for comparison.
 	/**
-	 *
-	 * @return
+	 * retrieves total number of guesses
+	 * @return - the total number of guesses
 	 */
 	private int totalGuesses() {
 		int retVal = 0;
@@ -148,6 +147,10 @@ public class WordleAccount implements Serializable, Comparable {
 		return retVal;
 	}
 
+	/**
+	 * Calculates the 'total score', the score to be displayed on the leaderboard
+	 * @return - the total score
+	 */
 	public int totalScore() {
 		if (getTotalGames() == 0)
 			return 0;

@@ -35,7 +35,6 @@ public class Leaderboard {
 	public Leaderboard(ArrayList<WordleAccount> accounts) {
 		contents = accounts;
 		contents.sort(Collections.reverseOrder());
-		// vanilla ArrayList uses a version of mergesort.
 	}
 
 	/**
