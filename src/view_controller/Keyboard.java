@@ -125,6 +125,11 @@ public class Keyboard extends VBox {
 			return keyChar;
 		}
 
+		/**
+		 * Manages the color the keyboard should be based on the current mode
+		 * 
+		 * @param a boolean indicating whether dark mode is on or off
+		 */
 		public void setDarkMode(boolean darkMode) {
 			if (darkMode) {
 				this.setStyle("-fx-padding: 5 10 10 10; " + "background: black; "

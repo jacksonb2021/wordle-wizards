@@ -214,6 +214,7 @@ public class WordleGUI extends Application {
 		counter = 0;
 		mode.setText("Practice mode (It will not count towards the leaderboards)");
 		button.setText("submit guess");
+		keyboard.setDarkMode(isDarkMode);
 
 	}
 
