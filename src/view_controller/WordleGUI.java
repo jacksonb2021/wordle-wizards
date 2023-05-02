@@ -44,7 +44,11 @@ import model.Wordle;
 import model.WordleAccount;
 
 /**
- * this class creates an interactive wordle game in a GUI, using javafx.
+ * This class creates an interactive wordle game in a GUI, using javafx.
+ * The Wordle game is simulated using a Wordle game object, using WordleAccount
+ * to limit user games per day and track scoring. This file also creates a
+ * Leaderboard object that records and stores user WordleAccounts to track 
+ * user performance across games.
  *
  * @author Jackson Burns, Jose Juan Velasquez, Duke Speed, Amon Guinan
  */
@@ -67,10 +71,17 @@ public class WordleGUI extends Application {
 	private int curBoxX = 0;
 	private int curBoxY = 0;
 
+	/**
+	 * Calls launch() from javafx.application.Application.launch().
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * Initializes required objects and opens GUI window.
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("Wordle");
@@ -101,6 +112,10 @@ public class WordleGUI extends Application {
 		stage.show();
 	}
 
+	/**
+	 * Implements direct keyboard input for game window.
+	 * @param event
+	 */
 	private void handleKeyboardInput(KeyEvent event) {
 		String key = event.getText();
 		if (event.getCode() == KeyCode.ENTER) {
@@ -128,6 +143,10 @@ public class WordleGUI extends Application {
 
 	}
 
+	/**
+	 * Initializes graphical objects for the game board,
+	 * and sets javafx window values.
+	 */
 	private void setBoard() {
 		// Label word = new Label(wordle.getWord(true));
 		List<HBox> rows = new ArrayList<>();
@@ -154,10 +173,14 @@ public class WordleGUI extends Application {
 		v.getChildren().addAll(mode, boardGame);
 		v.setAlignment(Pos.BASELINE_CENTER);
 		everything.setCenter(v);
-		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Reinitializes the Wordle object that simulates the game,
+	 * and sets the game to 'practice mode' which doesn't record user
+	 * scorig for leaderboard purposes.
+	 */
 	private void resetGame() {
 		setBoard();
 		wordle = new Wordle(false);
@@ -174,6 +197,10 @@ public class WordleGUI extends Application {
 
 	}
 
+	/**
+	 * Initializes the wordle game object for the first time.
+	 * User score is recorded.
+	 */
 	private void freshNewGame() {
 		setBoard();
 		wordle = new Wordle(true);
@@ -186,6 +213,10 @@ public class WordleGUI extends Application {
 		button.setText("submit guess");
 	}
 
+	/**
+	 * Initializes button objects.
+	 * @return array of initialized button objects.
+	 */
 	private Button[] ButtonMaker() {
 		Button[] temp = new Button[5];
 		for (int i = 0; i < 5; i++) {
@@ -202,6 +233,13 @@ public class WordleGUI extends Application {
 		return temp;
 	}
 
+	/**
+	 * Opens statistics window, which reflects the outcome of the game,
+	 * and user performance therein. 
+	 * @param menu
+	 * @param win
+	 * @param loggedIn
+	 */
 	private void showScore(boolean menu, boolean win, boolean loggedIn) {
 
 		Alert scoreAlert = new Alert(AlertType.CONFIRMATION);
@@ -241,6 +279,9 @@ public class WordleGUI extends Application {
 		leaderboardWindow.getLeaderboard().addUser(account);
 	}
 
+	/**
+	 * Initializes keyboard object with GUI buttons for mouse/touchscreen use.
+	 */
 	private void layoutKeyboard() {
 
 		HBox textbutton = new HBox();
@@ -264,7 +305,11 @@ public class WordleGUI extends Application {
 		everything.setBottom(keyboard);
 
 	}
-
+	
+	/**
+	 * Initializes various javafx objects, and calls/organizes
+	 * individual GUI elements in window.
+	 */
 	private void layoutGUI() {
 		everything = new BorderPane();
 		loginPane = new UsernameLogin(wordle);
@@ -351,6 +396,10 @@ public class WordleGUI extends Application {
 
 	}
 
+	/**
+	 * Implements javafx button EventHandler logic for responding
+	 * to user input.
+	 */
 	private class ButtonHandler implements EventHandler<ActionEvent> {
 
 		public boolean mode = true;
@@ -424,7 +473,11 @@ public class WordleGUI extends Application {
 //			everything.setDisable(false);
 
 		}
-
+		/**
+		 * Determines if the game was won by the user.
+		 * @param boardGame
+		 * @return true if game was won, false if otherwise.
+		 */
 		private boolean winCondition(Button[] boardGame) {
 			for (int i = 0; i < boardGame.length; i++) {
 				if (!boardGame[i].getStyle().contains("-fx-background-color: #00FF00; ")) {
@@ -439,6 +492,11 @@ public class WordleGUI extends Application {
 			return true;
 		}
 
+		/**
+		 * Handles changes in color for keyboard GUI elements.
+		 * @param guess
+		 * @param guessStr
+		 */
 		private void colorKeyboard(String guess, int[] guessStr) {
 			String guessUpper = guess.toUpperCase();
 			String[] splitGuess = guessUpper.split("");
@@ -476,6 +534,15 @@ public class WordleGUI extends Application {
 			}));
 		}
 
+		/**
+		 * handles color logic for the game board, allowing char tiles to be
+		 * animated and change color, depending on whether the user guessed
+		 * correctly or not.
+		 * @param guess
+		 * @param guessStr
+		 * @param boardGameR
+		 * @return
+		 */
 		private Button[] colorBoard(String guess, int[] guessStr, Button[] boardGameR) {
 
 			for (Button b : boardGameR) {
