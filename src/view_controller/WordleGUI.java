@@ -433,6 +433,7 @@ public class WordleGUI extends Application {
 			}
 			account = loginPane.getCurrentUser();
 			account.updateScore(counter);
+			account.setLastPlayed(LocalDate.now());
 			wordle.updateAccount(account);
 			wordle.save();
 
