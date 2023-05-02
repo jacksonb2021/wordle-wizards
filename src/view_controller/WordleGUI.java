@@ -322,6 +322,10 @@ public class WordleGUI extends Application {
 		login.setOnAction(event -> {
 			loginPane.login();
 			if (loginPane.isLoggedIn()) {
+				loginPane.setVisible(false);
+				holder.getChildren().add(logout);
+				holder.setAlignment(Pos.CENTER);
+				logout.setFocusTraversable(false);
 				field.setEditable(true);
 				button.setDisable(false);
 				LocalDate localDate;
@@ -342,6 +346,10 @@ public class WordleGUI extends Application {
 		});
 
 		logout.setOnAction(event -> {
+			holder.getChildren().remove(logout);
+			loginPane.getPwdLane().getChildren().add(logout);
+			loginPane.setVisible(true);
+			//holder.setAlignment(Pos.TOP_CENTER);
 			loginPane.logout();
 			freshNewGame();
 			field.setEditable(false);
