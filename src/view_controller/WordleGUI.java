@@ -477,9 +477,7 @@ public class WordleGUI extends Application {
 			curBoxX = 0;
 			curBoxY = counter;
 			if (winCondition(curBoard)) {
-				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
-
 //				account.updateScore(counter + 1);
 //				wordle.updateAccount(account);
 //				wordle.save();
@@ -490,7 +488,6 @@ public class WordleGUI extends Application {
 				curBoxX = 0;
 				curBoxY = 0;
 			} else if (counter == boardGameRs.length) {
-				account.setLastPlayed(LocalDate.now());
 				everything.setDisable(true);
 				account.updateScore(counter + 1);
 				showScore(false, false, true);
@@ -499,7 +496,7 @@ public class WordleGUI extends Application {
 				curBoxX = 0;
 				curBoxY = counter;
 			}
-
+			account.setLastPlayed(LocalDate.now());
 //			everything.setDisable(false);
 
 		}
